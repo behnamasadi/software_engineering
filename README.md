@@ -2,7 +2,6 @@
 This repository contains various example of "Design Pattern" in object oriented programming with C++.
 
 ![Design_Patterns._Elements_of_Reusable_Object-Oriented_Software](images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg)
-
 ![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg)
 
 

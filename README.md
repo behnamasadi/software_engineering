@@ -21,13 +21,13 @@ This repository contains various example of "Design Pattern" in object oriented 
 [State](src/Behavioral/State)  
 [Strategy](src/Behavioral/Strategy)  
 [Template method](src/Behavioral/TemplateMethod)  
-[Visitor](#)  
+[Visitor](src/Behavioral/Visitor)  
 
 ## [Creational patterns](src/Creational/)
 
-[Abstract Factory](src/Creational/FactoryMethod)  
+[Abstract Factory](src/Creational/AbstractFactoryMethod)  
 [Builder](#)  
-[Factory Method](#)  
+[Factory Method](src/Creational/FactoryMethod)  
 [Object Pool](#)  
 [Prototype](#)  
 [Singleton](src/Creational/Singleton)  
@@ -35,11 +35,11 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 ## [Structural patterns](src/Structural)  
 [Adapter](src/Structural/Adapter)  
-[Bridge](#)  
+[Bridge](src/Structural/Bridge)  
 [Composite](#)  
 [Decorator](src/Structural/Decorator)  
 [Facade](src/Structural/Facade)  
-[Flyweight](#)  
+[Flyweight](src/Structural/Flyweight)  
 [Private Class Data](#)  
 [Proxy](src/Structural/Proxy)  
 
@@ -48,7 +48,8 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 	[3](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns) , 
 	[4](https://sourcemaking.com/design_patterns/), 
 	[5](https://cpppatterns.com/), 
-	[6](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc)
+	[6](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
+	[7](https://www.bogotobogo.com/DesignPatterns/)
 
 
 

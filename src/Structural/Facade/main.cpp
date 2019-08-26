@@ -1,160 +1,79 @@
+#include <string>
 #include <iostream>
+
 using namespace std;
 
-class MisDepartment
+class Alarm
 {
-  public:
-    void submitNetworkRequest()
+public:
+    void alarmOn()
     {
-        _state = 0;
+        cout << "Alarm is on and house is secured"<<endl;
     }
-    bool checkOnStatus()
+
+    void alarmOff()
     {
-        _state++;
-        if (_state == Complete)
-          return 1;
-        return 0;
+        cout << "Alarm is off and you can go into the house"<<endl;
     }
-  private:
-    enum States
-    {
-        Received, DenyAllKnowledge, ReferClientToFacilities,
-          FacilitiesHasNotSentPaperwork, ElectricianIsNotDone,
-          ElectricianDidItWrong, DispatchTechnician, SignedOff, DoesNotWork,
-          FixElectriciansWiring, Complete
-    };
-    int _state;
 };
 
-class ElectricianUnion
+class Ac
 {
-  public:
-    void submitNetworkRequest()
+public:
+    void acOn()
     {
-        _state = 0;
+        cout << "Ac is on"<<endl;
     }
-    bool checkOnStatus()
+
+    void acOff()
     {
-        _state++;
-        if (_state == Complete)
-          return 1;
-        return 0;
+        cout << "AC is off"<<endl;
     }
-  private:
-    enum States
-    {
-        Received, RejectTheForm, SizeTheJob, SmokeAndJokeBreak,
-          WaitForAuthorization, DoTheWrongJob, BlameTheEngineer, WaitToPunchOut,
-          DoHalfAJob, ComplainToEngineer, GetClarification, CompleteTheJob,
-          TurnInThePaperwork, Complete
-    };
-    int _state;
 };
 
-class FacilitiesDepartment
+class Tv
 {
-  public:
-    void submitNetworkRequest()
+public:
+    void tvOn()
     {
-        _state = 0;
+        cout << "Tv is on"<<endl;
     }
-    bool checkOnStatus()
+
+    void tvOff()
     {
-        _state++;
-        if (_state == Complete)
-          return 1;
-        return 0;
+        cout << "TV is off"<<endl;
     }
-  private:
-    enum States
-    {
-        Received, AssignToEngineer, EngineerResearches, RequestIsNotPossible,
-          EngineerLeavesCompany, AssignToNewEngineer, NewEngineerResearches,
-          ReassignEngineer, EngineerReturns, EngineerResearchesAgain,
-          EngineerFillsOutPaperWork, Complete
-    };
-    int _state;
 };
 
-class FacilitiesFacade
+class HouseFacade
 {
-  public:
-    FacilitiesFacade()
-    {
-        _count = 0;
-    }
-    void submitNetworkRequest()
-    {
-        _state = 0;
-    }
-    bool checkOnStatus()
-    {
-        _count++;
-        /* Job request has just been received */
-        if (_state == Received)
-        {
-            _state++;
-            /* Forward the job request to the engineer */
-            _engineer.submitNetworkRequest();
-            cout << "submitted to Facilities - " << _count << 
-              " phone calls so far" << endl;
-        }
-        else if (_state == SubmitToEngineer)
-        {
-            /* If engineer is complete, forward to electrician */
-            if (_engineer.checkOnStatus())
-            {
-                _state++;
-                _electrician.submitNetworkRequest();
-                cout << "submitted to Electrician - " << _count << 
-                  " phone calls so far" << endl;
-            }
-        }
-        else if (_state == SubmitToElectrician)
-        {
-            /* If electrician is complete, forward to technician */
-            if (_electrician.checkOnStatus())
-            {
-                _state++;
-                _technician.submitNetworkRequest();
-                cout << "submitted to MIS - " << _count << 
-                  " phone calls so far" << endl;
-            }
-        }
-        else if (_state == SubmitToTechnician)
-        {
-            /* If technician is complete, job is done */
-            if (_technician.checkOnStatus())
-              return 1;
-        }
-        /* The job is not entirely complete */
-        return 0;
-    }
-    int getNumberOfCalls()
+    Alarm alarm;
+    Ac ac;
+    Tv tv;
 
+public:
+    HouseFacade(){}
+
+    void goToWork()
     {
-        return _count;
+        ac.acOff();
+        tv.tvOff();
+        alarm.alarmOn();
     }
-  private:
-    enum States
+
+    void comeHome()
     {
-        Received, SubmitToEngineer, SubmitToElectrician, SubmitToTechnician
-    };
-    int _state;
-    int _count;
-    FacilitiesDepartment _engineer;
-    ElectricianUnion _electrician;
-    MisDepartment _technician;
+        alarm.alarmOff();
+        ac.acOn();
+        tv.tvOn();
+    }
 };
 
 int main()
 {
-  FacilitiesFacade facilities;
+    HouseFacade hf;
 
-  facilities.submitNetworkRequest();
-  /* Keep checking until job is complete */
-  while (!facilities.checkOnStatus())
-    ;
-  cout << "job completed after only " << facilities.getNumberOfCalls() << 
-    " phone calls" << endl;
+    //Rather than calling 100 different on and off functions thanks to facade I only have 2 functions...
+    hf.goToWork();
+    hf.comeHome();
 }

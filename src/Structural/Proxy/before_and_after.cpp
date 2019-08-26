@@ -21,15 +21,15 @@ class Image
     Image()
     {
         m_id = s_next++;
-        std::cout << "   $$ ctor: " << m_id << '\n';
+        std::cout << "constructor: " << m_id << '\n';
     }
     ~Image()
     {
-        std::cout << "   dtor: " << m_id << '\n';
+        std::cout << "deconstructor: " << m_id << '\n';
     }
     void draw()
     {
-        std::cout << "   drawing image " << m_id << '\n';
+        std::cout << "drawing image " << m_id << '\n';
     }
 };
 
@@ -44,15 +44,15 @@ class RealImage
     RealImage(int i)
     {
         m_id = i;
-        std::cout << "   $$ ctor: " << m_id << '\n';
+        std::cout << "constructor: " << m_id << '\n';
     }
     ~RealImage()
     {
-        std::cout << "   dtor: " << m_id << '\n';
+        std::cout << "deconstructor: " << m_id << '\n';
     }
     void draw()
     {
-        std::cout << "   drawing image " << m_id << '\n';
+        std::cout << "drawing image " << m_id << '\n';
     }
 };
 

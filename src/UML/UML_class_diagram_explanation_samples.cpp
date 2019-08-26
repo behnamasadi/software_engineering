@@ -10,8 +10,8 @@ ASCII chars:
 https://www.alt-codes.net/
 ► ◄ ▲ ▼ ◆ ◇ ♦ △ ▽ ◁ ▷ ◹ ◸ ◺ ◿
 
-𝗕𝗼𝗹𝗱/𝐼𝑡𝑎𝑙𝑖𝑐
-https://yaytext.com/bold-italic/
+𝗕𝗼𝗹𝗱/𝐼𝑡𝑎𝑙𝑖𝑐,u͟n͟d͟e͟r͟l͟i͟n͟e͟
+https://yaytext.com/
 
 I)A class representation
 
@@ -43,19 +43,19 @@ _________________________________
 |_______________________________|
 
 Different type of members in a class
-1) Static members are represented as underlined.
-2) Pure virtual functions are represented as italics.
+1) S͟t͟a͟t͟i͟c͟ ͟m͟e͟m͟b͟e͟r͟s͟ are represented as underlined.
+2) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
 
 
 II)Class relationship
 
 In a system a class may be related to different classes,following are the different relation ship.
 
-1)Association (knows a)
-2)Dependency (uses a)
-3)Aggregation (has a)
-4)Composition (has a)
-5)Inheritance (is a)
+1)Association (knows a, Uses-a) ------->
+2)Dependency (uses a) - - - - - ->
+3)Aggregation (has a) ◇------------->
+4)Composition (has a) ◆------------->
+5)Inheritance (is a) ----------▷
 6)Class template
 
 Different Multiplicity in a relation
@@ -64,6 +64,12 @@ Different Multiplicity in a relation
 “0..* or *”    Zero or more instances
 “1..*”              One or more instances (at least one)
 
+
+In nutshell:
+Association is a pointer to an other class and life cycle doesn't depend on the class.
+Aggregation is vague concept and could be similar to Association.
+Dependency is done via sending an object via function parameter.
+Composition is when a class has member of an other class and maintains the life cycle.
 
 ////////////////////////////////////////////(1)Association////////////////////////////////////////////
 To qualify as an association, an object and another object must have the following relationship:

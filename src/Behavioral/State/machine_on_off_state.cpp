@@ -1,5 +1,7 @@
 #include <iostream>
 using namespace std;
+
+
 class Machine
 {
   class State *current;

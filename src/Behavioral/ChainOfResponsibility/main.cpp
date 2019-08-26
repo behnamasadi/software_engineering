@@ -88,8 +88,6 @@ class Handler3: public Base
     }
 };
 
-
-
 class Handler4: public Base
 {
 public:
@@ -105,6 +103,7 @@ public:
         }
     }
 };
+
 int main()
 {
     srand(time(0));

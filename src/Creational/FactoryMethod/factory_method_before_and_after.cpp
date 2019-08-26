@@ -92,26 +92,26 @@ Stooge *Stooge::make_stooge(int choice)
 int main()
 {
     {
-    vector<before::Stooge*> roles;
-    int choice;
+        vector<before::Stooge*> roles;
+        int choice;
 
-    while (true)
-    {
-        cout << "Larry(1) Moe(2) Curly(3) Go(0): ";
-        cin >> choice;
-        if (choice == 0)
-        break;
-        else if (choice == 1)
-        roles.push_back(new before::Larry);
-        else if (choice == 2)
-        roles.push_back(new before::Moe);
-        else
-        roles.push_back(new before::Curly);
-    }
-    for (int i = 0; i < roles.size(); i++)
-        roles[i]->slap_stick();
-    for (int i = 0; i < roles.size(); i++)
-        delete roles[i];
+        while (true)
+        {
+            cout << "Larry(1) Moe(2) Curly(3) Go(0): ";
+            cin >> choice;
+            if (choice == 0)
+                break;
+            else if (choice == 1)
+                roles.push_back(new before::Larry);
+            else if (choice == 2)
+                roles.push_back(new before::Moe);
+            else
+                roles.push_back(new before::Curly);
+        }
+        for (int i = 0; i < roles.size(); i++)
+            roles[i]->slap_stick();
+        for (int i = 0; i < roles.size(); i++)
+            delete roles[i];
 
     }
 

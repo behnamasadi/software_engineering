@@ -8,6 +8,7 @@
 #include <typeindex>
 #include <cxxabi.h>
 #include <memory>
+#include <functional>
 
 #ifndef SERVICELOCATOR_SPTR
 #define SERVICELOCATOR_SPTR

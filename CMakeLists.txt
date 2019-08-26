@@ -4,6 +4,8 @@ set(CMAKE_BUILD_TYPE DEBUG)
 project(design_pattern)
 
 
+
+
 #C++ 14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -39,17 +41,15 @@ TARGET_LINK_LIBRARIES(UML_class_diagram_explanation_samples)
 
 ############################################Structural############################################
 
-ADD_EXECUTABLE(decorator src/Structural/Decorator/main.cpp
-    src/Structural/Decorator/ballPack.hpp
-    src/Structural/Decorator/coaching.hpp
-    src/Structural/Decorator/rackets.hpp
-    src/Structural/Decorator/tennisDecorator.hpp
-    src/Structural/Decorator/courtBooking.hpp
-    src/Structural/Decorator/clayCourtBooking.hpp
-    src/Structural/Decorator/courtBooking.hpp
-    src/Structural/Decorator/grassCourtBooking.hpp
-    src/Structural/Decorator/hardCourtBooking.hpp)
-TARGET_LINK_LIBRARIES(decorator)
+
+ADD_EXECUTABLE(bridge src/Structural/Bridge/main.cpp)
+TARGET_LINK_LIBRARIES(bridge)
+
+ADD_EXECUTABLE(tennis_decorator src/Structural/Decorator/tennis_decorator.cpp)
+TARGET_LINK_LIBRARIES(tennis_decorator)
+
+ADD_EXECUTABLE(ice_cream_decorator src/Structural/Decorator/ice_cream_decorator.cpp)
+TARGET_LINK_LIBRARIES(ice_cream_decorator)
 
 ADD_EXECUTABLE(proxy_before_and_after src/Structural/Proxy/before_and_after.cpp)
 TARGET_LINK_LIBRARIES(proxy_before_and_after)
@@ -66,11 +66,31 @@ TARGET_LINK_LIBRARIES(external_polymorphism)
 ADD_EXECUTABLE(facade src/Structural/Facade/main.cpp)
 TARGET_LINK_LIBRARIES(facade)
 
+ADD_EXECUTABLE(remote_dvd_tv src/Structural/Bridge/remote_dvd_tv.cpp)
+TARGET_LINK_LIBRARIES(remote_dvd_tv)
 
+
+ADD_EXECUTABLE(vehicle_bridge src/Structural/Bridge/vehicle.cpp)
+TARGET_LINK_LIBRARIES(vehicle_bridge)
+
+ADD_EXECUTABLE(time_bridge src/Structural/Bridge/time.cpp)
+TARGET_LINK_LIBRARIES(time_bridge)
+
+ADD_EXECUTABLE(flyweight_character.cpp src/Structural/Flyweight/flyweight_character.cpp)
+TARGET_LINK_LIBRARIES(flyweight_character)
+
+ADD_EXECUTABLE(flyweight_Icon src/Structural/Flyweight/flyweight_Icon.cpp)
+TARGET_LINK_LIBRARIES(flyweight_Icon)
 
 ############################################Behavioral############################################
+ADD_EXECUTABLE(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
+TARGET_LINK_LIBRARIES(notification_iterator)
+
 ADD_EXECUTABLE(observer src/Behavioral/Observer/main.cpp)
 TARGET_LINK_LIBRARIES(observer)
+
+ADD_EXECUTABLE(clock_timer src/Behavioral/Observer/clocktimer.cpp)
+TARGET_LINK_LIBRARIES(clock_timer)
 
 ADD_EXECUTABLE(light_on_command src/Behavioral/Command/LightOnCommand.cpp)
 TARGET_LINK_LIBRARIES(light_on_command)
@@ -79,25 +99,17 @@ TARGET_LINK_LIBRARIES(light_on_command)
 ADD_EXECUTABLE(command src/Behavioral/Command/main.cpp)
 TARGET_LINK_LIBRARIES(command)
 
-ADD_EXECUTABLE(template_method_before_and_after src/Behavioral/TemplateMethod/template_method_before_and_after.cpp)
-TARGET_LINK_LIBRARIES(template_method_before_and_after)
+ADD_EXECUTABLE(template_method_order src/Behavioral/TemplateMethod/template_method_order.cpp)
+TARGET_LINK_LIBRARIES(template_method_order)
 
 ADD_EXECUTABLE(template_method src/Behavioral/TemplateMethod/template_method.cpp)
 TARGET_LINK_LIBRARIES(template_method)
 
+ADD_EXECUTABLE(machine_on_off_state src/Behavioral/State/machine_on_off_state.cpp)
+TARGET_LINK_LIBRARIES(machine_on_off_state)
 
-ADD_EXECUTABLE(state src/Behavioral/State/main.cpp)
-TARGET_LINK_LIBRARIES(state)
-
-ADD_EXECUTABLE(music_player_app
-    src/Behavioral/State/music_player_app.cpp
-    src/Behavioral/State/musicPlayer.cpp
-    src/Behavioral/State/musicPlayerState.cpp
-    src/Behavioral/State/pausedState.cpp
-    src/Behavioral/State/playingState.cpp
-    src/Behavioral/State/stoppedState.cpp
-    )
-TARGET_LINK_LIBRARIES(music_player_app)
+ADD_EXECUTABLE(music_player_state src/Behavioral/State/music_player_state.cpp)
+TARGET_LINK_LIBRARIES(music_player_state)
 
 ADD_EXECUTABLE(chain_of_responsibility src/Behavioral/ChainOfResponsibility/main.cpp)
 TARGET_LINK_LIBRARIES(chain_of_responsibility)
@@ -111,11 +123,38 @@ TARGET_LINK_LIBRARIES(iterator)
 ADD_EXECUTABLE(mediator_before_after src/Behavioral/Mediator/mediator_before_after.cpp)
 TARGET_LINK_LIBRARIES(mediator_before_after)
 
+ADD_EXECUTABLE(airport_mediator_traffic_pattern src/Behavioral/Mediator/airport_mediator_traffic_pattern.cpp)
+TARGET_LINK_LIBRARIES(airport_mediator_traffic_pattern)
+
+ADD_EXECUTABLE(chat_room_mediator src/Behavioral/Mediator/chat_room_mediator.cpp)
+TARGET_LINK_LIBRARIES(chat_room_mediator)
+
+ADD_EXECUTABLE(null_object src/Behavioral/NullObject/null_object.cpp)
+TARGET_LINK_LIBRARIES(null_object)
+
 ADD_EXECUTABLE(robot src/Behavioral/Strategy/robot.cpp)
 TARGET_LINK_LIBRARIES(robot)
 
+ADD_EXECUTABLE(billing_strategy src/Behavioral/Strategy/billing_strategy.cpp)
+TARGET_LINK_LIBRARIES(billing_strategy)
+
 ADD_EXECUTABLE(memento src/Behavioral/Memento/main.cpp)
 TARGET_LINK_LIBRARIES(memento)
+
+ADD_EXECUTABLE(shopping_item_visitor src/Behavioral/Visitor/shopping_item_visitor.cpp)
+TARGET_LINK_LIBRARIES(shopping_item_visitor)
+
+ADD_EXECUTABLE(file_visitor src/Behavioral/Visitor/file_visitor.cpp)
+TARGET_LINK_LIBRARIES(file_visitor)
+
+ADD_EXECUTABLE(car_visitor src/Behavioral/Visitor/car_visitor.cpp)
+TARGET_LINK_LIBRARIES(car_visitor)
+
+ADD_EXECUTABLE(expression_printer src/Behavioral/Visitor/expression_printer.cpp)
+TARGET_LINK_LIBRARIES(expression_printer)
+
+ADD_EXECUTABLE(stock_visitor src/Behavioral/Visitor/stock_visitor.cpp)
+TARGET_LINK_LIBRARIES(stock_visitor)
 
 
 ############################################Creational############################################
@@ -127,9 +166,8 @@ TARGET_LINK_LIBRARIES(singleton_before_after)
 ADD_EXECUTABLE(factory_method_before_and_after src/Creational/FactoryMethod/factory_method_before_and_after.cpp)
 TARGET_LINK_LIBRARIES(factory_method_before_and_after)
 
-
-ADD_EXECUTABLE(factory_method src/Creational/FactoryMethod/main.cpp)
-TARGET_LINK_LIBRARIES(factory_method)
+ADD_EXECUTABLE(vehicle_factory_method src/Creational/FactoryMethod/vehicle_factory_method.cpp)
+TARGET_LINK_LIBRARIES(vehicle_factory_method)
 
 ADD_EXECUTABLE(gui_factory src/Creational/FactoryMethod/guiFactory.cpp)
 TARGET_LINK_LIBRARIES(gui_factory)
@@ -139,6 +177,16 @@ TARGET_LINK_LIBRARIES(abstract_factory_method)
 
 ADD_EXECUTABLE(abstract_factory_method_before_after src/Creational/AbstractFactoryMethod/abstract_factory_method_before_after.cpp)
 TARGET_LINK_LIBRARIES(abstract_factory_method_before_after)
+
+
+ADD_EXECUTABLE(gui_abstract_factory src/Creational/AbstractFactoryMethod/gui_abstract_factory.cpp)
+TARGET_LINK_LIBRARIES(gui_abstract_factory)
+
+
+
+
+ADD_EXECUTABLE(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
+TARGET_LINK_LIBRARIES(car_abstract_factory)
 
 
 ADD_EXECUTABLE(dependency_injection src/DependencyInjection/dependency_injection.cpp)

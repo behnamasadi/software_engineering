@@ -71,3 +71,8 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 
 
 
+
+[![Build Status](https://travis-ci.org/behnamasadi/design_pattern.svg?branch=master)](https://travis-ci.org/behnamasadi/design_pattern)
+![alt text](https://img.shields.io/badge/license-BSD-blue.svg)
+
+

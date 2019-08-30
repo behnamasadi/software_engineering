@@ -1,0 +1,12 @@
+sudo: false
+dist: bionic 
+
+
+# Enable C++ support
+language: cpp
+script:
+  - git clone https://github.com/behnamasadi/design_pattern/
+  - cd design_pattern
+  - mkdir build
+  - cd build
+  - cmake .. && make -j8

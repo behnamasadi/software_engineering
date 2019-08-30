@@ -43,6 +43,21 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Private Class Data](#)  
 [Proxy](src/Structural/Proxy)  
 
+## [SOLID Design Principles](SOLID)  
+
+[Single responsibility principle](SOLID/SingleResponsibilityPrinciple)  
+[Open–closed principle](SOLID/OpenClosedPrinciple)  
+[Liskov substitution principle](SOLID/LiskovSubstitutionPrinciple)  
+[Interface segregation principle](SOLID/InterfaceSegregationPrinciple)  
+[Dependency inversion principle](SOLID/DependencyInjection)  
+
+
+## [Model View Controller](ModelViewController)  
+
+
+## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)  
+
+
 References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 
 	[2](https://www.amazon.de/First-Design-Patterns-Brain-Friendly/dp/0596007124/ref=asc_df_0596007124/), 
 	[3](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns) , 

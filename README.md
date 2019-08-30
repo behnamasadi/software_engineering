@@ -53,9 +53,13 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 
 ## [Model View Controller](ModelViewController)  
+[Simple Model View Controller Example](ModelViewController/student_model_view_controller.cpp)
 
+## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)
+[Rule Of Five](RuleOfThreeFiveZero/rule_of_five.cpp)  
+[Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
+[Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
-## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)  
 
 
 References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 

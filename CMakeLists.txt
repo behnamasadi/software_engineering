@@ -189,3 +189,13 @@ TARGET_LINK_LIBRARIES(dependency_inversion_principle)
 
 ADD_EXECUTABLE(rule_of_five RuleOfThreeFiveZero/rule_of_five.cpp)
 TARGET_LINK_LIBRARIES(rule_of_five)
+
+ADD_EXECUTABLE(rule_of_three RuleOfThreeFiveZero/rule_of_three.cpp)
+TARGET_LINK_LIBRARIES(rule_of_three)
+
+ADD_EXECUTABLE(rule_of_zero RuleOfThreeFiveZero/rule_of_zero.cpp)
+TARGET_LINK_LIBRARIES(rule_of_zero)
+
+############################################Model View Controller############################################
+ADD_EXECUTABLE(student_model_view_controller ModelViewController/student_model_view_controller.cpp)
+TARGET_LINK_LIBRARIES(student_model_view_controller)

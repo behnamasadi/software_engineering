@@ -49,7 +49,10 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 	[4](https://sourcemaking.com/design_patterns/), 
 	[5](https://cpppatterns.com/), 
 	[6](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
-	[7](https://www.bogotobogo.com/DesignPatterns/)
+	[7](https://www.bogotobogo.com/DesignPatterns/),
+	[8](https://www.growingwiththeweb.com/p/explore.html?t=Design%20pattern),
+	[9](https://www.tutorialspoint.com/design_pattern/)
+	[10](http://simpletechtalks.com/tag/design-patterns/)
 
 
 

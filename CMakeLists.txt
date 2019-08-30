@@ -15,28 +15,40 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_CXX_FLAGS}")
 #set(CMAKE_CXX_FLAGS "-fno-omit-frame-pointer ${CMAKE_CXX_FLAGS}")
 
-
-############################################UML Class Diagram Explained With C++ samples############################################
-
-ADD_EXECUTABLE(UML_class_diagram_explanation_samples src/UML/UML_class_diagram_explanation_samples.cpp)
-TARGET_LINK_LIBRARIES(UML_class_diagram_explanation_samples)
-
 #Finding Memory leaking, Stack and Heap overflow
 #set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_CXX_FLAGS}")
 #set(CMAKE_CXX_FLAGS "-fno-omit-frame-pointer ${CMAKE_CXX_FLAGS}")
 
+############################################UML Class Diagram Explained With C++ samples############################################
 
-#ADD_EXECUTABLE(main  src/main.cpp )
-#TARGET_LINK_LIBRARIES(main)
-#/home/behnam/workspace/design_pattern/src/Structural/Decorator
+ADD_EXECUTABLE(UML_class_diagram_explanation_samples UML/UML_class_diagram_explanation_samples.cpp)
+TARGET_LINK_LIBRARIES(UML_class_diagram_explanation_samples)
 
+############################################Creational############################################
 
-#ADD_EXECUTABLE(dependency_injection  src/dependency_injection/dependency_injection.cpp)
-#TARGET_LINK_LIBRARIES(dependency_injection)
+ADD_EXECUTABLE(singleton_before_after src/Creational/Singleton/singleton_before_after.cpp)
+TARGET_LINK_LIBRARIES(singleton_before_after)
 
-#ADD_EXECUTABLE(simple_dependency_injection src/dependency_injection/simple_dependency_injection.cpp )
-#TARGET_LINK_LIBRARIES(simple_dependency_injection)
+ADD_EXECUTABLE(factory_method_before_and_after src/Creational/FactoryMethod/factory_method_before_and_after.cpp)
+TARGET_LINK_LIBRARIES(factory_method_before_and_after)
 
+ADD_EXECUTABLE(vehicle_factory_method src/Creational/FactoryMethod/vehicle_factory_method.cpp)
+TARGET_LINK_LIBRARIES(vehicle_factory_method)
+
+ADD_EXECUTABLE(gui_factory src/Creational/FactoryMethod/guiFactory.cpp)
+TARGET_LINK_LIBRARIES(gui_factory)
+
+ADD_EXECUTABLE(abstract_factory_method src/Creational/AbstractFactoryMethod/main.cpp)
+TARGET_LINK_LIBRARIES(abstract_factory_method)
+
+ADD_EXECUTABLE(abstract_factory_method_before_after src/Creational/AbstractFactoryMethod/abstract_factory_method_before_after.cpp)
+TARGET_LINK_LIBRARIES(abstract_factory_method_before_after)
+
+ADD_EXECUTABLE(gui_abstract_factory src/Creational/AbstractFactoryMethod/gui_abstract_factory.cpp)
+TARGET_LINK_LIBRARIES(gui_abstract_factory)
+
+ADD_EXECUTABLE(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
+TARGET_LINK_LIBRARIES(car_abstract_factory)
 
 
 ############################################Structural############################################
@@ -69,18 +81,15 @@ TARGET_LINK_LIBRARIES(facade)
 ADD_EXECUTABLE(remote_dvd_tv src/Structural/Bridge/remote_dvd_tv.cpp)
 TARGET_LINK_LIBRARIES(remote_dvd_tv)
 
-
 ADD_EXECUTABLE(vehicle_bridge src/Structural/Bridge/vehicle.cpp)
 TARGET_LINK_LIBRARIES(vehicle_bridge)
 
 ADD_EXECUTABLE(time_bridge src/Structural/Bridge/time.cpp)
 TARGET_LINK_LIBRARIES(time_bridge)
 
-ADD_EXECUTABLE(flyweight_character.cpp src/Structural/Flyweight/flyweight_character.cpp)
-TARGET_LINK_LIBRARIES(flyweight_character)
+ADD_EXECUTABLE(flyweight_counter_strike src/Structural/Flyweight/flyweight_counter_strike.cpp)
+TARGET_LINK_LIBRARIES(flyweight_counter_strike)
 
-ADD_EXECUTABLE(flyweight_Icon src/Structural/Flyweight/flyweight_Icon.cpp)
-TARGET_LINK_LIBRARIES(flyweight_Icon)
 
 ############################################Behavioral############################################
 ADD_EXECUTABLE(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
@@ -157,39 +166,26 @@ ADD_EXECUTABLE(stock_visitor src/Behavioral/Visitor/stock_visitor.cpp)
 TARGET_LINK_LIBRARIES(stock_visitor)
 
 
-############################################Creational############################################
+############################################SOLID############################################
+ADD_EXECUTABLE(single_responsibility_principle SOLID/SingleResponsibilityPrinciple/single_responsibility_principle.cpp)
+TARGET_LINK_LIBRARIES(single_responsibility_principle)
 
-ADD_EXECUTABLE(singleton_before_after src/Creational/Singleton/singleton_before_after.cpp)
-TARGET_LINK_LIBRARIES(singleton_before_after)
+ADD_EXECUTABLE(open_closed_principle SOLID/OpenClosedPrinciple/open_closed_principle.cpp)
+TARGET_LINK_LIBRARIES(open_closed_principle)
 
+ADD_EXECUTABLE(liskov_substitution_principle SOLID/LiskovSubstitutionPrinciple/liskov_substitution_principle.cpp)
+TARGET_LINK_LIBRARIES(liskov_substitution_principle)
 
-ADD_EXECUTABLE(factory_method_before_and_after src/Creational/FactoryMethod/factory_method_before_and_after.cpp)
-TARGET_LINK_LIBRARIES(factory_method_before_and_after)
+ADD_EXECUTABLE(interface_segregation_principle SOLID/InterfaceSegregationPrinciple/interface_segregation_principle.cpp)
+TARGET_LINK_LIBRARIES(interface_segregation_principle)
 
-ADD_EXECUTABLE(vehicle_factory_method src/Creational/FactoryMethod/vehicle_factory_method.cpp)
-TARGET_LINK_LIBRARIES(vehicle_factory_method)
+ADD_EXECUTABLE(dependency_injection_car_enginge SOLID/DependencyInjection/dependency_injection_car_enginge.cpp)
+TARGET_LINK_LIBRARIES(dependency_injection_car_enginge)
 
-ADD_EXECUTABLE(gui_factory src/Creational/FactoryMethod/guiFactory.cpp)
-TARGET_LINK_LIBRARIES(gui_factory)
+ADD_EXECUTABLE(dependency_inversion_principle SOLID/DependencyInjection/dependency_inversion_principle.cpp)
+TARGET_LINK_LIBRARIES(dependency_inversion_principle)
 
-ADD_EXECUTABLE(abstract_factory_method src/Creational/AbstractFactoryMethod/main.cpp)
-TARGET_LINK_LIBRARIES(abstract_factory_method)
+############################################Rule Of Three Five Zero############################################
 
-ADD_EXECUTABLE(abstract_factory_method_before_after src/Creational/AbstractFactoryMethod/abstract_factory_method_before_after.cpp)
-TARGET_LINK_LIBRARIES(abstract_factory_method_before_after)
-
-
-ADD_EXECUTABLE(gui_abstract_factory src/Creational/AbstractFactoryMethod/gui_abstract_factory.cpp)
-TARGET_LINK_LIBRARIES(gui_abstract_factory)
-
-
-
-
-ADD_EXECUTABLE(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
-TARGET_LINK_LIBRARIES(car_abstract_factory)
-
-
-ADD_EXECUTABLE(dependency_injection src/DependencyInjection/dependency_injection.cpp)
-TARGET_LINK_LIBRARIES(dependency_injection)
-
-
+ADD_EXECUTABLE(rule_of_five RuleOfThreeFiveZero/rule_of_five.cpp)
+TARGET_LINK_LIBRARIES(rule_of_five)

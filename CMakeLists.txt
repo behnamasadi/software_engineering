@@ -199,3 +199,10 @@ TARGET_LINK_LIBRARIES(rule_of_zero)
 ############################################Model View Controller############################################
 ADD_EXECUTABLE(student_model_view_controller ModelViewController/student_model_view_controller.cpp)
 TARGET_LINK_LIBRARIES(student_model_view_controller)
+
+
+############################################Clean Code############################################
+
+ADD_EXECUTABLE(clean_code clean_code/main.cpp)
+TARGET_LINK_LIBRARIES(clean_code)
+

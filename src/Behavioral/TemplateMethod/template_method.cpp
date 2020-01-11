@@ -68,5 +68,5 @@ int main()
         array[i]->execute();
         cout << '\n';
     }
-    delete []array;
+    //delete []array;
 }

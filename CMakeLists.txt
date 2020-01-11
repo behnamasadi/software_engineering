@@ -203,6 +203,20 @@ TARGET_LINK_LIBRARIES(student_model_view_controller)
 
 ############################################Clean Code############################################
 
-ADD_EXECUTABLE(clean_code clean_code/main.cpp)
+ADD_EXECUTABLE(clean_code Clean_Code/main.cpp)
 TARGET_LINK_LIBRARIES(clean_code)
+
+############################################ Refactoring ############################################
+
+ADD_EXECUTABLE(refactoring Refactoring/main.cpp)
+TARGET_LINK_LIBRARIES(refactoring)
+
+ADD_EXECUTABLE(feature_envy Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
+TARGET_LINK_LIBRARIES(feature_envy)
+
+ADD_EXECUTABLE(message_chains Refactoring/Couplers/Message_Chains/message_chains.cpp)
+TARGET_LINK_LIBRARIES(message_chains)
+
+ADD_EXECUTABLE(primitive_obsession Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
+TARGET_LINK_LIBRARIES(primitive_obsession)
 

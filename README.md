@@ -1,5 +1,5 @@
 # Design Pattern, Refactoring and UML
-This repository contains various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code) and an introduction on UML with various examples.
+This repository contains various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), Model View Controller (MVC), SOLID Design Principles, Clean Code and an introduction on UML with various examples.
 
 ![Design_Patterns._Elements_of_Reusable_Object-Oriented_Software](images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg)
 ![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg)

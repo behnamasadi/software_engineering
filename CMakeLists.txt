@@ -21,8 +21,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 ############################################UML Class Diagram Explained With C++ samples############################################
 
-ADD_EXECUTABLE(UML_class_diagram_explanation_samples UML/UML_class_diagram_explanation_samples.cpp)
-TARGET_LINK_LIBRARIES(UML_class_diagram_explanation_samples)
+#ADD_EXECUTABLE(UML_class_diagram_explanation_samples UML/UML_class_diagram_explanation_samples.cpp)
+#TARGET_LINK_LIBRARIES(UML_class_diagram_explanation_samples)
 
 ############################################Creational############################################
 

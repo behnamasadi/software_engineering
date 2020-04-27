@@ -1,0 +1,13 @@
+@startuml
+class Circle
+{
+
+    -double radius
+    -Point center
+
+    +setRadius(double radius)
+    +setCenter(Point center)
+    +double getArea()
+    +double getCircumfrence()
+}
+@enduml

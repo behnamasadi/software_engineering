@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="142px" preserveAspectRatio="none" style="width:192px;height:142px;" version="1.1" viewBox="0 0 192 142" width="192px" zoomAndPan="magnify"><defs><filter height="300%" id="ft02x4ruceft" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[a7f9118cae7621dd25d25149752faef0]
+class Circle--><rect fill="#FEFECE" filter="url(#ft02x4ruceft)" height="124.8281" id="Circle" style="stroke: #A80036; stroke-width: 1.5;" width="174" x="7" y="7"/><ellipse cx="72.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M74.5938,18.6719 C73.6563,18.2344 73.0625,18.0938 72.1875,18.0938 C69.5625,18.0938 67.5625,20.1719 67.5625,22.8906 L67.5625,24.0156 C67.5625,26.5938 69.6719,28.4844 72.5625,28.4844 C73.7813,28.4844 74.9375,28.1875 75.6875,27.6406 C76.2656,27.2344 76.5938,26.7813 76.5938,26.3906 C76.5938,25.9375 76.2031,25.5469 75.7344,25.5469 C75.5156,25.5469 75.3125,25.625 75.125,25.8125 C74.6719,26.2969 74.6719,26.2969 74.4844,26.3906 C74.0625,26.6563 73.375,26.7813 72.6094,26.7813 C70.5625,26.7813 69.2656,25.6875 69.2656,23.9844 L69.2656,22.8906 C69.2656,21.1094 70.5156,19.7969 72.25,19.7969 C72.8281,19.7969 73.4375,19.9531 73.9063,20.2031 C74.3906,20.4844 74.5625,20.7031 74.6563,21.1094 C74.7188,21.5156 74.75,21.6406 74.8906,21.7656 C75.0313,21.9063 75.2656,22.0156 75.4844,22.0156 C75.75,22.0156 76.0156,21.875 76.1875,21.6563 C76.2969,21.5 76.3281,21.3125 76.3281,20.8906 L76.3281,19.4688 C76.3281,19.0313 76.3125,18.9063 76.2188,18.75 C76.0625,18.4844 75.7813,18.3438 75.4844,18.3438 C75.1875,18.3438 74.9844,18.4375 74.7656,18.75 L74.5938,18.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="35" x="92.75" y="27.1543">Circle</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="180" y1="39" y2="39"/><rect fill="none" height="6" style="stroke: #C82930; stroke-width: 1.0;" width="6" x="15" y="47"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="79" x="27" y="53.2104">double radius</text><rect fill="none" height="6" style="stroke: #C82930; stroke-width: 1.0;" width="6" x="15" y="59.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="70" x="27" y="66.0151">Point center</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="180" y1="72.6094" y2="72.6094"/><ellipse cx="18" cy="83.6094" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="144" x="27" y="86.8198">setRadius(double radius)</text><ellipse cx="18" cy="96.4141" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="137" x="27" y="99.6245">setCenter(Point center)</text><ellipse cx="18" cy="109.2188" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="98" x="27" y="112.4292">double getArea()</text><ellipse cx="18" cy="122.0234" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="148" x="27" y="125.2339">double getCircumfrence()</text><!--MD5=[4c3687390d5f2b4a78e780224f99a23b]
+@startuml
+class Circle
+{
+
+    -double radius
+    -Point center
+
+    +setRadius(double radius)
+    +setCenter(Point center)
+    +double getArea()
+    +double getCircumfrence()
+}
+@enduml
+
+PlantUML version 1.2020.09beta3(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 14.0.1+7
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

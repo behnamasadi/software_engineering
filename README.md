@@ -1,5 +1,5 @@
-# Design pattern
-This repository contains various example of "Design Pattern" in object oriented programming with C++.
+# Design Pattern, Refactoring and UML
+This repository contains various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code) and an introduction on UML with various examples.
 
 ![Design_Patterns._Elements_of_Reusable_Object-Oriented_Software](images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg)
 ![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg)
@@ -62,12 +62,12 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 ## [UML Diagrams](UML/)
 
-### [Refactoring ](Refactoring/)
+### [Refactoring](Refactoring/)
 ### [Bloaters](Refactoring/Bloaters)
-[Primitive_Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
+[Primitive Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
 ### [Couplers](Refactoring/Couplers)
-[Feature_Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
-[Message_Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)
+[Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
+[Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)
 
 
 References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 

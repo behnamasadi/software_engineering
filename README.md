@@ -67,7 +67,7 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Sequence Diagram](UML/)  
 [Activity Diagram](UML/)  
 
-### [Refactoring](Refactoring/)
+## [Refactoring](Refactoring/)
 ### [Bloaters](Refactoring/Bloaters)  
 [Primitive Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
 ### [Couplers](Refactoring/Couplers)  

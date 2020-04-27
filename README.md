@@ -61,6 +61,11 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
 ## [UML Diagrams](UML/)
+[Class Diagram](UML/)
+[Class Relationship](UML/)
+[Use Case Diagram](UML/)
+[Sequence Diagram](UML/)
+[Activity Diagram](UML/)
 
 ### [Refactoring](Refactoring/)
 ### [Bloaters](Refactoring/Bloaters)

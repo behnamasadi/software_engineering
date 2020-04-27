@@ -208,9 +208,6 @@ TARGET_LINK_LIBRARIES(clean_code)
 
 ############################################ Refactoring ############################################
 
-ADD_EXECUTABLE(refactoring Refactoring/main.cpp)
-TARGET_LINK_LIBRARIES(refactoring)
-
 ADD_EXECUTABLE(feature_envy Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
 TARGET_LINK_LIBRARIES(feature_envy)
 

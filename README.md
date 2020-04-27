@@ -62,12 +62,12 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 ## [UML Diagrams](UML/)
 
-## [Refactoring ](Refactoring/)
-### [Bloaters]()
-#### [Primitive_Obsession]()
-### [Couplers]()
-#### [Feature_Envy]()
-#### [Message_Chains]()
+### [Refactoring ](Refactoring/)
+### [Bloaters](Refactoring/Bloaters)
+[Primitive_Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
+### [Couplers](Refactoring/Couplers)
+[Feature_Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
+[Message_Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)
 
 
 References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 

@@ -60,19 +60,19 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
 [Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
-## [UML Diagrams](UML/)
-[Class Diagram](UML/)
-[Class Relationship](UML/)
-[Use Case Diagram](UML/)
-[Sequence Diagram](UML/)
-[Activity Diagram](UML/)
+## [UML Diagrams](UML/)  
+[Class Diagram](UML/)  
+[Class Relationship](UML/)  
+[Use Case Diagram](UML/)  
+[Sequence Diagram](UML/)  
+[Activity Diagram](UML/)  
 
 ### [Refactoring](Refactoring/)
-### [Bloaters](Refactoring/Bloaters)
+### [Bloaters](Refactoring/Bloaters)  
 [Primitive Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
-### [Couplers](Refactoring/Couplers)
-[Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
-[Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)
+### [Couplers](Refactoring/Couplers)  
+[Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)  
+[Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)  
 
 
 References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 
@@ -83,9 +83,9 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 	[6](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
 	[7](https://www.bogotobogo.com/DesignPatterns/),
 	[8](https://www.growingwiththeweb.com/p/explore.html?t=Design%20pattern),
-	[9](https://www.tutorialspoint.com/design_pattern/)
-	[10](http://simpletechtalks.com/tag/design-patterns/)
-	[11](https://refactoring.guru/refactoring)
+	[9](https://www.tutorialspoint.com/design_pattern/),
+	[10](http://simpletechtalks.com/tag/design-patterns/),
+	[11](https://refactoring.guru/refactoring),
 	[12](https://sourcemaking.com/refactoring)
 
 

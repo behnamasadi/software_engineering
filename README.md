@@ -86,7 +86,9 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 	[9](https://www.tutorialspoint.com/design_pattern/),
 	[10](http://simpletechtalks.com/tag/design-patterns/),
 	[11](https://refactoring.guru/refactoring),
-	[12](https://sourcemaking.com/refactoring)
+	[12](https://sourcemaking.com/refactoring),
+	[13](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/),
+	[14](http://www.plantuml.com/plantuml/uml/)
 
 
 

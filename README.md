@@ -3,8 +3,8 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 ![Design_Patterns._Elements_of_Reusable_Object-Oriented_Software](images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg)
 ![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg)
-
-
+![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg)
+![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg)
 
 
 

@@ -88,7 +88,9 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 	[11](https://refactoring.guru/refactoring),
 	[12](https://sourcemaking.com/refactoring),
 	[13](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/),
-	[14](http://www.plantuml.com/plantuml/uml/)
+	[14](http://www.plantuml.com/plantuml/uml/),
+	[15](https://www.amazon.de/-/en/Martin-Fowler/dp/0134757599/),
+	[16](https://www.amazon.de/-/en/Robert-Martin/dp/0132350882/)
 
 
 

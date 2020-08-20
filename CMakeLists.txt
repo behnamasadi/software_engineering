@@ -21,199 +21,205 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 ############################################UML Class Diagram Explained With C++ samples############################################
 
-#ADD_EXECUTABLE(UML_class_diagram_explanation_samples UML/UML_class_diagram_explanation_samples.cpp)
-#TARGET_LINK_LIBRARIES(UML_class_diagram_explanation_samples)
+#add_executable(UML_class_diagram_explanation_samples UML/UML_class_diagram_explanation_samples.cpp)
+#target_link_libraries(UML_class_diagram_explanation_samples)
 
 ############################################Creational############################################
 
-ADD_EXECUTABLE(singleton_before_after src/Creational/Singleton/singleton_before_after.cpp)
-TARGET_LINK_LIBRARIES(singleton_before_after)
+add_executable(singleton_before_after src/Creational/Singleton/singleton_before_after.cpp)
+target_link_libraries(singleton_before_after)
 
-ADD_EXECUTABLE(factory_method_before_and_after src/Creational/FactoryMethod/factory_method_before_and_after.cpp)
-TARGET_LINK_LIBRARIES(factory_method_before_and_after)
+add_executable(factory_method_before_and_after src/Creational/FactoryMethod/factory_method_before_and_after.cpp)
+target_link_libraries(factory_method_before_and_after)
 
-ADD_EXECUTABLE(vehicle_factory_method src/Creational/FactoryMethod/vehicle_factory_method.cpp)
-TARGET_LINK_LIBRARIES(vehicle_factory_method)
+add_executable(vehicle_factory_method src/Creational/FactoryMethod/vehicle_factory_method.cpp)
+target_link_libraries(vehicle_factory_method)
 
-ADD_EXECUTABLE(gui_factory src/Creational/FactoryMethod/guiFactory.cpp)
-TARGET_LINK_LIBRARIES(gui_factory)
+add_executable(gui_factory src/Creational/FactoryMethod/guiFactory.cpp)
+target_link_libraries(gui_factory)
 
-ADD_EXECUTABLE(abstract_factory_method src/Creational/AbstractFactoryMethod/main.cpp)
-TARGET_LINK_LIBRARIES(abstract_factory_method)
+add_executable(abstract_factory_method src/Creational/AbstractFactoryMethod/main.cpp)
+target_link_libraries(abstract_factory_method)
 
-ADD_EXECUTABLE(abstract_factory_method_before_after src/Creational/AbstractFactoryMethod/abstract_factory_method_before_after.cpp)
-TARGET_LINK_LIBRARIES(abstract_factory_method_before_after)
+add_executable(abstract_factory_method_before_after src/Creational/AbstractFactoryMethod/abstract_factory_method_before_after.cpp)
+target_link_libraries(abstract_factory_method_before_after)
 
-ADD_EXECUTABLE(gui_abstract_factory src/Creational/AbstractFactoryMethod/gui_abstract_factory.cpp)
-TARGET_LINK_LIBRARIES(gui_abstract_factory)
+add_executable(gui_abstract_factory src/Creational/AbstractFactoryMethod/gui_abstract_factory.cpp)
+target_link_libraries(gui_abstract_factory)
 
-ADD_EXECUTABLE(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
-TARGET_LINK_LIBRARIES(car_abstract_factory)
+add_executable(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
+target_link_libraries(car_abstract_factory)
 
 
 ############################################Structural############################################
 
 
-ADD_EXECUTABLE(bridge src/Structural/Bridge/main.cpp)
-TARGET_LINK_LIBRARIES(bridge)
+add_executable(bridge src/Structural/Bridge/main.cpp)
+target_link_libraries(bridge)
 
-ADD_EXECUTABLE(tennis_decorator src/Structural/Decorator/tennis_decorator.cpp)
-TARGET_LINK_LIBRARIES(tennis_decorator)
+add_executable(tennis_decorator src/Structural/Decorator/tennis_decorator.cpp)
+target_link_libraries(tennis_decorator)
 
-ADD_EXECUTABLE(ice_cream_decorator src/Structural/Decorator/ice_cream_decorator.cpp)
-TARGET_LINK_LIBRARIES(ice_cream_decorator)
+add_executable(ice_cream_decorator src/Structural/Decorator/ice_cream_decorator.cpp)
+target_link_libraries(ice_cream_decorator)
 
-ADD_EXECUTABLE(proxy_before_and_after src/Structural/Proxy/before_and_after.cpp)
-TARGET_LINK_LIBRARIES(proxy_before_and_after)
+add_executable(proxy_before_and_after src/Structural/Proxy/before_and_after.cpp)
+target_link_libraries(proxy_before_and_after)
 
-ADD_EXECUTABLE(protection_proxy src/Structural/Proxy/protection_proxy.cpp)
-TARGET_LINK_LIBRARIES(protection_proxy)
+add_executable(protection_proxy src/Structural/Proxy/protection_proxy.cpp)
+target_link_libraries(protection_proxy)
 
-ADD_EXECUTABLE(adapter src/Structural/Adapter/main.cpp)
-TARGET_LINK_LIBRARIES(adapter)
+add_executable(adapter src/Structural/Adapter/main.cpp)
+target_link_libraries(adapter)
 
-ADD_EXECUTABLE(external_polymorphism src/Structural/Adapter/external_polymorphism.cpp)
-TARGET_LINK_LIBRARIES(external_polymorphism)
+add_executable(external_polymorphism src/Structural/Adapter/external_polymorphism.cpp)
+target_link_libraries(external_polymorphism)
 
-ADD_EXECUTABLE(facade src/Structural/Facade/main.cpp)
-TARGET_LINK_LIBRARIES(facade)
+add_executable(facade src/Structural/Facade/main.cpp)
+target_link_libraries(facade)
 
-ADD_EXECUTABLE(remote_dvd_tv src/Structural/Bridge/remote_dvd_tv.cpp)
-TARGET_LINK_LIBRARIES(remote_dvd_tv)
+add_executable(remote_dvd_tv src/Structural/Bridge/remote_dvd_tv.cpp)
+target_link_libraries(remote_dvd_tv)
 
-ADD_EXECUTABLE(vehicle_bridge src/Structural/Bridge/vehicle.cpp)
-TARGET_LINK_LIBRARIES(vehicle_bridge)
+add_executable(vehicle_bridge src/Structural/Bridge/vehicle.cpp)
+target_link_libraries(vehicle_bridge)
 
-ADD_EXECUTABLE(time_bridge src/Structural/Bridge/time.cpp)
-TARGET_LINK_LIBRARIES(time_bridge)
+add_executable(time_bridge src/Structural/Bridge/time.cpp)
+target_link_libraries(time_bridge)
 
-ADD_EXECUTABLE(flyweight_counter_strike src/Structural/Flyweight/flyweight_counter_strike.cpp)
-TARGET_LINK_LIBRARIES(flyweight_counter_strike)
+add_executable(flyweight_counter_strike src/Structural/Flyweight/flyweight_counter_strike.cpp)
+target_link_libraries(flyweight_counter_strike)
 
 
 ############################################Behavioral############################################
-ADD_EXECUTABLE(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
-TARGET_LINK_LIBRARIES(notification_iterator)
+add_executable(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
+target_link_libraries(notification_iterator)
 
-ADD_EXECUTABLE(observer src/Behavioral/Observer/main.cpp)
-TARGET_LINK_LIBRARIES(observer)
+add_executable(observer src/Behavioral/Observer/main.cpp)
+target_link_libraries(observer)
 
-ADD_EXECUTABLE(clock_timer src/Behavioral/Observer/clocktimer.cpp)
-TARGET_LINK_LIBRARIES(clock_timer)
+add_executable(clock_timer src/Behavioral/Observer/clocktimer.cpp)
+target_link_libraries(clock_timer)
 
-ADD_EXECUTABLE(light_on_command src/Behavioral/Command/LightOnCommand.cpp)
-TARGET_LINK_LIBRARIES(light_on_command)
+add_executable(light_on_command src/Behavioral/Command/LightOnCommand.cpp)
+target_link_libraries(light_on_command)
 
 
-ADD_EXECUTABLE(command src/Behavioral/Command/main.cpp)
-TARGET_LINK_LIBRARIES(command)
+add_executable(command src/Behavioral/Command/main.cpp)
+target_link_libraries(command)
 
-ADD_EXECUTABLE(template_method_order src/Behavioral/TemplateMethod/template_method_order.cpp)
-TARGET_LINK_LIBRARIES(template_method_order)
+add_executable(template_method_order src/Behavioral/TemplateMethod/template_method_order.cpp)
+target_link_libraries(template_method_order)
 
-ADD_EXECUTABLE(template_method src/Behavioral/TemplateMethod/template_method.cpp)
-TARGET_LINK_LIBRARIES(template_method)
+add_executable(template_method src/Behavioral/TemplateMethod/template_method.cpp)
+target_link_libraries(template_method)
 
-ADD_EXECUTABLE(machine_on_off_state src/Behavioral/State/machine_on_off_state.cpp)
-TARGET_LINK_LIBRARIES(machine_on_off_state)
+add_executable(machine_on_off_state src/Behavioral/State/machine_on_off_state.cpp)
+target_link_libraries(machine_on_off_state)
 
-ADD_EXECUTABLE(music_player_state src/Behavioral/State/music_player_state.cpp)
-TARGET_LINK_LIBRARIES(music_player_state)
+add_executable(music_player_state src/Behavioral/State/music_player_state.cpp)
+target_link_libraries(music_player_state)
 
-ADD_EXECUTABLE(chain_of_responsibility src/Behavioral/ChainOfResponsibility/main.cpp)
-TARGET_LINK_LIBRARIES(chain_of_responsibility)
+add_executable(chain_of_responsibility src/Behavioral/ChainOfResponsibility/main.cpp)
+target_link_libraries(chain_of_responsibility)
 
-ADD_EXECUTABLE(photo_processor src/Behavioral/ChainOfResponsibility/photoProcessor.cpp)
-TARGET_LINK_LIBRARIES(photo_processor)
+add_executable(photo_processor src/Behavioral/ChainOfResponsibility/photoProcessor.cpp)
+target_link_libraries(photo_processor)
 
-ADD_EXECUTABLE(iterator src/Behavioral/Iterator/main.cpp)
-TARGET_LINK_LIBRARIES(iterator)
+add_executable(iterator src/Behavioral/Iterator/main.cpp)
+target_link_libraries(iterator)
 
-ADD_EXECUTABLE(mediator_before_after src/Behavioral/Mediator/mediator_before_after.cpp)
-TARGET_LINK_LIBRARIES(mediator_before_after)
+add_executable(mediator_before_after src/Behavioral/Mediator/mediator_before_after.cpp)
+target_link_libraries(mediator_before_after)
 
-ADD_EXECUTABLE(airport_mediator_traffic_pattern src/Behavioral/Mediator/airport_mediator_traffic_pattern.cpp)
-TARGET_LINK_LIBRARIES(airport_mediator_traffic_pattern)
+add_executable(airport_mediator_traffic_pattern src/Behavioral/Mediator/airport_mediator_traffic_pattern.cpp)
+target_link_libraries(airport_mediator_traffic_pattern)
 
-ADD_EXECUTABLE(chat_room_mediator src/Behavioral/Mediator/chat_room_mediator.cpp)
-TARGET_LINK_LIBRARIES(chat_room_mediator)
+add_executable(chat_room_mediator src/Behavioral/Mediator/chat_room_mediator.cpp)
+target_link_libraries(chat_room_mediator)
 
-ADD_EXECUTABLE(null_object src/Behavioral/NullObject/null_object.cpp)
-TARGET_LINK_LIBRARIES(null_object)
+add_executable(null_object src/Behavioral/NullObject/null_object.cpp)
+target_link_libraries(null_object)
 
-ADD_EXECUTABLE(robot src/Behavioral/Strategy/robot.cpp)
-TARGET_LINK_LIBRARIES(robot)
+add_executable(robot src/Behavioral/Strategy/robot.cpp)
+target_link_libraries(robot)
 
-ADD_EXECUTABLE(billing_strategy src/Behavioral/Strategy/billing_strategy.cpp)
-TARGET_LINK_LIBRARIES(billing_strategy)
+add_executable(billing_strategy src/Behavioral/Strategy/billing_strategy.cpp)
+target_link_libraries(billing_strategy)
 
-ADD_EXECUTABLE(memento src/Behavioral/Memento/main.cpp)
-TARGET_LINK_LIBRARIES(memento)
+add_executable(memento src/Behavioral/Memento/main.cpp)
+target_link_libraries(memento)
 
-ADD_EXECUTABLE(shopping_item_visitor src/Behavioral/Visitor/shopping_item_visitor.cpp)
-TARGET_LINK_LIBRARIES(shopping_item_visitor)
+add_executable(shopping_item_visitor src/Behavioral/Visitor/shopping_item_visitor.cpp)
+target_link_libraries(shopping_item_visitor)
 
-ADD_EXECUTABLE(file_visitor src/Behavioral/Visitor/file_visitor.cpp)
-TARGET_LINK_LIBRARIES(file_visitor)
+add_executable(file_visitor src/Behavioral/Visitor/file_visitor.cpp)
+target_link_libraries(file_visitor)
 
-ADD_EXECUTABLE(car_visitor src/Behavioral/Visitor/car_visitor.cpp)
-TARGET_LINK_LIBRARIES(car_visitor)
+add_executable(car_visitor src/Behavioral/Visitor/car_visitor.cpp)
+target_link_libraries(car_visitor)
 
-ADD_EXECUTABLE(expression_printer src/Behavioral/Visitor/expression_printer.cpp)
-TARGET_LINK_LIBRARIES(expression_printer)
+add_executable(expression_printer src/Behavioral/Visitor/expression_printer.cpp)
+target_link_libraries(expression_printer)
 
-ADD_EXECUTABLE(stock_visitor src/Behavioral/Visitor/stock_visitor.cpp)
-TARGET_LINK_LIBRARIES(stock_visitor)
+add_executable(stock_visitor src/Behavioral/Visitor/stock_visitor.cpp)
+target_link_libraries(stock_visitor)
 
 
 ############################################SOLID############################################
-ADD_EXECUTABLE(single_responsibility_principle SOLID/SingleResponsibilityPrinciple/single_responsibility_principle.cpp)
-TARGET_LINK_LIBRARIES(single_responsibility_principle)
+add_executable(single_responsibility_principle SOLID/SingleResponsibilityPrinciple/single_responsibility_principle.cpp)
+target_link_libraries(single_responsibility_principle)
 
-ADD_EXECUTABLE(open_closed_principle SOLID/OpenClosedPrinciple/open_closed_principle.cpp)
-TARGET_LINK_LIBRARIES(open_closed_principle)
+add_executable(open_closed_principle SOLID/OpenClosedPrinciple/open_closed_principle.cpp)
+target_link_libraries(open_closed_principle)
 
-ADD_EXECUTABLE(liskov_substitution_principle SOLID/LiskovSubstitutionPrinciple/liskov_substitution_principle.cpp)
-TARGET_LINK_LIBRARIES(liskov_substitution_principle)
+add_executable(liskov_substitution_principle SOLID/LiskovSubstitutionPrinciple/liskov_substitution_principle.cpp)
+target_link_libraries(liskov_substitution_principle)
 
-ADD_EXECUTABLE(interface_segregation_principle SOLID/InterfaceSegregationPrinciple/interface_segregation_principle.cpp)
-TARGET_LINK_LIBRARIES(interface_segregation_principle)
+add_executable(interface_segregation_principle SOLID/InterfaceSegregationPrinciple/interface_segregation_principle.cpp)
+target_link_libraries(interface_segregation_principle)
 
-ADD_EXECUTABLE(dependency_injection_car_enginge SOLID/DependencyInjection/dependency_injection_car_enginge.cpp)
-TARGET_LINK_LIBRARIES(dependency_injection_car_enginge)
+add_executable(dependency_injection_car_enginge SOLID/DependencyInjection/dependency_injection_car_enginge.cpp)
+target_link_libraries(dependency_injection_car_enginge)
 
-ADD_EXECUTABLE(dependency_inversion_principle SOLID/DependencyInjection/dependency_inversion_principle.cpp)
-TARGET_LINK_LIBRARIES(dependency_inversion_principle)
+add_executable(dependency_inversion_principle SOLID/DependencyInjection/dependency_inversion_principle.cpp)
+target_link_libraries(dependency_inversion_principle)
 
 ############################################Rule Of Three Five Zero############################################
 
-ADD_EXECUTABLE(rule_of_five RuleOfThreeFiveZero/rule_of_five.cpp)
-TARGET_LINK_LIBRARIES(rule_of_five)
+add_executable(rule_of_five RuleOfThreeFiveZero/rule_of_five.cpp)
+target_link_libraries(rule_of_five)
 
-ADD_EXECUTABLE(rule_of_three RuleOfThreeFiveZero/rule_of_three.cpp)
-TARGET_LINK_LIBRARIES(rule_of_three)
+add_executable(rule_of_three RuleOfThreeFiveZero/rule_of_three.cpp)
+target_link_libraries(rule_of_three)
 
-ADD_EXECUTABLE(rule_of_zero RuleOfThreeFiveZero/rule_of_zero.cpp)
-TARGET_LINK_LIBRARIES(rule_of_zero)
+add_executable(rule_of_zero RuleOfThreeFiveZero/rule_of_zero.cpp)
+target_link_libraries(rule_of_zero)
 
 ############################################Model View Controller############################################
-ADD_EXECUTABLE(student_model_view_controller ModelViewController/student_model_view_controller.cpp)
-TARGET_LINK_LIBRARIES(student_model_view_controller)
+add_executable(student_model_view_controller ModelViewController/student_model_view_controller.cpp)
+target_link_libraries(student_model_view_controller)
 
 
 ############################################Clean Code############################################
 
-ADD_EXECUTABLE(clean_code Clean_Code/main.cpp)
-TARGET_LINK_LIBRARIES(clean_code)
+add_executable(clean_code Clean_Code/main.cpp)
+target_link_libraries(clean_code)
 
 ############################################ Refactoring ############################################
 
-ADD_EXECUTABLE(feature_envy Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
-TARGET_LINK_LIBRARIES(feature_envy)
+add_executable(feature_envy Refactoring/Couplers/Feature_Envy/feature_envy.cpp)
+target_link_libraries(feature_envy)
 
-ADD_EXECUTABLE(message_chains Refactoring/Couplers/Message_Chains/message_chains.cpp)
-TARGET_LINK_LIBRARIES(message_chains)
+add_executable(message_chains Refactoring/Couplers/Message_Chains/message_chains.cpp)
+target_link_libraries(message_chains)
 
-ADD_EXECUTABLE(primitive_obsession Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
-TARGET_LINK_LIBRARIES(primitive_obsession)
+add_executable(primitive_obsession Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
+target_link_libraries(primitive_obsession)
+
+############################################ UML ############################################
+
+add_executable(class_diagram UML/src/class_diagram.cpp)
+target_link_libraries(class_diagram)
+
 

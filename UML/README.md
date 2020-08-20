@@ -21,46 +21,49 @@
 ## Class Diagram
 
 ```cpp
-class Circle
+class Animal
 {
 private:
-    double radius;
-    Point center;
+    std::string name;
+protected: 
+    int id;
 public:
-    setRadius(double radius);
-    setCenter(Point center);
-    double getArea();
-    double getCircumfrence();
+    void setName(std::string name);
+    void virtual move();
+    static int count();
 };
 ```
 
 Class diagram for the above class is shown below:
 
 ```
-_________________________________
-|            circle             |
-|───────────────────────────────|
-|-radius: double                |
-|-center: Point                 |
-|───────────────────────────────|
-|setRadius(double:radius):void  |
-|setCenter(Point:center):void   |
-|getArea(void):double           |
-|getCircumfrence(void):double   |
-|_______________________________|
+,--------------------------.
+|Animal                    |
+|--------------------------|
+|-name:string              |
+|#id: int                  |
+|--------------------------|
+|+setName(string name):void|
+|+move(): void             |
+|+count(): int             |
+`--------------------------'
 ```
-![PlantUML model](http://www.plantuml.com/plantuml/svg/POvD2i8m44RtSuei8-8TAhs0U8EOV4fWaiByhCIxMziYIcVvlVTW1hKaveqfSr8DOvNCe2THcEzK9hynWgHINTVfCjLk8QCRPBME2hikHlpp3rywBdRyJJUu1G_OMP3YRltyu-qkw1apVT60Nhpn6m00)
+![PlantUML model](http://www.plantuml.com/plantuml/svg/BSwn3e903CRncJv54nU8CN6-2KON5v-W78rfv7g65WO9x-wTSVr-_-7hpMdnDSrWBz4tBPGmpcGsk2yohiwtcFKX7yOh_007bKGpx71fb187Aw4-4KwDJ0557U7S6FkzOFl76dPXop9Lt6aiEqK_CEMDsovWfIhcv18Fn9XNzIgY3WVqh5Dv-GK0)
+[plantuml code](http://www.plantuml.com/plantuml/png/BSwn3e903CRncJv54nU8CN6-2KON5v-W78rfv7g65WO9x-wTSVr-_-7hpMdnDSrWBz4tBPGmpcGsk2yohiwtcFKX7yOh_007bKGpx71fb187Aw4-4KwDJ0557U7S6FkzOFl76dPXop9Lt6aiEqK_CEMDsovWfIhcv18Fn9XNzIgY3WVqh5Dv-GK0)
 
 
-
-Different type of members in a class
-1) S͟t͟a͟t͟i͟c͟ ͟m͟e͟m͟b͟e͟r͟s͟ are represented as underlined.
-2) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
+Different type of members/ methods in a class diagram
+1) private members are pointed with ```-```
+2) protected members are pointed with ```#``` 
+3) public members are pointed with ```+```  
+4) S͟t͟a͟t͟i͟c͟ ͟m͟e͟m͟b͟e͟r͟s͟ are represented as underlined.
+5) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
 
 
 ## Class relationship
-
-In a system a class may be related to different classes, following are the different relationship:
+So far we only have had classes that were consist of primitive types such as int, double and string.
+But a class might have relation to other classes, such as inheritance or has a member that is from type of an other class. The following summarize the relationship between classes. 
+The following summarize the relationship between classes:
 
 1) Association (knows a, Uses-a) ────────>
 2) Dependency (uses a) - - - - - ->
@@ -76,66 +79,71 @@ Different Multiplicity in a relation
 4) “1..*”               One or more instances (at least one)
 
 
-#### Class relationship in nutshell
-Association is a pointer to an other class and life cycle doesn't depend on the class.  
-Aggregation is vague concept and could be similar to Association.  
-Dependency is done via sending an object via function parameter.  
-Composition is when a class has member of an other class and maintains the life cycle.  
 
-### Association
-To qualify as an association, an object and another object must have the following relationship:
+### Composition
+In real-life, complex objects are composed of smaller ones, i.e. a car has engine, some tires, a transmission. 
+in C++ when you write a class or struct you are using basic types like int, double or other classes
+when constructing a complex object which is object composition.
 
-1) The associated object (member) is otherwise unrelated to the object (class)
-2) The associated object (member) can belong to more than one object (class) at a time
-3) The associated object (member) does not have its existence managed by the object (class)
-4) The associated object (member) may or may not know about the existence of the object (class)
-Because associations are a broad type of relationship, they can be implemented in many different ways.
-However, most often, associations are implemented using pointers, where the object points at the associated object.
+You can interpret or read object composition relation as ```has a```. A car ```has-a``` frame.
+Composition can occur when a class is a collection or container of other classes, but where the 
+contained classes have a strong life cycle dependency on the container—essentially, if the container 
+is destroyed, its contents are also destroyed.
 
+To qualify as a composition, an object and a part must have the following relationship:
+
+1) The part (member) is part of the object (class)
+2) The part (member) can only belong to one object (class) at a time
+3) The part (member) has its existence managed by the object (class)
+4) The part (member) does not know about the existence of the object (class)
+
+Compositions are one of the easiest relationship types to implement in C++.
+They are typically created as structs or classes with normal data members.
+Because these data members exist directly as part of the struct/class, their lifetimes are bound to that
+of the class instance itself. Compositions that need to do dynamic allocation or deallocation may be
+implemented using pointer data members. In this case, the composition class should be responsible for
+doing all necessary memory management itself (not the user of the class).
 
 ```cpp
-Class X
+class Point
 {
-    X(Y *y) : y_ptr(y) {}
-    void SetY(Y *y) { y_ptr = y;   }
-    void f()        { y_ptr->Foo();}
-    ----
-    Y *y_ptr; // pointer
+};
+
+class Circle
+{
+private:
+    Point center;
 };
 ```
 
 ```
-_______________        _______________
-|       X     |        |     Y       |
-|─────────────|───────>|─────────────|
-|─────────────|        |─────────────|
-|_____________|        |_____________|
+_______________               _______________
+|    Circle   |   -center     |   point     |
+|─────────────|◆─────────────>|─────────────|
+|─────────────|              1|─────────────|
+|_____________|               |_____________|
 ```
-
-
-
-### Dependency
-One class depends on another if the independent class is a parameter variable or local variable of a method of the dependent class
 
 ```cpp
+class X
+{
+    Y a; // 1; Composition
+    Y b[10]; // 0..10; Composition
+};
+
+class X
+{
+    X() { a = new Y[10]; }
+    ~X(){ delete [] a; }
+    ...
+    Y *a; // 0..10; Composition
+};
+
 class X {
- ...
- void f1(Y y)  {…;  y.Foo();       }
- void f2(Y *y) {…;  y->Foo();      }
- void f3(Y &y) {…;  y.Foo();       }
- void f4()     {   Y y; y.Foo();  …}
- void f5()     {…; Y::StaticFoo(); }
+...
+vector a;
 };
 ```
-
-```
-_______________            _______________
-|       X     |            |     Y       |
-|─────────────|- - - - - ->|─────────────|
-|─────────────|            |─────────────|
-|_____________|            |_____________|
-```
-
 
 
 ### Aggregation
@@ -196,29 +204,70 @@ int main()
 }
 ```
 
-### Composition
-Composition is the stronger form of aggregation. Composition can occur when a class is a collection or container of other classes,
-but where the contained classes have a strong life cycle dependency on the container—essentially, if the container is destroyed,
-its contents are also destroyed.
 
-To qualify as a composition, an object and a part must have the following relationship:
 
-1) The part (member) is part of the object (class)
-2) The part (member) can only belong to one object (class) at a time
-3) The part (member) has its existence managed by the object (class)
-4) The part (member) does not know about the existence of the object (class)
 
-Compositions are one of the easiest relationship types to implement in C++.
-They are typically created as structs or classes with normal data members.
-Because these data members exist directly as part of the struct/class, their lifetimes are bound to that
-of the class instance itself. Compositions that need to do dynamic allocation or deallocation may be
-implemented using pointer data members. In this case, the composition class should be responsible for
-doing all necessary memory management itself (not the user of the class).
+### Association
+To qualify as an association, an object and another object must have the following relationship:
+
+1) The associated object (member) is otherwise unrelated to the object (class)
+2) The associated object (member) can belong to more than one object (class) at a time
+3) The associated object (member) does not have its existence managed by the object (class)
+4) The associated object (member) may or may not know about the existence of the object (class)
+Because associations are a broad type of relationship, they can be implemented in many different ways.
+However, most often, associations are implemented using pointers, where the object points at the associated object.
+
+
+```cpp
+Class X
+{
+    X(Y *y) : y_ptr(y) {}
+    void SetY(Y *y) { y_ptr = y;   }
+    void f()        { y_ptr->Foo();}
+    ----
+    Y *y_ptr; // pointer
+};
+```
+
+```
+_______________        _______________
+|       X     |        |     Y       |
+|─────────────|───────>|─────────────|
+|─────────────|        |─────────────|
+|_____________|        |_____________|
+```
+
+
+
+### Dependency
+One class depends on another if the independent class is a parameter variable or local variable of a method of the dependent class
+
+```cpp
+class X {
+ ...
+ void f1(Y y)  {…;  y.Foo();       }
+ void f2(Y *y) {…;  y->Foo();      }
+ void f3(Y &y) {…;  y.Foo();       }
+ void f4()     {   Y y; y.Foo();  …}
+ void f5()     {…; Y::StaticFoo(); }
+};
+```
+
+```
+_______________            _______________
+|       X     |            |     Y       |
+|─────────────|- - - - - ->|─────────────|
+|─────────────|            |─────────────|
+|_____________|            |_____________|
+```
+
+
+
 
 
 
 #### Composition vs Aggregation
-Because aggregations are similar to compositions in that they are both part-whole relationships,
+Composition is the stronger form of aggregation. Because aggregations are similar to compositions in that they are both part-whole relationships,
 they are implemented almost identically, and the difference between them is mostly semantic.
 In a composition, we typically add our parts to the composition using normal member variables
 (or pointers where the allocation and deallocation process is handled by the composition class).
@@ -228,43 +277,7 @@ Consequently, an aggregation usually either takes the objects it is going to poi
 or it begins empty and the subobjects are added later via access functions or operators.
 Because these parts exist outside of the scope of the class, when the class is destroyed, the pointer or reference member variable will be destroyed (but not deleted). Consequently, the parts themselves will still exist.
 
-```cpp
-class Circle
-{
-private:
-     ...
-    Point center;
-....
-};
-```
-```
-_______________               _______________
-|    Circle   |   -center     |   point     |
-|─────────────|◆─────────────>|─────────────|
-|─────────────|              1|─────────────|
-|_____________|               |_____________|
-```
 
-```cpp
-class X
-{
-    Y a; // 1; Composition
-    Y b[10]; // 0..10; Composition
-};
-
-class X
-{
-    X() { a = new Y[10]; }
-    ~X(){ delete [] a; }
-    ...
-    Y *a; // 0..10; Composition
-};
-
-class X {
-...
-vector a;
-};
-```
 
 #### Summarizing composition and aggregation
 
@@ -273,6 +286,8 @@ vector a;
 1) Typically use normal member variables.
 2) Can use pointer members if the class handles object allocation/deallocation itself.
 3) Responsible for creation/destruction of parts.
+
+
 **Aggregations**:
 
 1) Typically use pointer or reference members that point to or reference objects that live outside the scope of the aggregate class
@@ -385,7 +400,11 @@ UML sequence diagram shows how objects in a system  or classes in the code inter
 
 ![PlantUML model](http://www.plantuml.com/plantuml/svg/PP114e8m34NtESM_01TWmJ3ZoXKBl41jmzWPA4n8FRyHqQ8ky_xxJIVjgauqJoCvhxCWhooq68e-BYufBZTs-iDwbhkXfrirRwF6EHbGU2VXB-jvPAy8Dj4EKPbWdgNTCDYy6jwAA4tKVRvEKJ5BO2dLPlz4ZMCEUb4SLtTRSfhJ46NYy7cZRFyMGA2MKx2ZF000)
 
-
+#### Class relationship in nutshell
+Association is a pointer to an other class and life cycle doesn't depend on the class.  
+Aggregation is vague concept and could be similar to Association.  
+Dependency is done via sending an object via function parameter.  
+Composition is when a class has member of an other class and maintains the life cycle.  
 ## Use Case Diagram
 
 

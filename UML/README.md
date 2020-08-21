@@ -10,7 +10,7 @@
   - Use Case Diagram
   - Activity Diagram
   - State Machine Diagram
-  - Sequence Diagram
+  - [Sequence Diagram](BehavioralDiagrams/SequenceDiagram)
   - Communication Diagram
   - Interaction Overview Diagram
   - Timing Diagram

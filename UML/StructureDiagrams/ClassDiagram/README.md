@@ -43,7 +43,7 @@ Different type of members/ methods in a class diagram
 5) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
 
 
-## Class relationship
+## Class Relationship
 So far we only have had classes that were consist of primitive types such as int, double and string.
 But a class might have relation to other classes, such as inheritance or has a member that is from type of an other class. The following summarize the relationship between classes. 
 The following summarize the relationship between classes:
@@ -55,7 +55,7 @@ The following summarize the relationship between classes:
 5) Inheritance (is a) ────────▷
 6) Class template
 
-### Multiplicity in a relation
+### Multiplicity in a Relation
 1) “0..1”               No instances, or one instance (optional, may)
 2) “1”                  Exactly one instance
 3) “0..* or *”          Zero or more instances
@@ -435,7 +435,7 @@ Foo<double> fooFouble;
 [plantuml code](diagrams/Template.puml)
 
 
-#### Class relationship in nutshell
+## Class Relationship in Nutshell
 Association is a pointer to an other class and life cycle doesn't depend on the class.  
 Aggregation is vague concept and could be similar to Association.  
 Dependency is done via sending an object via function parameter.  

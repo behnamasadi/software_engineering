@@ -36,27 +36,17 @@ public:
 
 Class diagram for the above class is shown below:
 
-```
-,--------------------------.
-|Animal                    |
-|--------------------------|
-|-name:string              |
-|#id: int                  |
-|--------------------------|
-|+setName(string name):void|
-|+move(): void             |
-|+count(): int             |
-`--------------------------'
-```
-![PlantUML model](http://www.plantuml.com/plantuml/svg/BSwn3e903CRncJv54nU8CN6-2KON5v-W78rfv7g65WO9x-wTSVr-_-7hpMdnDSrWBz4tBPGmpcGsk2yohiwtcFKX7yOh_007bKGpx71fb187Aw4-4KwDJ0557U7S6FkzOFl76dPXop9Lt6aiEqK_CEMDsovWfIhcv18Fn9XNzIgY3WVqh5Dv-GK0)
-[plantuml code](http://www.plantuml.com/plantuml/png/BSwn3e903CRncJv54nU8CN6-2KON5v-W78rfv7g65WO9x-wTSVr-_-7hpMdnDSrWBz4tBPGmpcGsk2yohiwtcFKX7yOh_007bKGpx71fb187Aw4-4KwDJ0557U7S6FkzOFl76dPXop9Lt6aiEqK_CEMDsovWfIhcv18Fn9XNzIgY3WVqh5Dv-GK0)
+![PlantUML model](diagrams/ClassDiagram/Animal.svg)
+
+
+[plantuml code](diagrams/ClassDiagram/Animal.puml)
 
 
 Different type of members/ methods in a class diagram
 1) private members are pointed with ```-```
 2) protected members are pointed with ```#``` 
 3) public members are pointed with ```+```  
-4) S͟t͟a͟t͟i͟c͟ ͟m͟e͟m͟b͟e͟r͟s͟ are represented as underlined.
+4) S͟t͟a͟t͟i͟c͟  members are represented as underlined.
 5) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
 
 
@@ -65,14 +55,14 @@ So far we only have had classes that were consist of primitive types such as int
 But a class might have relation to other classes, such as inheritance or has a member that is from type of an other class. The following summarize the relationship between classes. 
 The following summarize the relationship between classes:
 
-1) Association (knows a, Uses-a) ────────>
-2) Dependency (uses a) - - - - - ->
-3) Aggregation (has a) ◇────────>
-4) Composition (has a) ◆────────>
+1) Composition (has a) ◆────────
+2) Aggregation (has a) ◇────────
+3) Association (knows a, Uses-a) ────────
+4) Dependency (uses a) - - - - - ->
 5) Inheritance (is a) ────────▷
 6) Class template
 
-Different Multiplicity in a relation
+### Multiplicity in a relation
 1) “0..1”               No instances, or one instance (optional, may)
 2) “1”                  Exactly one instance
 3) “0..* or *”          Zero or more instances
@@ -90,12 +80,13 @@ Composition can occur when a class is a collection or container of other classes
 contained classes have a strong life cycle dependency on the container—essentially, if the container 
 is destroyed, its contents are also destroyed.
 
-To qualify as a composition, an object and a part must have the following relationship:
 
-1) The part (member) is part of the object (class)
-2) The part (member) can only belong to one object (class) at a time
-3) The part (member) has its existence managed by the object (class)
-4) The part (member) does not know about the existence of the object (class)
+Composition relationship has the following characteristics:
+
+1) The part is the fraction of the object.
+2) The part can only belong to one object at a time.
+3) The existence of the part is being managed by the object.
+4) The part does not have any information about about the existence of the object.
 
 Compositions are one of the easiest relationship types to implement in C++.
 They are typically created as structs or classes with normal data members.
@@ -116,34 +107,68 @@ private:
 };
 ```
 
+An other example is heart and person, hear can only belong to one person and if the person dies, the heart will be deleted as well:
+
 ```
-_______________               _______________
-|    Circle   |   -center     |   point     |
-|─────────────|◆─────────────>|─────────────|
-|─────────────|              1|─────────────|
-|_____________|               |_____________|
+class Heart
+{
+};
+
+class Person
+{
+private:
+	Heart heart;
+};
 ```
+
+![PlantUML model](diagrams/ClassDiagram/PersonHeart.svg)
+
+
+[plantuml code](diagrams/ClassDiagram/PersonHeart.puml)
+
+
+Folder may contain many files, but each File has exactly one Folder parent. If Folder is deleted, all contained Files are deleted as well.
+
 
 ```cpp
-class X
-{
-    Y a; // 1; Composition
-    Y b[10]; // 0..10; Composition
-};
 
-class X
+class File
 {
-    X() { a = new Y[10]; }
-    ~X(){ delete [] a; }
-    ...
-    Y *a; // 0..10; Composition
+    
 };
-
-class X {
-...
-vector a;
+class Folder
+{
+public:
+    vector<File> files;// 0..*; Composition
 };
 ```
+
+![PlantUML model](diagrams/ClassDiagram/FolderFile.svg)
+
+
+[plantuml code](diagrams/ClassDiagram/FolderFile.puml)
+
+
+Hospital has 1 or more Departments, and each Department belongs to exactly one Hospital. If Hospital is closed, so are all of its Departments.
+```cpp
+class Departments
+{
+
+};
+
+class Hospital
+{
+public:
+    Hospital(int n) { departments = new Departments[n]; }
+    ~Hospital(){ delete [] departments; }
+    Departments *departments; // 0..*; Composition
+};
+```
+
+![PlantUML model](diagrams/ClassDiagram/HospitalDepartment.svg)
+
+
+[plantuml code](diagrams/ClassDiagram/HospitalDepartment.puml)
 
 
 ### Aggregation
@@ -152,90 +177,153 @@ do not have a strong life cycle dependency on the container—essentially, if th
 its contents are not. You may have confusion between aggregation and association.
 Association differs from aggregation only in that it does not imply any containment.
 
-To qualify as an aggregation, a whole object and its parts must have the following relationship:
+Aggregation relationship has the following characteristics:
 
-1) The part (member) is part of the object (class)
-2) The part (member) can belong to more than one object (class) at a time
-3) The part (member) does not have its existence managed by the object (class)
-4) The part (member) does not know about the existence of the object (class)
+1) The part is the fraction of the object.
+2) The part can belong to more than one object at a time.
+3) The part existence does managed managed by the object.
+4) The part does not have any information about about the existence of the object.
 
 ```cpp
-class Teacher
+class Proffesor
 {
 private:
     std::string m_name;
 public:
-    Teacher(std::string name): m_name(name) { }
+    Proffesor(std::string name): m_name(name) { }
     std::string getName() { return m_name; }
 };
-
 
 class Department
 {
 private:
-    Teacher *m_teacher; // This dept holds only one teacher for simplicity, but it could hold many teachers
+    Proffesor *m_proffesor; 
 public:
-    Department(Teacher *teacher = nullptr): m_teacher(teacher){}
+    Department(Proffesor *proffesor = nullptr): m_proffesor(proffesor){}
+};
+
+```
+![PlantUML model](diagrams/ClassDiagram/HospitalDepartment.svg)
+
+
+[plantuml code](diagrams/ClassDiagram/HospitalDepartment.puml)
+
+A Department has a Proffesor, and the scope of Proffesor doesn’t depend on the Department. Many-to-many does not fit very well into an aggregation. Aggregation represents a part-whole relationship. It is verbalized by a "has a" verb. Thus, modeling a many-to-many relationship as an aggregation introduces a faulty design and should be expressed via association.
+
+```cpp
+
+Proffesor *proffesor = new Proffesor("Bob");
+{
+	Department dept(proffesor);
+}
+std::cout << proffesor->getName() << " still exists!";
+delete proffesor;
+
+```
+and other implementation would be via reference variable: 
+```cpp
+class Proffesor
+{
+private:
+    std::string m_name;
+public:
+    Proffesor(std::string name): m_name(name) { }
+    std::string getName() { return m_name; }
+};
+
+class Department
+{
+private:
+    Proffesor  m_proffesor;
+public:
+    Department(const Proffesor& proffesor ): m_proffesor(proffesor){}
 };
 ```
 
-```
-_______________               _______________
-| Department  | -m_teacher    |   Teacher   |
-|─────────────|◇─────────────>|─────────────|
-|─────────────|              1|─────────────|
-|_____________|               |_____________|
-
-```
-A department has a teacher, and the scope of teacher doesn’t depend on the department since a teacher can be
-member of another department.
+Since the Department might have several Proffesor, if we use a vector (which makes a copy of the sent object) we will get an if we send 
+a reference object (reference object can not be copied). The solution is `std::reference_wrapper`. It is a class that allows assignment and copying,
+but behave like a reference
 
 ```cpp
-int main()
+class Proffesor
 {
-    Teacher *teacher = new Teacher("Bob"); // create a teacher
+private:
+    std::string m_name;
+public:
+    Proffesor(std::string name): m_name(name) { }
+    std::string getName() { return m_name; }
+};
+
+class Department
+{
+private:
+    std::vector<std::reference_wrapper<const Proffesor>>  m_proffesors;
+
+public:
+
+    void addProffesor(const Proffesor& proffesor )
     {
-        Department dept(teacher);
+        m_proffesors.push_back(proffesor);
     }
-    // Teacher still exists here because dept did not delete m_teacher
-    std::cout << teacher->getName() << " still exists!";
-    delete teacher;
-    return 0;
-}
+};
+
+    Proffesor Bob("Bob");
+    Proffesor Jim("Jim");
+    {
+        Department dept;
+        dept.addProffesor(Bob);
+        dept.addProffesor(Jim);
+    }
+    std::cout << Bob.getName() << " still exists!";
+    std::cout << Jim.getName() << " still exists!";
+
+
 ```
 
+![PlantUML model](diagrams/ClassDiagram/StudentTeacher.svg)
 
 
+[plantuml code](diagrams/ClassDiagram/StudentTeacher.puml)
 
 ### Association
-To qualify as an association, an object and another object must have the following relationship:
 
-1) The associated object (member) is otherwise unrelated to the object (class)
-2) The associated object (member) can belong to more than one object (class) at a time
-3) The associated object (member) does not have its existence managed by the object (class)
-4) The associated object (member) may or may not know about the existence of the object (class)
+In an association, there is no implication of whole/part relationship (just like we had in aggregation and composition). A good example of such relationship is the relationship between teachers and students (doctors and patients). The teacher (doctor) has a relationship with the student (patients), but the teacher (doctor) is not a part/whole student (patients). A teacher (doctor) can see many student (patients), and a student (patients) can see many teacher (doctor) and neither teacher (doctor) nor student (patients) manage each other lifespans.
+
+Association relationship has the following characteristics:
+
+1) The associated objects is unrelated to the object.
+2) The associated object can belong to more than one object at a time.
+3) The associated object existence does  managed by the object.
+4) The associated object may or may not know about the existence of the object.
 Because associations are a broad type of relationship, they can be implemented in many different ways.
 However, most often, associations are implemented using pointers, where the object points at the associated object.
 
 
 ```cpp
-Class X
+class Student;
+
+class Teacher
 {
-    X(Y *y) : y_ptr(y) {}
-    void SetY(Y *y) { y_ptr = y;   }
-    void f()        { y_ptr->Foo();}
-    ----
-    Y *y_ptr; // pointer
+private:
+    std::vector<std::reference_wrapper<const Student>> m_students{};
+
+public:
+    void addStudent(Student& student);
+
 };
-```
+
+class Student
+{
+    std::vector<std::reference_wrapper<const Teacher>> m_teacher{};
+public:
+    void addTeacher(const Teacher& teacher)
+    {
+        m_teacher.push_back(teacher);
+    }
+};
 
 ```
-_______________        _______________
-|       X     |        |     Y       |
-|─────────────|───────>|─────────────|
-|─────────────|        |─────────────|
-|_____________|        |_____________|
-```
+
 
 
 
@@ -411,5 +499,8 @@ Composition is when a class has member of an other class and maintains the life 
 ## Activity Diagram
 
 
-Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/), [2](https://www.learncpp.com/cpp-tutorial/10-1-object-relationships/), [3](https://www.geeksforgeeks.org/unified-modeling-language-uml-sequence-diagrams/)
+Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/), 
+	[2](https://www.learncpp.com/cpp-tutorial/10-1-object-relationships/), 
+	[3](https://www.geeksforgeeks.org/unified-modeling-language-uml-sequence-diagrams/),
+	[4](https://www.uml-diagrams.org/)
 ASCII codes: [━━━ ─── ► ◄ ▲ ▼ ◆ ◇ ♦ △ ▽ ◁ ▷ ◹ ◸ ◺ ◿](https://www.alt-codes.net/), [𝗕𝗼𝗹𝗱/𝐼𝑡𝑎𝑙𝑖𝑐,u͟n͟d͟e͟r͟l͟i͟n͟e͟](https://yaytext.com/)

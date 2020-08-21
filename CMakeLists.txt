@@ -21,10 +21,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 ############################################UML Class Diagram Explained With C++ samples############################################
 
-#add_executable(UML_class_diagram_explanation_samples UML/UML_class_diagram_explanation_samples.cpp)
-#target_link_libraries(UML_class_diagram_explanation_samples)
+add_executable(class_diagram UML/src/class_diagram.cpp)
+target_link_libraries(class_diagram)
 
-############################################Creational############################################
+############################################ Creational ############################################
 
 add_executable(singleton_before_after src/Creational/Singleton/singleton_before_after.cpp)
 target_link_libraries(singleton_before_after)
@@ -51,7 +51,7 @@ add_executable(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abs
 target_link_libraries(car_abstract_factory)
 
 
-############################################Structural############################################
+############################################ Structural ############################################
 
 
 add_executable(bridge src/Structural/Bridge/main.cpp)
@@ -91,7 +91,7 @@ add_executable(flyweight_counter_strike src/Structural/Flyweight/flyweight_count
 target_link_libraries(flyweight_counter_strike)
 
 
-############################################Behavioral############################################
+############################################ Behavioral ############################################
 add_executable(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
 target_link_libraries(notification_iterator)
 
@@ -166,7 +166,7 @@ add_executable(stock_visitor src/Behavioral/Visitor/stock_visitor.cpp)
 target_link_libraries(stock_visitor)
 
 
-############################################SOLID############################################
+############################################ SOLID ############################################
 add_executable(single_responsibility_principle SOLID/SingleResponsibilityPrinciple/single_responsibility_principle.cpp)
 target_link_libraries(single_responsibility_principle)
 
@@ -185,7 +185,7 @@ target_link_libraries(dependency_injection_car_enginge)
 add_executable(dependency_inversion_principle SOLID/DependencyInjection/dependency_inversion_principle.cpp)
 target_link_libraries(dependency_inversion_principle)
 
-############################################Rule Of Three Five Zero############################################
+############################################ Rule Of Three Five Zero############################################
 
 add_executable(rule_of_five RuleOfThreeFiveZero/rule_of_five.cpp)
 target_link_libraries(rule_of_five)
@@ -196,12 +196,12 @@ target_link_libraries(rule_of_three)
 add_executable(rule_of_zero RuleOfThreeFiveZero/rule_of_zero.cpp)
 target_link_libraries(rule_of_zero)
 
-############################################Model View Controller############################################
+############################################ Model View Controller############################################
 add_executable(student_model_view_controller ModelViewController/student_model_view_controller.cpp)
 target_link_libraries(student_model_view_controller)
 
 
-############################################Clean Code############################################
+############################################ Clean Code############################################
 
 add_executable(clean_code Clean_Code/main.cpp)
 target_link_libraries(clean_code)
@@ -216,10 +216,3 @@ target_link_libraries(message_chains)
 
 add_executable(primitive_obsession Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
 target_link_libraries(primitive_obsession)
-
-############################################ UML ############################################
-
-add_executable(class_diagram UML/src/class_diagram.cpp)
-target_link_libraries(class_diagram)
-
-

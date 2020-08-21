@@ -1,0 +1,11 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Animal
+{
+-	name:string
+#	id: int
++	setName(string name):void
++	{abstract} move(): void
++	{static}  count(): int
+}
+@enduml

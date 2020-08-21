@@ -1,0 +1,5 @@
+@startuml
+class Proffesor
+class Department
+Department "1" o-- "*" Proffesor
+@enduml

@@ -130,7 +130,7 @@ class Student
 {
     std::vector<std::reference_wrapper<const Teacher>> m_teacher{};
 public:
-    void addDoctor(const Teacher& teacher)
+    void addTeacher(const Teacher& teacher)
     {
         m_teacher.push_back(teacher);
     }

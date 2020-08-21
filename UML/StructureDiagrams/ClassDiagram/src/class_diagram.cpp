@@ -158,6 +158,40 @@ class X
 };
 
 
+/////////////////////////////////////////// Inheritance ///////////////////////////////////////////
+
+namespace Inheritance
+{
+class Shape
+{
+public:
+    void virtual draw();
+    double virtual getArea();
+};
+
+class Circle: public Shape
+{
+    void draw() override{}
+    double getArea() override{}
+};
+
+class Ellipse : public Shape
+{
+    void draw() override{}
+    double getArea() override{}
+};
+}
+
+/////////////////////////////////////////// Template ///////////////////////////////////////////
+
+namespace Template
+{
+
+template <class T>
+class Foo{T item;} ;
+Foo<int> fooInt;
+Foo<double> fooFouble;
+}
 
 int main() 
 {

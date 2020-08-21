@@ -6,8 +6,8 @@ project(design_pattern)
 
 
 
-#C++ 14
-set(CMAKE_CXX_STANDARD 14)
+#C++ 17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -21,7 +21,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 ############################################UML Class Diagram Explained With C++ samples############################################
 
-add_executable(class_diagram UML/src/class_diagram.cpp)
+add_executable(class_diagram UML/StructureDiagrams/ClassDiagram/src/class_diagram.cpp)
 target_link_libraries(class_diagram)
 
 ############################################ Creational ############################################

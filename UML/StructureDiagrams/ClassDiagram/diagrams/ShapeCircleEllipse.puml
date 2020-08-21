@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Shape
+{
++     {abstract} draw():void
++     {abstract} getArea():double
+}
+class Circle
+{
++     draw():void
++     getArea():double
+}
+
+class Ellipse
+{
++     draw():void
++     getArea():double
+}
+Shape <|-- Circle 
+Shape <|-- Ellipse
+@enduml

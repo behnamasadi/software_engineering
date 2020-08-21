@@ -38,7 +38,6 @@ Class diagram for the above class is shown below:
 
 ![PlantUML model](diagrams/ClassDiagram/Animal.svg)
 
-
 [plantuml code](diagrams/ClassDiagram/Animal.puml)
 
 
@@ -123,7 +122,6 @@ private:
 
 ![PlantUML model](diagrams/ClassDiagram/PersonHeart.svg)
 
-
 [plantuml code](diagrams/ClassDiagram/PersonHeart.puml)
 
 
@@ -145,7 +143,6 @@ public:
 
 ![PlantUML model](diagrams/ClassDiagram/FolderFile.svg)
 
-
 [plantuml code](diagrams/ClassDiagram/FolderFile.puml)
 
 
@@ -166,7 +163,6 @@ public:
 ```
 
 ![PlantUML model](diagrams/ClassDiagram/HospitalDepartment.svg)
-
 
 [plantuml code](diagrams/ClassDiagram/HospitalDepartment.puml)
 
@@ -204,7 +200,6 @@ public:
 
 ```
 ![PlantUML model](diagrams/ClassDiagram/HospitalDepartment.svg)
-
 
 [plantuml code](diagrams/ClassDiagram/HospitalDepartment.puml)
 
@@ -280,10 +275,7 @@ public:
 
 ```
 
-![PlantUML model](diagrams/ClassDiagram/StudentTeacher.svg)
 
-
-[plantuml code](diagrams/ClassDiagram/StudentTeacher.puml)
 
 ### Association
 
@@ -324,32 +316,55 @@ public:
 
 ```
 
+![PlantUML model](diagrams/ClassDiagram/StudentTeacher.svg)
 
+[plantuml code](diagrams/ClassDiagram/StudentTeacher.puml)
 
 
 ### Dependency
-One class depends on another if the independent class is a parameter variable or local variable of a method of the dependent class
+A dependency is a semantic connection between dependent and independent model elements. It occurs when one object invokes another object’s functionality in order to accomplish some specific task. Dependency is a weaker relationship than an association, but still, any change to object being depended upon may break functionality in the (dependent) caller. A dependency is always uni-directional.
+One class depends on another if the independent class is a parameter variable or local variable of a method of the dependent class.
+
+
+
+
+
 
 ```cpp
-class X {
- ...
- void f1(Y y)  {…;  y.Foo();       }
- void f2(Y *y) {…;  y->Foo();      }
- void f3(Y &y) {…;  y.Foo();       }
- void f4()     {   Y y; y.Foo();  …}
- void f5()     {…; Y::StaticFoo(); }
+class Y
+{
+public:
+    void foo(){}
+    void static StaticFoo(){}
 };
-```
+class X 
+{
+    void f1(Y y)  {y.foo();       }
+    void f2(Y *y) {y->foo();      }
+    void f3(Y &y) {y.foo();       }
+    void f4()     {Y y; y.foo();}
+    void f5()     {Y::StaticFoo(); }
+};
 
 ```
-_______________            _______________
-|       X     |            |     Y       |
-|─────────────|- - - - - ->|─────────────|
-|─────────────|            |─────────────|
-|_____________|            |_____________|
-```
+
+![PlantUML model](diagrams/ClassDiagram/XDependsOnY.svg)
+
+[plantuml code](diagrams/ClassDiagram/XDependsOnY.puml)
 
 
+#### Types of dependency relationships
+<!-- mdformat off(github rendering does not support multiline tables) -->
+|Keyword                                    | Type of dependency       | Description  |
+|---                                        |---                       |---           |
+|«abstraction», «derive», «refine», «trace» |Abstraction               |represent the same concept at different levels of abstraction, or from different viewpoints              |
+|«bind»                                     |    Binding                      | Connects template arguments to template parameters to create model elements from templates             |
+|«realize»                                  |      Realization                    | Indicates that the client model element is an implementation of the supplier model element, and the supplier model element is the specification             |
+|«substitute»                               |     Substitution                     | Indicates that the client model element takes the place of the supplier; the client model element must conform to the contract or interface that the supplier model element establishes             |
+|«use», «call», «create», «instantiate», or «send»| Usage                         |Indicates that one model element requires another model element for its full implementation or operation
+              |
+
+<!-- mdformat on-->
 
 
 

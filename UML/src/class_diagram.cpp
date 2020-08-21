@@ -3,9 +3,8 @@
 #include <iostream>
 #include <functional>
 using namespace std;
+
 /////////////////////////////////////////// class diagram ///////////////////////////////////////////
-
-
 
 /*
 ,--------------------------.
@@ -84,6 +83,7 @@ public:
     Departments *departments; // 0..*; Composition
 };
 }
+
 /////////////////////////////////////////// Aggregation ///////////////////////////////////////////
 
 namespace Aggregation
@@ -109,6 +109,7 @@ public:
         m_proffesors.push_back(proffesor);
     }
 };
+}
 
 /////////////////////////////////////////// Association ///////////////////////////////////////////
 
@@ -130,13 +131,34 @@ class Student
 {
     std::vector<std::reference_wrapper<const Teacher>> m_teacher{};
 public:
-    void addDoctor(const Teacher& teacher)
+    void addTeacher(const Teacher& teacher)
     {
         m_teacher.push_back(teacher);
     }
 };
 
 }
+
+
+/////////////////////////////////////////// Dependency ///////////////////////////////////////////
+
+class Y
+{
+public:
+    void foo(){}
+    void static StaticFoo(){}
+};
+class X
+{
+    void f1(Y y)  {y.foo();       }
+    void f2(Y *y) {y->foo();      }
+    void f3(Y &y) {y.foo();       }
+    void f4()     {Y y; y.foo();}
+    void f5()     {Y::StaticFoo(); }
+};
+
+
+
 int main() 
 {
     Aggregation::Proffesor Bob("Bob");

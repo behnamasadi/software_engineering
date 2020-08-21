@@ -1,6 +1,6 @@
 - [Class Diagram](#class-diagram)
-- [Class relationship](#class-relationship)
-  * [Multiplicity in a relation](#multiplicity-in-a-relation)
+- [Class Relationship](#class-relationship)
+  * [Multiplicity in a Relation](#multiplicity-in-a-relation)
   * [Composition](#composition)
   * [Aggregation](#aggregation)
     + [Composition vs Aggregation](#composition-vs-aggregation)
@@ -10,7 +10,8 @@
     + [Types of dependency relationships](#types-of-dependency-relationships)
   * [Inheritance (Generalization)](#inheritance--generalization-)
   * [Class template](#class-template)
-    + [Class relationship in nutshell](#class-relationship-in-nutshell)
+- [Class Relationship in Nutshell](#class-relationship-in-nutshell)
+
 
 ## Class Diagram
 

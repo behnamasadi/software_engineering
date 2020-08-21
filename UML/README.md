@@ -1,9 +1,9 @@
 1) Structure Diagrams
   - [Class Diagram](StructureDiagrams/ClassDiagram)
-  - Component Diagram
+  - [Component Diagram](StructureDiagrams/ComponentDiagram/)
   - Deployment Diagram
   - [Object Diagram](StructureDiagrams/ObjectDiagram)
-  - Package Diagram
+  - [Package Diagram](StructureDiagrams/PackageDiagrams)
   - Profile Diagram
   - Composite Structure Diagram
 2) Behavioral Diagrams

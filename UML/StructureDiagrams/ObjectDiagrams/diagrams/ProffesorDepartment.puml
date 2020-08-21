@@ -1,0 +1,13 @@
+@startuml
+object "<u>newProffesor:Proffesor</u>" as p1 {
+id : int = 64654192
+name:string = John 
+gender= male
+}
+
+object "<u>newDepartment:Department</u>" as d1 {
+id : int = 47151197125
+name:string = Math
+}
+d1 "1" o-- "*" p1
+@enduml

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="184px" preserveAspectRatio="none" style="width:211px;height:184px;" version="1.1" viewBox="0 0 211 184" width="211px" zoomAndPan="magnify"><defs><filter height="300%" id="f1w20hodzyzcrj" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FEFECE" filter="url(#f1w20hodzyzcrj)" height="49.25" style="stroke: #A80036; stroke-width: 1.5;" width="149" x="25" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="127" x="36" y="20.1387">newHospital:Hospital</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="26" x2="173" y1="24.9688" y2="24.9688"/><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="137" x="31" y="38.251">id : String = "41-965-264"</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="121" x="31" y="49.8916">name = Johns Hopkins</text><rect fill="#FEFECE" filter="url(#f1w20hodzyzcrj)" height="49.25" style="stroke: #A80036; stroke-width: 1.5;" width="185" x="7" y="116"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="171" x="14" y="129.1387">newDepartment:Department</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="191" y1="133.9688" y2="133.9688"/><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="135" x="13" y="147.251">id : String = "45-125-197"</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="100" x="13" y="158.8916">name = Radiology</text><!--MD5=[c2047a6f4044bad33958f3fa708023d2]
+reverse link h2 to d2--><path codeLine="10" d="M99.5,69.6032 C99.5,84.9352 99.5,102.256 99.5,115.8196 " fill="none" id="h2-backto-d2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="99.5,56.247,95.5,62.247,99.5,68.247,103.5,62.247,99.5,56.247" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="8" x="90.525" y="76.1598">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="23" x="73.6969" y="105.0282">1..*</text><!--MD5=[e73069a1a233fe559a8be5ce008c1599]
+@startuml
+object "<u>newHospital:Hospital</u>" as h2 {
+id : String = "41-965-264"
+name = Johns Hopkins
+}
+
+object "<u>newDepartment:Department</u>" as d2 {
+id : String = "45-125-197"
+name = Radiology
+}
+h2 "1" *- - "1..*" d2
+@enduml
+
+PlantUML version 1.2020.16beta10(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

@@ -2,7 +2,7 @@
   - [Class Diagram](StructureDiagrams/ClassDiagram)
   - Component Diagram
   - Deployment Diagram
-  - Object Diagram
+  - [Object Diagram](StructureDiagrams/ObjectDiagram)
   - Package Diagram
   - Profile Diagram
   - Composite Structure Diagram

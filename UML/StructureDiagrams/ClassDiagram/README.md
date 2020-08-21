@@ -194,9 +194,9 @@ public:
 };
 
 ```
-![PlantUML model](diagrams/HospitalDepartment.svg)
+![PlantUML model](diagrams/ProffesorDepartment.svg)
 
-[plantuml code](diagrams/HospitalDepartment.puml)
+[plantuml code](diagrams/ProffesorDepartment.puml)
 
 A Department has a Proffesor, and the scope of Proffesor doesn’t depend on the Department. Many-to-many does not fit very well into an aggregation. Aggregation represents a part-whole relationship. It is verbalized by a "has a" verb. Thus, modeling a many-to-many relationship as an aggregation introduces a faulty design and should be expressed via association.
 

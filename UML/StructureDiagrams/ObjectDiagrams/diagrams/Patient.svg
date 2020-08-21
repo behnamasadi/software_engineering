@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="86px" preserveAspectRatio="none" style="width:376px;height:86px;" version="1.1" viewBox="0 0 376 86" width="376px" zoomAndPan="magnify"><defs><filter height="300%" id="f19xjsjvb2mlp2" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FEFECE" filter="url(#f19xjsjvb2mlp2)" height="60.8906" style="stroke: #A80036; stroke-width: 1.5;" width="148" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="107" x="27.5" y="20.1387">newPatient:Patient</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="154" y1="24.9688" y2="24.9688"/><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="136" x="13" y="38.251">id : String = "38-545-137"</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="95" x="13" y="49.8916">name = John Doe</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="127" x="13" y="61.5322">gender: Gender = male</text><path d="M190,17.5 L190,33.5 L155.266,37.5 L190,41.5 L190,57.7656 A0,0 0 0 0 190,57.7656 L364,57.7656 A0,0 0 0 0 364,57.7656 L364,27.5 L354,17.5 L190,17.5 A0,0 0 0 0 190,17.5 " fill="#FBFB77" filter="url(#f19xjsjvb2mlp2)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M354,17.5 L354,27.5 L364,27.5 L354,17.5 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="153" x="196" y="34.5669">Underlining of instances</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="196" y="49.6997">is old (UML 1.0)?</text><!--MD5=[7b7f0132288f0d196627679a6ae22f75]
+@startuml
+object "<u>newPatient:Patient</u>" as p2 {
+id : String = "38-545-137"
+name = John Doe
+gender: Gender = male
+}
+note right 
+ Underlining of instances
+ is old (UML 1.0)?
+end note
+@enduml
+
+PlantUML version 1.2020.16beta10(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

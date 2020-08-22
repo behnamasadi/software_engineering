@@ -32,6 +32,30 @@ public:
 	static int count() {}
 };
 
+class Player {
+public:
+    virtual void play() = 0;
+    virtual void stop() = 0;
+    virtual void pause() = 0;
+    virtual void reverse() = 0;
+};
+
+class Recorder: public Player
+{
+public:
+    virtual void record() = 0;
+};
+
+class TapePlayer: public Recorder {
+public:
+    void play();
+    void stop();
+    void pause();
+    void reverse();
+    void record();
+};
+
+
 /////////////////////////////////////////// Composition ///////////////////////////////////////////
 namespace Composition
 {

@@ -43,6 +43,61 @@ Different type of members/ methods in a class diagram
 4) S͟t͟a͟t͟i͟c͟  members are represented as underlined.
 5) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
 
+### Interfaces and Abstract Classes
+The interfaces are implemented using abstract classes in C++. A class is abstract when at least one of its functions is pure 
+virtual. There are two types of virtual functions in C++:
+
+1) Virtual function
+2) Pure virtual function
+A virtual function just has the keyword virtual in its declaration.
+A pure virtual function is specified by placing "= 0" in its declaration.
+
+A class that has virtual function can be instantiated whereas an abstract class can not be instantiated on its own and a derived class that implements the pure-virtual method(s) must be used. You mark an interface with the keyword «interface».
+
+```cpp
+class Player {
+public:
+    virtual void play() = 0;
+    virtual void stop() = 0;
+    virtual void pause() = 0;
+    virtual void reverse() = 0;
+};
+
+class Recorder: public Player
+{
+public:
+    virtual void record() = 0;
+};
+
+class TapePlayer: public Recorder {
+public:
+    void play();
+    void stop();
+    void pause();
+    void reverse();
+    void record();
+};
+```
+
+![PlantUML model](diagrams/PlayerRecorderTapePlayer.svg)
+
+[plantuml code](diagrams/PlayerRecorderTapePlayer.puml)
+
+Classes have two kinds of relationships with interfaces: providing and requiring.
+
+#### Providing an Interface  
+A class provides an interface when it is implementing the interface or implementing a subtype of the interface.
+
+#### Requiring an Interface  
+A class requires an interface if it needs an instance of that interface in order to work. Essentially, this is having a dependency on the interface.
+
+#### Ball-and-socket notation
+
+
+
+
+
+
 
 ## Class Relationship
 So far we only have had classes that were consist of primitive types such as int, double and string.
@@ -449,4 +504,5 @@ Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-expla
 	[4](https://www.uml-diagrams.org/),
 	[5](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/),
 	[6](https://www.ibm.com/support/knowledgecenter/SS8PJ7_9.7.0/com.ibm.xtools.modeler.doc/topics/cdepend.html)
+	[7](http://www.cs.sjsu.edu/~pearce/modules/lectures/oop/basics/interfaces.htm)
 

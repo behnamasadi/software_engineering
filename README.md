@@ -61,11 +61,22 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
 ## [UML Diagrams](UML/)  
-[Class Diagram](UML/)  
-[Class Relationship](UML/)  
-[Use Case Diagram](UML/)  
-[Sequence Diagram](UML/)  
-[Activity Diagram](UML/)  
+1) Structure Diagrams
+  - [Class Diagram](UML/StructureDiagrams/ClassDiagram)
+  - [Component Diagram](UML/StructureDiagrams/ComponentDiagram/)
+  - [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
+  - [Object Diagram](UML/StructureDiagrams/ObjectDiagram)
+  - [Package Diagram](UML/StructureDiagrams/PackageDiagram)
+  - [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
+  - [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
+2) Behavioral Diagrams
+  - [Use Case Diagram](UML/BehavioralDiagrams/SequenceDiagram)
+  - [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
+  - [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
+  - [Sequence Diagram](UML/BehavioralDiagrams/SequenceDiagram)
+  - [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram) 
+  - [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram) 
+  - [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram) 
 
 ## [Refactoring](Refactoring/)
 ### [Bloaters](Refactoring/Bloaters)  

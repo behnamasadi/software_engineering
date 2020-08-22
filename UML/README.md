@@ -1,19 +1,19 @@
 1) Structure Diagrams
   - [Class Diagram](StructureDiagrams/ClassDiagram)
   - [Component Diagram](StructureDiagrams/ComponentDiagram/)
-  - Deployment Diagram
+  - [Deployment Diagram](StructureDiagrams/DeploymentDiagram)
   - [Object Diagram](StructureDiagrams/ObjectDiagram)
   - [Package Diagram](StructureDiagrams/PackageDiagram)
   - [Profile Diagram](StructureDiagrams/ProfileDiagram)
   - [Composite Structure Diagram](StructureDiagrams/CompositeStructureDiagram)
 2) Behavioral Diagrams
-  - Use Case Diagram
-  - Activity Diagram
-  - State Machine Diagram
+  - [Use Case Diagram](BehavioralDiagrams/SequenceDiagram)
+  - [Activity Diagram](BehavioralDiagrams/ActivityDiagram)
+  - [State Machine Diagram](BehavioralDiagrams/StateMachineDiagram)
   - [Sequence Diagram](BehavioralDiagrams/SequenceDiagram)
-  - Communication Diagram
-  - Interaction Overview Diagram
-  - Timing Diagram
+  - [Communication Diagram](BehavioralDiagrams/CommunicationDiagram) 
+  - [Interaction Overview Diagram](BehavioralDiagrams/InteractionOverviewDiagram) 
+  - [Timing Diagram](BehavioralDiagrams/TimingDiagram) 
 
 <small><i>TOC generated with <a href='http://ecotrust-canada.github.io/markdown-toc/'>markdown-toc</a></i></small>
 

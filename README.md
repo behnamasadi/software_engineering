@@ -1,13 +1,8 @@
 # Design Pattern, Refactoring and UML
 This repository contains various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), Model View Controller (MVC), SOLID Design Principles, Clean Code and an introduction on UML with various examples.
 
-![Design_Patterns._Elements_of_Reusable_Object-Oriented_Software](images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg)
-![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg)
-![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg)
-![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg)
-
 ## [UML Diagrams](UML/)  
-1) Structure Diagrams
+1) [Structure Diagrams](UML/StructureDiagrams/)
   - [Class Diagram](UML/StructureDiagrams/ClassDiagram)
   - [Component Diagram](UML/StructureDiagrams/ComponentDiagram/)
   - [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
@@ -15,7 +10,7 @@ This repository contains various example of "Design Pattern" in object oriented 
   - [Package Diagram](UML/StructureDiagrams/PackageDiagram)
   - [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
   - [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
-2) Behavioral Diagrams
+2) [Behavioral Diagrams](UML/BehavioralDiagrams/)
   - [Use Case Diagram](UML/BehavioralDiagrams/SequenceDiagram)
   - [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
   - [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
@@ -78,6 +73,15 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Proxy](src/Structural/Proxy)  
 
 
+
+
+<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+
+
+
+<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+
+
 ## [Refactoring](Refactoring/)
 ### [Bloaters](Refactoring/Bloaters)  
 [Primitive Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
@@ -85,6 +89,12 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)  
 [Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)  
 
+
+<a target="_blank"  href="https://www.amazon.com/gp/product/0132350882/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0132350882&linkCode=as2&tag=rosdev09-20&linkId=949bad73dc39e53caf1caf849ad0f565"><img border="0" src="images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0132350882" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+
+
+
+<a target="_blank"  href="https://www.amazon.com/gp/product/B07XGR7QQD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07XGR7QQD&linkCode=as2&tag=rosdev09-20&linkId=44172741182e66512df744aa85f17756"><img border="0" src="images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=B07XGR7QQD" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 
 
 

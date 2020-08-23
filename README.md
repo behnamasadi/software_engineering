@@ -19,6 +19,15 @@ This repository contains various example of "Design Pattern" in object oriented 
   - [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram) 
   - [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram) 
 
+
+
+|   |   |   |
+|---|---|---|
+|<a target="_blank"  href="https://www.amazon.com/gp/product/0596009828/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596009828&linkCode=as2&tag=rosdev09-20&linkId=2690ec967b66a97892f0dc164b3451cb"><img border="0" src="images/Learning_UML_2.0:_A_Pragmatic_Introduction_to_UML" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596009828" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
+<a target="_blank"  href="https://www.amazon.com/gp/product/0321321278/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321321278&linkCode=as2&tag=rosdev09-20&linkId=daa19c0aab2d0a02aa6877635026ccc3"><img border="0" src="images/UML_2_and_the_Unified_Process:_Practical_Object-Oriented_Analysis_and_Design_(2nd_Edition).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0321321278" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
+<a target="_blank"  href="https://www.amazon.com/gp/product/0321193687/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321193687&linkCode=as2&tag=rosdev09-20&linkId=657a0bf853a4191b25a2d6a8d8c44d95"><img border="0" src="images/UML_Distilled:_A_Brief_Guide_to_the_Standard_Object_Modeling_Language.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0321193687" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+
+
 ## [SOLID Design Principles](SOLID)  
 
 [Single responsibility principle](SOLID/SingleResponsibilityPrinciple)  
@@ -77,7 +86,7 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 |   |   |   |
 |---|---|---|
-|<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />   |   |
+|<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/1484236025/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1484236025&linkCode=as2&tag=rosdev09-20&linkId=974576fff321c67154d6bc7299956ef0"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=1484236025&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rosdev09-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=1484236025" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
 
 
 
@@ -96,12 +105,9 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)  
 [Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)  
 
-
-<a target="_blank"  href="https://www.amazon.com/gp/product/0132350882/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0132350882&linkCode=as2&tag=rosdev09-20&linkId=949bad73dc39e53caf1caf849ad0f565"><img border="0" src="images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0132350882" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
-
-
-<a target="_blank"  href="https://www.amazon.com/gp/product/B07XGR7QQD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07XGR7QQD&linkCode=as2&tag=rosdev09-20&linkId=44172741182e66512df744aa85f17756"><img border="0" src="images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=B07XGR7QQD" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+|   |   |   |
+|---|---|---|
+|<a target="_blank"  href="https://www.amazon.com/gp/product/0132350882/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0132350882&linkCode=as2&tag=rosdev09-20&linkId=949bad73dc39e53caf1caf849ad0f565"><img border="0" src="images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0132350882" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/B07XGR7QQD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07XGR7QQD&linkCode=as2&tag=rosdev09-20&linkId=44172741182e66512df744aa85f17756"><img border="0" src="images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=B07XGR7QQD" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|   |
 
 
 

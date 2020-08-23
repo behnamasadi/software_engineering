@@ -6,6 +6,40 @@ This repository contains various example of "Design Pattern" in object oriented 
 ![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg)
 ![Head_First_Design_Patterns_(A_Brain_Friendly_Guide)](images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg)
 
+## [UML Diagrams](UML/)  
+1) Structure Diagrams
+  - [Class Diagram](UML/StructureDiagrams/ClassDiagram)
+  - [Component Diagram](UML/StructureDiagrams/ComponentDiagram/)
+  - [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
+  - [Object Diagram](UML/StructureDiagrams/ObjectDiagram)
+  - [Package Diagram](UML/StructureDiagrams/PackageDiagram)
+  - [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
+  - [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
+2) Behavioral Diagrams
+  - [Use Case Diagram](UML/BehavioralDiagrams/SequenceDiagram)
+  - [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
+  - [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
+  - [Sequence Diagram](UML/BehavioralDiagrams/SequenceDiagram)
+  - [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram) 
+  - [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram) 
+  - [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram) 
+
+## [SOLID Design Principles](SOLID)  
+
+[Single responsibility principle](SOLID/SingleResponsibilityPrinciple)  
+[Open–closed principle](SOLID/OpenClosedPrinciple)  
+[Liskov substitution principle](SOLID/LiskovSubstitutionPrinciple)  
+[Interface segregation principle](SOLID/InterfaceSegregationPrinciple)  
+[Dependency inversion principle](SOLID/DependencyInjection)  
+
+
+## [Model View Controller](ModelViewController)  
+[Simple Model View Controller Example](ModelViewController/student_model_view_controller.cpp)
+
+## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)
+[Rule Of Five](RuleOfThreeFiveZero/rule_of_five.cpp)  
+[Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
+[Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
 
 ## [Behavioral patterns](src/Behavioral)  
@@ -43,40 +77,6 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Private Class Data](#)  
 [Proxy](src/Structural/Proxy)  
 
-## [SOLID Design Principles](SOLID)  
-
-[Single responsibility principle](SOLID/SingleResponsibilityPrinciple)  
-[Open–closed principle](SOLID/OpenClosedPrinciple)  
-[Liskov substitution principle](SOLID/LiskovSubstitutionPrinciple)  
-[Interface segregation principle](SOLID/InterfaceSegregationPrinciple)  
-[Dependency inversion principle](SOLID/DependencyInjection)  
-
-
-## [Model View Controller](ModelViewController)  
-[Simple Model View Controller Example](ModelViewController/student_model_view_controller.cpp)
-
-## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)
-[Rule Of Five](RuleOfThreeFiveZero/rule_of_five.cpp)  
-[Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
-[Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
-
-## [UML Diagrams](UML/)  
-1) Structure Diagrams
-  - [Class Diagram](UML/StructureDiagrams/ClassDiagram)
-  - [Component Diagram](UML/StructureDiagrams/ComponentDiagram/)
-  - [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
-  - [Object Diagram](UML/StructureDiagrams/ObjectDiagram)
-  - [Package Diagram](UML/StructureDiagrams/PackageDiagram)
-  - [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
-  - [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
-2) Behavioral Diagrams
-  - [Use Case Diagram](UML/BehavioralDiagrams/SequenceDiagram)
-  - [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
-  - [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
-  - [Sequence Diagram](UML/BehavioralDiagrams/SequenceDiagram)
-  - [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram) 
-  - [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram) 
-  - [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram) 
 
 ## [Refactoring](Refactoring/)
 ### [Bloaters](Refactoring/Bloaters)  
@@ -84,6 +84,8 @@ This repository contains various example of "Design Pattern" in object oriented 
 ### [Couplers](Refactoring/Couplers)  
 [Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)  
 [Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)  
+
+
 
 
 References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 
@@ -102,10 +104,6 @@ References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-
 	[14](http://www.plantuml.com/plantuml/uml/),
 	[15](https://www.amazon.de/-/en/Martin-Fowler/dp/0134757599/),
 	[16](https://www.amazon.de/-/en/Robert-Martin/dp/0132350882/)
-
-
-
-
 
 [![Build Status](https://travis-ci.org/behnamasadi/design_pattern.svg?branch=master)](https://travis-ci.org/behnamasadi/design_pattern)
 ![alt text](https://img.shields.io/badge/license-BSD-blue.svg)

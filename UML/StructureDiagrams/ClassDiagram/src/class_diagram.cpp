@@ -191,6 +191,7 @@ class Shape
 public:
     void virtual draw();
     double virtual getArea();
+    void erase(){}
 };
 
 class Circle: public Shape

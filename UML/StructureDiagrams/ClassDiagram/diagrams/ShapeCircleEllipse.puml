@@ -4,6 +4,7 @@ class Shape
 {
 +     {abstract} draw():void
 +     {abstract} getArea():double
++     erase():void
 }
 class Circle
 {

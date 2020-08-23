@@ -1,0 +1,6 @@
+@startuml
+left to right direction
+class Playlist
+circle TrackData 
+Playlist --( TrackData
+@enduml

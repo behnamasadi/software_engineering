@@ -1,4 +1,8 @@
 - [Class Diagram](#class-diagram)
+  * [Interfaces and Abstract Classes](#interfaces-and-abstract-classes)
+    + [Ball-and-socket Notation And Lollipop Notation](#ball-and-socket-notation-and-lollipop-notation)
+    + [Requiring an Interface](#requiring-an-interface)
+    + [Providing an Interface](#providing-an-interface)
 - [Class Relationship](#class-relationship)
   * [Multiplicity in a Relation](#multiplicity-in-a-relation)
   * [Composition](#composition)
@@ -9,9 +13,9 @@
   * [Dependency](#dependency)
     + [Types of dependency relationships](#types-of-dependency-relationships)
   * [Inheritance (Generalization)](#inheritance--generalization-)
+  * [Realization](#realization)
   * [Class template](#class-template)
 - [Class Relationship in Nutshell](#class-relationship-in-nutshell)
-
 
 ## Class Diagram
 
@@ -62,39 +66,42 @@ public:
     virtual void pause() = 0;
     virtual void reverse() = 0;
 };
-
-class Recorder: public Player
-{
-public:
-    virtual void record() = 0;
-};
-
-class TapePlayer: public Recorder {
-public:
-    void play();
-    void stop();
-    void pause();
-    void reverse();
-    void record();
-};
 ```
 
-![PlantUML model](diagrams/PlayerRecorderTapePlayer.svg)
+![PlantUML model](diagrams/PlayerInterface.svg)
 
-[plantuml code](diagrams/PlayerRecorderTapePlayer.puml)
+[plantuml code](diagrams/PlayerInterface.puml)
 
-Classes have two kinds of relationships with interfaces: providing and requiring.
+
+#### Ball-and-socket Notation And Lollipop Notation
+
+"Ball-and-socket" is a new notations that appeared in UML 2.0 was to show interfaces required by a class. "Lollipop" notation (which was popularized by Microsoft) was being sed in UML 1.0 to show a class implementing multiple interfaces.
+
+Classes don't just implement interfaces, they might also require them. Both implementing (providing) and requiring operation can be modeled by 
+ball-and-socket notation and lollipop notation.
+
+Imagine writing a class that can provide information about a music playlists, such ID3 tag (metadata), total length of the playlist, etc. You can acquire these information from iTunes, spotify, last.fm, reading directly from an mp3 etc. You can achive this easily by substituting another implementation.
+
+
+#### Requiring an Interface  
+The required interface notation allows you to show this required interface with a compact socket notation.
+
+![PlantUML model](diagrams/PlaylistTrackData.svg)
+
+[plantuml code](diagrams/PlaylistTrackData.puml)
 
 #### Providing an Interface  
 A class provides an interface when it is implementing the interface or implementing a subtype of the interface.
 
-#### Requiring an Interface  
-A class requires an interface if it needs an instance of that interface in order to work. Essentially, this is having a dependency on the interface.
+![PlantUML model](diagrams/PlaylistSpotifyTrackData.svg)
 
-#### Ball-and-socket notation
+[plantuml code](diagrams/PlaylistSpotifyTrackData.puml)
 
+The following is the Lollipop notation of the top one:
 
+![PlantUML model](diagrams/PlaylistSpotifyTrackDataLollipop.svg)
 
+[plantuml code](diagrams/PlaylistSpotifyTrackDataLollipop.puml)
 
 
 
@@ -109,7 +116,8 @@ The following summarize the relationship between classes:
 3) Association (knows a, Uses-a) ────────
 4) Dependency (uses a) - - - - - ->
 5) Inheritance (is a) ────────▷
-6) Class template
+6) Realization  - - - - - -▷
+7) Class template
 
 ### Multiplicity in a Relation
 1) “0..1”               No instances, or one instance (optional, may)
@@ -449,7 +457,8 @@ In Inheritance relationship a class is derived from another class. It is a “is
 ```
 
 
-𝙙𝙧𝙖𝙬() and 𝗴𝗲𝘁𝗔𝗿𝗲𝗮() methods of Shape class are virtual functions, so they are written in italics.
+𝙙𝙧𝙖𝙬() and 𝗴𝗲𝘁𝗔𝗿𝗲𝗮() methods of Shape class are virtual functions, so they are written in italics. Please note that Circle and Ellipse
+don't override `erase()` so if they call `erase()`, the one from Shape will be called.
 
 ```cpp
 class Shape
@@ -457,6 +466,7 @@ class Shape
 public:
     void virtual draw();
     double virtual getArea();
+    void erase(){}
 };
 
 class Circle: public Shape
@@ -474,6 +484,37 @@ class Ellipse : public Shape
 ![PlantUML model](diagrams/ShapeCircleEllipse.svg)
 
 [plantuml code](diagrams/ShapeCircleEllipse.puml)
+
+
+### Realization
+Realization relationship is used when a class one or more interface
+
+
+```cpp
+class Player {
+public:
+    virtual void play() = 0;
+    virtual void stop() = 0;
+    virtual void pause() = 0;
+    virtual void reverse() = 0;
+};
+
+class Recorder: public Player
+{
+public:
+    virtual void record() = 0;
+};
+
+class TapePlayer: public Recorder {
+public:
+    void play();
+    void stop();
+    void pause();
+    void reverse();
+    void record();
+};
+```
+
 
 ### Class template
 
@@ -505,4 +546,5 @@ Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-expla
 	[5](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/),
 	[6](https://www.ibm.com/support/knowledgecenter/SS8PJ7_9.7.0/com.ibm.xtools.modeler.doc/topics/cdepend.html)
 	[7](http://www.cs.sjsu.edu/~pearce/modules/lectures/oop/basics/interfaces.htm)
+	[8](https://martinfowler.com/bliki/BallAndSocket.html)
 

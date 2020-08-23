@@ -1,5 +1,5 @@
 # Design Pattern, Refactoring and UML
-This repository contains various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), Model View Controller (MVC), SOLID Design Principles, Clean Code and an introduction on UML with various examples.
+This repository contains an introduction on "UML" with C++ examples, various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), and few examples for software design such "Model View Controller (MVC)", "SOLID Design Principles" and finally examples of "Clean Code".
 
 ## [UML Diagrams](UML/)  
 1) [Structure Diagrams](UML/StructureDiagrams/)
@@ -18,6 +18,10 @@ This repository contains various example of "Design Pattern" in object oriented 
   - [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram) 
   - [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram) 
   - [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram) 
+
+References:
+	[1](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/),
+	[2](http://www.plantuml.com/plantuml/uml/),
 
 
 
@@ -80,6 +84,15 @@ This repository contains various example of "Design Pattern" in object oriented 
 [Proxy](src/Structural/Proxy)  
 
 
+References:
+	[1](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns), 
+	[2](https://sourcemaking.com/design_patterns/), 
+	[3](https://cpppatterns.com/), 
+	[4](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
+	[5](https://www.bogotobogo.com/DesignPatterns/),
+	[6](https://www.growingwiththeweb.com/p/explore.html?t=Design%20pattern),
+	[7](https://www.tutorialspoint.com/design_pattern/),
+	[8](http://simpletechtalks.com/tag/design-patterns/),
 
 
 |   |   |   |
@@ -101,22 +114,10 @@ This repository contains various example of "Design Pattern" in object oriented 
 
 
 
-References:[1](https://www.amazon.de/Patterns-Elements-Reusable-Object-Oriented-Software/dp/0201633612/ref=asc_df_0201633612/), 
-	[2](https://www.amazon.de/First-Design-Patterns-Brain-Friendly/dp/0596007124/ref=asc_df_0596007124/), 
-	[3](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns) , 
-	[4](https://sourcemaking.com/design_patterns/), 
-	[5](https://cpppatterns.com/), 
-	[6](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
-	[7](https://www.bogotobogo.com/DesignPatterns/),
-	[8](https://www.growingwiththeweb.com/p/explore.html?t=Design%20pattern),
-	[9](https://www.tutorialspoint.com/design_pattern/),
-	[10](http://simpletechtalks.com/tag/design-patterns/),
-	[11](https://refactoring.guru/refactoring),
-	[12](https://sourcemaking.com/refactoring),
-	[13](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/),
-	[14](http://www.plantuml.com/plantuml/uml/),
-	[15](https://www.amazon.de/-/en/Martin-Fowler/dp/0134757599/),
-	[16](https://www.amazon.de/-/en/Robert-Martin/dp/0132350882/)
+References:
+	[1](https://refactoring.guru/refactoring),
+	[2](https://sourcemaking.com/refactoring),
+
 
 [![Build Status](https://travis-ci.org/behnamasadi/design_pattern.svg?branch=master)](https://travis-ci.org/behnamasadi/design_pattern)
 ![alt text](https://img.shields.io/badge/license-BSD-blue.svg)

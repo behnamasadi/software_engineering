@@ -487,8 +487,7 @@ class Ellipse : public Shape
 
 
 ### Realization
-Realization relationship is used when a class one or more interface
-
+Realization relationship is used when a class implement one or more interface. It is very similar to inheritance but used with interface mainly.
 
 ```cpp
 class Player {
@@ -514,6 +513,11 @@ public:
     void record();
 };
 ```
+
+![PlantUML model](diagrams/PlayerRecorderTapePlayer.svg)
+
+[plantuml code](diagrams/PlayerRecorderTapePlayer.puml)
+
 
 
 ### Class template

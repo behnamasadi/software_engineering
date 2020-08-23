@@ -1,0 +1,6 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+[Component] -right-( Interface
+[AnotherComponent] -left- Interface
+@enduml

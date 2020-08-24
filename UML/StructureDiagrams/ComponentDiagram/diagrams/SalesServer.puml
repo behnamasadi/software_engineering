@@ -1,0 +1,19 @@
+@startuml
+component "Sales Server" as SalesServer {
+  component "Transaction\nProcessor" as TransactionProcessor{
+  }
+  component "Accounting\n Driver" as AccountingDriver{
+  }
+}
+component "Point of\nSale Machine" as POS{
+}
+component "Message Queue" as MessageQueue{
+}
+MessageQueue #-- SalesServer
+
+() "Sales\n Messages" as SalesMessages
+
+MessageQueue - SalesMessages
+POS -left-(SalesMessages
+POS #-- SalesServer
+@enduml

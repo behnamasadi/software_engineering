@@ -1,0 +1,6 @@
+@startuml
+left to right direction
+class  "«Metaclass» \n User " as User
+class "«stereotype» \n Web Client"  as WebClient
+WebClient --|>  User
+@enduml

@@ -1,0 +1,4 @@
+@startuml
+[component]
+note left : This is the UML 2.0 notation
+@enduml

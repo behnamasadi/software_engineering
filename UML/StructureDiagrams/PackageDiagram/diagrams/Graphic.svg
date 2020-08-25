@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="264.5041px" preserveAspectRatio="none" style="width:304px;height:264px;" version="1.1" viewBox="0 0 304 264" width="304.4292px" zoomAndPan="magnify"><defs><filter height="300%" id="f96wwaen9cl1o" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="4.990642545227698"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="9.981285090455396" dy="9.981285090455396" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[2041a2e7c8d4d6168c76153b837c5d12]
+entity graphic\n--><polygon fill="#FFFFFF" filter="url(#f96wwaen9cl1o)" points="39.9251,14.9719,154.7099,14.9719,172.1772,67.3737,249.5321,67.3737,249.5321,235.0281,39.9251,235.0281,39.9251,14.9719" style="stroke: #000000; stroke-width: 3.7429819089207736;"/><line style="stroke: #000000; stroke-width: 3.7429819089207736;" x1="39.9251" x2="172.1772" y1="67.3737" y2="67.3737"/><text fill="#000000" font-family="sans-serif" font-size="34.9345" lengthAdjust="spacingAndGlyphs" textLength="134.7473" x="64.8784" y="117.2679">graphic</text><text fill="#000000" font-family="sans-serif" font-size="34.9345" lengthAdjust="spacingAndGlyphs" textLength="0" x="74.8596" y="157.9339"/><!--MD5=[0519aa2f5fbbfab1964fd0ab4ccdd7a5]
+@startuml
+scale 250 width
+scale 250 height
+package  "graphic\n" <<Folder>> {
+   
+}
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 20:20:43 UTC 2020)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

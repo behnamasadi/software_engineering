@@ -1,0 +1,7 @@
+@startuml
+scale 250 width
+scale 250 height
+package  "graphic\n" <<Folder>> {
+   
+}
+@enduml

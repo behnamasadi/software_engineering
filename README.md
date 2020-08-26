@@ -1,33 +1,58 @@
 # Design Pattern, Refactoring and UML
 This repository contains an introduction on "UML" with C++ examples, various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), and few examples for software design such "Model View Controller (MVC)", "SOLID Design Principles" and finally examples of "Clean Code".
 
-## [UML Diagrams](UML/)  
-1) [Structure Diagrams](UML/StructureDiagrams/)
-  - [Class Diagram](UML/StructureDiagrams/ClassDiagram)
-  - [Component Diagram](UML/StructureDiagrams/ComponentDiagram/)
-  - [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
-  - [Object Diagram](UML/StructureDiagrams/ObjectDiagram)
-  - [Package Diagram](UML/StructureDiagrams/PackageDiagram)
-  - [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
-  - [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
-2) [Behavioral Diagrams](UML/BehavioralDiagrams/)
-  - [Use Case Diagram](UML/BehavioralDiagrams/SequenceDiagram)
-  - [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
-  - [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
-  - [Sequence Diagram](UML/BehavioralDiagrams/SequenceDiagram)
-  - [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram) 
-  - [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram) 
-  - [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram) 
-
-References:
-	[1](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/),
-	[2](http://www.plantuml.com/plantuml/uml/),
-
+## [UML](UML/)  
+- [Concepts](#concepts)
+  * [Structure](#structure)
+    + [Actor](#actor)
+    + [Attribute](#attribute)
+    + [Artifact](#artifact)
+    + [Class](#class)
+    + [Component](#component)
+    + [Interface](#interface)
+    + [Object](#object)
+    + [Package](#package)
+    + [Profile diagram](#profile-diagram)
+  * [Classifier](#classifier)
+    + [Types of UML Classifiers](#types-of-uml-classifiers)
+  * [Behavior](#behavior)
+    + [Activity](#activity)
+    + [Event](#event)
+    + [Message](#message)
+    + [Method](#method)
+    + [State](#state)
+    + [Use case](#use-case)
+  * [Relationships](#relationships)
+    + [Association](#association)
+    + [Composition](#composition)
+    + [Dependency](#dependency)
+    + [Generalization (or Inheritance)](#generalization--or-inheritance-)
+  * [Extensibility](#extensibility)
+    + [[Stereotype](Extensibility/#Stereotype)](#-stereotype--extensibility--stereotype-)
+    + [[Tag](Extensibility/#Tag)](#-tag--extensibility--tag-)
+    + [[Constraints](Extensibility/#Constraints)](#-constraints--extensibility--constraints-)
+- [Diagrams](#diagrams)
+  * [Structure Diagrams](#structure-diagrams)
+    + [[Class Diagram](StructureDiagrams/ClassDiagram)](#-class-diagram--structurediagrams-classdiagram-)
+    + [[Component Diagram](StructureDiagrams/ComponentDiagram/)](#-component-diagram--structurediagrams-componentdiagram--)
+    + [[Deployment Diagram](StructureDiagrams/DeploymentDiagram)](#-deployment-diagram--structurediagrams-deploymentdiagram-)
+    + [[Object Diagram](StructureDiagrams/ObjectDiagram)](#-object-diagram--structurediagrams-objectdiagram-)
+    + [[Package Diagram](StructureDiagrams/PackageDiagram)](#-package-diagram--structurediagrams-packagediagram-)
+    + [[Profile Diagram](StructureDiagrams/ProfileDiagram)](#-profile-diagram--structurediagrams-profilediagram-)
+    + [[Composite Structure Diagram](StructureDiagrams/CompositeStructureDiagram)](#-composite-structure-diagram--structurediagrams-compositestructurediagram-)
+  * [Behavioral Diagrams](#behavioral-diagrams)
+    + [[Use Case Diagram](BehavioralDiagrams/UseCaseDiagram)](#-use-case-diagram--behavioraldiagrams-usecasediagram-)
+    + [[Activity Diagram](BehavioralDiagrams/ActivityDiagram)](#-activity-diagram--behavioraldiagrams-activitydiagram-)
+    + [[State Machine Diagram](BehavioralDiagrams/StateMachineDiagram)](#-state-machine-diagram--behavioraldiagrams-statemachinediagram-)
+    + [[Sequence Diagram](BehavioralDiagrams/SequenceDiagram)](#-sequence-diagram--behavioraldiagrams-sequencediagram-)
+    + [[Communication Diagram](BehavioralDiagrams/CommunicationDiagram)](#-communication-diagram--behavioraldiagrams-communicationdiagram-)
+    + [[Interaction Overview Diagram](BehavioralDiagrams/InteractionOverviewDiagram)](#-interaction-overview-diagram--behavioraldiagrams-interactionoverviewdiagram-)
+    + [[Timing Diagram](BehavioralDiagrams/TimingDiagram)](#-timing-diagram--behavioraldiagrams-timingdiagram-)
 
 
 |   |   |   |
 |---|---|---|
-|<a target="_blank"  href="https://www.amazon.com/gp/product/0596009828/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596009828&linkCode=as2&tag=rosdev09-20&linkId=2690ec967b66a97892f0dc164b3451cb"><img border="0" src="images/Learning_UML_2.0:_A_Pragmatic_Introduction_to_UML.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596009828" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0321321278/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321321278&linkCode=as2&tag=rosdev09-20&linkId=daa19c0aab2d0a02aa6877635026ccc3"><img border="0" src="images/UML_2_and_the_Unified_Process:_Practical_Object-Oriented_Analysis_and_Design_(2nd_Edition).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0321321278" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0321193687/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321193687&linkCode=as2&tag=rosdev09-20&linkId=657a0bf853a4191b25a2d6a8d8c44d95"><img border="0" src="images/UML_Distilled:_A_Brief_Guide_to_the_Standard_Object_Modeling_Language.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0321193687" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+|<a target="_blank"  href="https://www.amazon.com/gp/product/0596009828/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596009828&linkCode=as2&tag=rosdev09-20&linkId=2690ec967b66a97892f0dc164b3451cb"><img border="0" src="images/Learning_UML_2.0__A_Pragmatic_Introduction_to_UML.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596009828" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0321321278/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321321278&linkCode=as2&tag=rosdev09-20&linkId=daa19c0aab2d0a02aa6877635026ccc3"><img border="0" src="images/UML_2_and_the_Unified_Process__Practical_Object-Oriented_Analysis_and_Design_(2nd_Edition).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0321321278" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0321193687/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321193687&linkCode=as2&tag=rosdev09-20&linkId=657a0bf853a4191b25a2d6a8d8c44d95"><img border="0" src="images/UML_Distilled__A_Brief_Guide_to_the_Standard_Object_Modeling_Language.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0321193687" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 
 
 ## [SOLID Design Principles](SOLID)  
@@ -97,7 +122,7 @@ References:
 
 |   |   |   |
 |---|---|---|
-|<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/1484236025/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1484236025&linkCode=as2&tag=rosdev09-20&linkId=974576fff321c67154d6bc7299956ef0"><img border="0" src="images/Design_Patterns_in_Modern_C++:_Reusable_Approaches_for_Object-Oriented_Software_Design.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=1484236025" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
+|<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/1484236025/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1484236025&linkCode=as2&tag=rosdev09-20&linkId=974576fff321c67154d6bc7299956ef0"><img border="0" src="images/Design_Patterns_in_Modern_C++__Reusable_Approaches_for_Object-Oriented_Software_Design.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=1484236025" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
 
 
 
@@ -116,7 +141,7 @@ References:
 
 References:
 	[1](https://refactoring.guru/refactoring),
-	[2](https://sourcemaking.com/refactoring),
+	[2](https://sourcemaking.com/refactoring)
 
 
 [![Build Status](https://travis-ci.org/behnamasadi/design_pattern.svg?branch=master)](https://travis-ci.org/behnamasadi/design_pattern)

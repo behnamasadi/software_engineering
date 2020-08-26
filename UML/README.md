@@ -1,14 +1,14 @@
 ## Concepts
 ### Structure
-- Actor
-- Attribute
-- Artifact
-- Class
-- Component
-- Interface
-- Object
-- Package
-- Profile diagram
+#### Actor
+#### Attribute
+#### Artifact
+#### Class
+#### Component
+#### Interface
+#### Object
+#### Package
+#### Profile diagram
 
 ### Classifier
 The basic modeling element in UML is the classifier . A classifier represents a group of things with common properties.
@@ -26,43 +26,43 @@ Class
 
 
 ### Behavior
-- Activity
-- Event
-- Message
-- Method
-- State
-- Use case
+#### Activity
+#### Event
+#### Message
+#### Method
+#### State
+#### Use case
 
 ### Relationships
 
-- Association
-- Composition
-- Dependency
-- Generalization (or Inheritance)
+#### Association
+#### Composition
+#### Dependency
+#### Generalization (or Inheritance)
 
 ### Extensibility
 
-- [Stereotype](Extensibility/#Stereotype)
-- [Tag](Extensibility/#Tag)
-- [Constraints](Extensibility/#Constraints)
+#### [Stereotype](Extensibility/#Stereotype)
+#### [Tag](Extensibility/#Tag)
+#### [Constraints](Extensibility/#Constraints)
 
 ## Diagrams
-1) Structure Diagrams
-  - [Class Diagram](StructureDiagrams/ClassDiagram)
-  - [Component Diagram](StructureDiagrams/ComponentDiagram/)
-  - [Deployment Diagram](StructureDiagrams/DeploymentDiagram)
-  - [Object Diagram](StructureDiagrams/ObjectDiagram)
-  - [Package Diagram](StructureDiagrams/PackageDiagram)
-  - [Profile Diagram](StructureDiagrams/ProfileDiagram)
-  - [Composite Structure Diagram](StructureDiagrams/CompositeStructureDiagram)
-2) Behavioral Diagrams
-  - [Use Case Diagram](BehavioralDiagrams/SequenceDiagram)
-  - [Activity Diagram](BehavioralDiagrams/ActivityDiagram)
-  - [State Machine Diagram](BehavioralDiagrams/StateMachineDiagram)
-  - [Sequence Diagram](BehavioralDiagrams/SequenceDiagram)
-  - [Communication Diagram](BehavioralDiagrams/CommunicationDiagram) 
-  - [Interaction Overview Diagram](BehavioralDiagrams/InteractionOverviewDiagram) 
-  - [Timing Diagram](BehavioralDiagrams/TimingDiagram) 
+### Structure Diagrams
+  #### [Class Diagram](StructureDiagrams/ClassDiagram)
+  #### [Component Diagram](StructureDiagrams/ComponentDiagram/)
+  #### [Deployment Diagram](StructureDiagrams/DeploymentDiagram)
+  #### [Object Diagram](StructureDiagrams/ObjectDiagram)
+  #### [Package Diagram](StructureDiagrams/PackageDiagram)
+  #### [Profile Diagram](StructureDiagrams/ProfileDiagram)
+  #### [Composite Structure Diagram](StructureDiagrams/CompositeStructureDiagram)
+### Behavioral Diagrams
+  #### [Use Case Diagram](BehavioralDiagrams/UseCaseDiagram)
+  #### [Activity Diagram](BehavioralDiagrams/ActivityDiagram)
+  #### [State Machine Diagram](BehavioralDiagrams/StateMachineDiagram)
+  #### [Sequence Diagram](BehavioralDiagrams/SequenceDiagram)
+  #### [Communication Diagram](BehavioralDiagrams/CommunicationDiagram) 
+  #### [Interaction Overview Diagram](BehavioralDiagrams/InteractionOverviewDiagram) 
+  #### [Timing Diagram](BehavioralDiagrams/TimingDiagram) 
 
 
 

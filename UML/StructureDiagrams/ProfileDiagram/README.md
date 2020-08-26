@@ -11,6 +11,7 @@ Profile diagram is structure diagram which describes lightweight extension mecha
 2) Domains, such business process modeling, service-oriented architecture, medical applications, etc.
 
 
-Ref:    [1](https://www.uml-diagrams.org/profile-diagrams.html)
+Refs:    
+    [1](https://www.uml-diagrams.org/profile-diagrams.html),
 	[2](https://www.youtube.com/watch?v=OqBX8YvGicA)
 

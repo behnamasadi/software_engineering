@@ -11,8 +11,9 @@
 #### Profile diagram
 
 ### Classifier
-The basic modeling element in UML is the classifier . A classifier represents a group of things with common properties.
-A classifier is an abstract metaclass classification concept that serves as a mechanism to show `interfaces`, `classes`, `datatypes` and `components`.
+
+
+
 
 #### Types of UML Classifiers
 Class
@@ -73,7 +74,8 @@ Class
 
 
 Ref Links:
-	[1](https://www.uml-diagrams.org/)
+	[1](https://www.uml-diagrams.org/),
+    
 
 
 ASCII codes:

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="530px" preserveAspectRatio="none" style="width:597px;height:530px;" version="1.1" viewBox="0 0 597 530" width="597px" zoomAndPan="magnify"><defs><filter height="300%" id="f1t5upmheej2sp" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[e209b37fc91f378abaa2ddf468318055]
+entity actor--><ellipse cx="51.5" cy="14" fill="#FEFECE" filter="url(#f1t5upmheej2sp)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M51.5,22 L51.5,49 M38.5,30 L64.5,30 M51.5,49 L38.5,64 M51.5,49 L64.5,64 " fill="none" filter="url(#f1t5upmheej2sp)" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="32.5" y="82.4951">actor</text><!--MD5=[3908db504f15eb564d5f0e12bd7273c1]
+entity agent--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="36.2969" style="stroke: #A80036; stroke-width: 1.5;" width="62" x="105.5" y="27"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="42" x="115.5" y="49.9951">agent</text><!--MD5=[ed13bbfe61d4f4be62c09eebe4db66d3]
+entity artifact--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="39.2969" style="stroke: #000000; stroke-width: 1.5;" width="84" x="202.5" y="25.5"/><polygon fill="#FEFECE" points="269.5,30.5,269.5,44.5,281.5,44.5,281.5,36.5,275.5,30.5,269.5,30.5" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="275.5" x2="275.5" y1="30.5" y2="36.5"/><line style="stroke: #000000; stroke-width: 1.5;" x1="281.5" x2="275.5" y1="36.5" y2="36.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="54" x="212.5" y="51.4951">artifact</text><!--MD5=[6cbf048fd2d5a055b0f2cbfd23391788]
+entity boundary--><path d="M335,25 L335,49 M335,37 L352,37 " fill="none" filter="url(#f1t5upmheej2sp)" style="stroke: #A80036; stroke-width: 2.0;"/><ellipse cx="364" cy="37" fill="#FEFECE" filter="url(#f1t5upmheej2sp)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="67" x="322" y="65.9951">boundary</text><!--MD5=[0568ea600d1c2ace8679ac75c80dfc89]
+entity card--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="22.2969" style="stroke: #000000; stroke-width: 1.5;" width="51" x="424" y="34"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="31" x="434" y="49.9951">card</text><!--MD5=[3a4d72efb1b53e1acbdd1189cccbc328]
+entity cloud--><path d="M26.5949,155.5025 C28.9559,149.4034 34.6645,148.2045 38.7344,153.7158 C42.3758,145.821 46.616,144.8052 52.5803,151.5133 C56.8929,146.4926 62.6148,147.077 65.0918,153.5172 C69.6555,148.1672 74.9581,149.8916 77.5613,155.7067 C85.2778,157.9029 88.4459,164.8771 81.3015,170.7646 C87.2663,176.0768 87.0835,182.5086 79.105,185.7813 C76.5481,193.9294 71.4278,194.6932 65.2131,189.6266 C63.4015,196.6802 58.2965,196.7739 53.6711,192.4915 C48.5942,197.6223 41.6217,197.4871 39.3737,189.4255 C34.5728,195.4992 28.9492,192.2969 26.9313,186.5067 C18.4312,183.9799 17.7998,177.8327 23.0049,171.6772 C16.3642,165.7922 18.9472,158.2161 26.5949,155.5025 " fill="#FEFECE" filter="url(#f1t5upmheej2sp)" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="32.5" y="174.4951">cloud</text><!--MD5=[a5a7a1c563e7de0fee7f3171b646813b]
+entity collections--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="32.2969" style="stroke: #000000; stroke-width: 1.5;" width="94" x="124.5" y="155.5"/><rect fill="#FEFECE" height="32.2969" style="stroke: #000000; stroke-width: 1.5;" width="94" x="120.5" y="151.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="78" x="128.5" y="172.4951">collections</text><!--MD5=[5f175ec018c225c86e8e77149e6345d4]
+entity component--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="46.2969" style="stroke: #A80036; stroke-width: 1.5;" width="124" x="253.5" y="146.5"/><rect fill="#FEFECE" height="10" style="stroke: #A80036; stroke-width: 1.5;" width="15" x="357.5" y="151.5"/><rect fill="#FEFECE" height="2" style="stroke: #A80036; stroke-width: 1.5;" width="4" x="355.5" y="153.5"/><rect fill="#FEFECE" height="2" style="stroke: #A80036; stroke-width: 1.5;" width="4" x="355.5" y="157.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="84" x="268.5" y="179.4951">component</text><!--MD5=[0b4603c22bc0d9214baf3db11effa15f]
+entity control--><ellipse cx="438.5" cy="161.5" fill="#FEFECE" filter="url(#f1t5upmheej2sp)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/><polygon fill="#A80036" points="434.5,149.5,440.5,144.5,438.5,149.5,440.5,154.5,434.5,149.5" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="52" x="412.5" y="190.4951">control</text><!--MD5=[f50ff5e4cd64f259303fc83dba1819fc]
+entity database--><path d="M499.5,157 C499.5,147 542.5,147 542.5,147 C542.5,147 585.5,147 585.5,157 L585.5,182.2969 C585.5,192.2969 542.5,192.2969 542.5,192.2969 C542.5,192.2969 499.5,192.2969 499.5,182.2969 L499.5,157 " fill="#FEFECE" filter="url(#f1t5upmheej2sp)" style="stroke: #000000; stroke-width: 1.5;"/><path d="M499.5,157 C499.5,167 542.5,167 542.5,167 C542.5,167 585.5,167 585.5,157 " fill="none" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="66" x="509.5" y="183.9951">database</text><!--MD5=[fbcd1a1664252f7f7ddf883fed3c1e0a]
+entity entity--><ellipse cx="51.5" cy="274.5" fill="#FEFECE" filter="url(#f1t5upmheej2sp)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/><line style="stroke: #A80036; stroke-width: 2.0;" x1="39.5" x2="63.5" y1="288.5" y2="288.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="44" x="29.5" y="303.4951">entity</text><!--MD5=[7edcefaa406c65155265f04249a95b70]
+entity file--><polygon fill="#FEFECE" filter="url(#f1t5upmheej2sp)" points="109,264.5,109,300.7969,152,300.7969,152,274.5,142,264.5,109,264.5" style="stroke: #000000; stroke-width: 1.5;"/><path d="M142,264.5 L142,274.5 L152,274.5 " fill="#FEFECE" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="23" x="119" y="287.4951">file</text><!--MD5=[18b72bf5d1838316b3d85261d2b42cce]
+entity folder--><polygon fill="#FEFECE" filter="url(#f1t5upmheej2sp)" points="187,254.5,233,254.5,240,275.5,260,275.5,260,310.0938,187,310.0938,187,254.5" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="187" x2="240" y1="275.5" y2="275.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="43" x="197" y="295.4951">folder</text><!--MD5=[7a641773cfca2682e51daa01eb969ffa]
+entity frame--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="46.2969" style="stroke: #000000; stroke-width: 1.5;" width="83" x="295" y="259.5"/><path d="M322.6667,259.5 L322.6667,264.5 L315.6667,271.5 L295,271.5 " fill="none" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="43" x="310" y="292.4951">frame</text><!--MD5=[ea4128e1b5db6200a10193b8015cde63]
+entity interface--><ellipse cx="454.5" cy="282.5" fill="#FEFECE" filter="url(#f1t5upmheej2sp)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="66" x="421.5" y="312.4951">interface</text><!--MD5=[a4a9a576f4d148d24afc849b85929192]
+entity label--><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="35" x="34" y="399.4951">label</text><!--MD5=[0b70d51bdd028022f5101c089cfdd98e]
+entity node--><polygon fill="#FEFECE" filter="url(#f1t5upmheej2sp)" points="114.5,381.5,124.5,371.5,190.5,371.5,190.5,407.7969,180.5,417.7969,114.5,417.7969,114.5,381.5" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="180.5" x2="190.5" y1="381.5" y2="371.5"/><line style="stroke: #000000; stroke-width: 1.5;" x1="114.5" x2="180.5" y1="381.5" y2="381.5"/><line style="stroke: #000000; stroke-width: 1.5;" x1="180.5" x2="180.5" y1="381.5" y2="417.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="36" x="129.5" y="404.4951">node</text><!--MD5=[18b4c220f17afa2fa1b7909f1259f27e]
+entity package--><polygon fill="#FEFECE" filter="url(#f1t5upmheej2sp)" points="226,375,299,375,306,397.2969,323,397.2969,323,414.2969,226,414.2969,226,375" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="226" x2="306" y1="397.2969" y2="397.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="67" x="230" y="390.9951">package</text><!--MD5=[799e9543975076390d2a6ceafec8df6c]
+entity queue--><path d="M363,381.5 L416,381.5 C421,381.5 421,394.6484 421,394.6484 C421,394.6484 421,407.7969 416,407.7969 L363,407.7969 C358,407.7969 358,394.6484 358,394.6484 C358,394.6484 358,381.5 363,381.5 " fill="#FEFECE" filter="url(#f1t5upmheej2sp)" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M416,381.5 C411,381.5 411,394.6484 411,394.6484 C411,407.7969 416,407.7969 416,407.7969 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="43" x="363" y="399.4951">queue</text><!--MD5=[f71e1929eceb486be132a5333dc4c68d]
+entity stack--><rect fill="#FEFECE" height="36.2969" style="stroke: none; stroke-width: 1.5;" width="59" x="471" y="376.5"/><path d="M456,376.5 L471,376.5 L471,412.7969 L530,412.7969 L530,376.5 L545,376.5 " fill="none" filter="url(#f1t5upmheej2sp)" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="39" x="481" y="399.4951">stack</text><!--MD5=[7267aa9592867b0c03d3cbda6e92e719]
+entity rectangle--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="36.2969" style="stroke: #000000; stroke-width: 1.5;" width="89" x="7" y="477.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="17" y="500.4951">rectangle</text><!--MD5=[a5a6ae0ba01c8a4589ab26bd33e87aad]
+entity storage--><rect fill="#FEFECE" filter="url(#f1t5upmheej2sp)" height="36.2969" rx="35" ry="35" style="stroke: #000000; stroke-width: 1.5;" width="75" x="131" y="477.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="55" x="141" y="500.4951">storage</text><ellipse cx="283.598" cy="495.5236" fill="#FEFECE" filter="url(#f1t5upmheej2sp)" rx="42.598" ry="14.5236" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="56" x="255.598" y="500.1721">usecase</text><!--MD5=[403d5c14816e3fd6c34baff245aae996]
+link actor to agent--><!--MD5=[64bb286cf7260b747f34aab12634a004]
+link agent to artifact--><!--MD5=[00e5dfb8e68433482ac634f71ca4cc03]
+link artifact to boundary--><!--MD5=[0a1997872cb7b5dc19307073964d47e6]
+link boundary to card--><!--MD5=[0bccf8e3437c5c3c7fe51f45cc386cff]
+link actor to cloud--><!--MD5=[0b440645a936dd341138124ef929e183]
+link cloud to collections--><!--MD5=[ee23a149a812653026017f1538146379]
+link collections to component--><!--MD5=[4533821a253da4c88be5a6a338acd4e9]
+link component to control--><!--MD5=[ee3f3e4871a542abb22ae612dc643c4d]
+link control to database--><!--MD5=[ea9bec8c84dd484bc16fc8af29a64d4f]
+link cloud to entity--><!--MD5=[59daddd05257271c9cd70517cc25aec2]
+link entity to file--><!--MD5=[34c4ea2ec1a1e6d0a3a34a5ce0777fef]
+link file to folder--><!--MD5=[0c6dffb2cca7298a41ee3788a177ce7f]
+link folder to frame--><!--MD5=[ee194c5b89fc636fd01c768ce6f86d88]
+link frame to interface--><!--MD5=[3b4d4feb5bd35b6bf1cab526933a1a42]
+link entity to label--><!--MD5=[dc3a1fc3b97405dec83bef1da8d195ef]
+link label to node--><!--MD5=[25eee8668465b150de9b719034a4e11f]
+link node to package--><!--MD5=[ee2bb58ff61a23681c57f939cb95f1e2]
+link package to queue--><!--MD5=[05fc4ac20b7e99d3ec6e2a0d431387d1]
+link queue to stack--><!--MD5=[5a2d13f3721fa8575363fa3757061e98]
+link label to rectangle--><!--MD5=[1f2528f3aff633fef29d8d20637760c3]
+link rectangle to storage--><!--MD5=[3653f2d8d01dce9d85eaa536b92b1c92]
+link storage to usecase--><!--MD5=[db03d8dba68300fbf04b5943fc7407c7]
+@startuml
+actor actor
+agent agent
+artifact artifact
+boundary boundary
+card card
+cloud cloud
+collections collections
+component component
+control control
+database database
+entity entity
+file file
+folder folder
+frame frame
+interface interface
+label label
+node node
+package package
+queue queue
+stack stack
+rectangle rectangle
+storage storage
+usecase usecase
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 20:20:43 UTC 2020)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

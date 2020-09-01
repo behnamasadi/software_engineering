@@ -177,7 +177,6 @@ public:
     }
 };
 
-
 class USACarFactory
 {
 public:
@@ -205,7 +204,6 @@ public:
         return car;
     }
 };
-
 
 class CarFactory
 {

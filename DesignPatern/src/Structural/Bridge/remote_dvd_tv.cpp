@@ -71,7 +71,7 @@ when you want to change you abstract class and concrete class independet of each
 
 //abstract class for tv1, tv2 with DVD, etc
 
-class entertainmentDevice
+class EntertainmentDevice
 {
 public:
     int deviceState;//either current channel ro current DVD chapter
@@ -98,7 +98,7 @@ public:
 
 };
 
-class tvDevice: public entertainmentDevice
+class TVDevice: public EntertainmentDevice
 {
     void buttonFivePressed()
     {
@@ -112,12 +112,27 @@ class tvDevice: public entertainmentDevice
     }
 };
 
-class remoteButton
+class DVDDevice: public EntertainmentDevice
+{
+   public:
+    void buttonFivePressed()
+    {
+        std::cout<<"previous chapter on DVD"<<std::endl;
+        deviceState--;
+    }
+    void buttonSixPressed()
+    {
+        std::cout<<"next chapter on DVD"<<std::endl;
+        deviceState++;
+    }
+};
+
+class RemoteButton
 {
     private:
-        entertainmentDevice *theDevice;
+        EntertainmentDevice *theDevice;
     public:
-        remoteButton(entertainmentDevice *theDevice):theDevice(theDevice){}
+        RemoteButton(EntertainmentDevice *theDevice):theDevice(theDevice){}
 
         void buttonFivePressed()
         {
@@ -136,10 +151,10 @@ class remoteButton
 
 };
 
-class tvRemoteMute: public remoteButton
+class TVRemoteMute: public RemoteButton
 {
 public:
-    tvRemoteMute(entertainmentDevice *theDevice):remoteButton(theDevice)
+    TVRemoteMute(EntertainmentDevice *theDevice):RemoteButton(theDevice)
     {
 
     }
@@ -151,10 +166,10 @@ public:
     }
 };
 
-class tvRemotePause: public remoteButton
+class TVRemotePause: public RemoteButton
 {
 public:
-    tvRemotePause(entertainmentDevice *theDevice):remoteButton(theDevice)
+    TVRemotePause(EntertainmentDevice *theDevice):RemoteButton(theDevice)
     {
 
     }
@@ -168,6 +183,6 @@ public:
 
 int main()
 {
-    remoteButton *theTv1=new tvRemoteMute(new tvDevice);
-    remoteButton *theTv2=new tvRemotePause(new tvDevice);
+    RemoteButton *theTv1=new TVRemoteMute(new TVDevice);
+    RemoteButton *theTv2=new TVRemotePause(new TVDevice);
 }

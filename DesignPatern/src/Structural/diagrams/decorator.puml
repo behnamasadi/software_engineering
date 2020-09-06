@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Car
+{
+    # description:string
+    +{abstract} getDescription():string
+    +{abstract} getPrice():double;
+}
+class BaseModel
+{
++ getPrice():double
+}
+note "return 35000" as BaseModelNote
+BaseModelNote -left.. BaseModel
+
+class OptionsDecorator
+{
+    +{abstract} getPrice():double;
+}
+
+class Navigation
+{
+    getDescription():string
+    getPrice():double;
+}
+class SoundSystem
+{
+    getDescription():string
+    getPrice():double;
+
+}
+class LeatherSeat
+{
+    getDescription():string
+    getPrice():double;
+}
+OptionsDecorator -up..|> Car
+OptionsDecorator *-- Car
+
+Navigation -up..|> OptionsDecorator
+SoundSystem -up..|> OptionsDecorator
+LeatherSeat -up..|> OptionsDecorator
+BaseModel -up..|> Car
+@enduml

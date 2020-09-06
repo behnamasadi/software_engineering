@@ -49,10 +49,37 @@ Bridge is a synonym for the "handle/body" idiom. This is a design mechanism that
 [plantuml code](diagrams/bridge.puml)
 
 ## Composite
+Composite design pattern is to solve the problem representing "whole-part" hierarchical relationships. Compose objects into tree 
+structures to represent whole-part hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly. 
 
 ![PlantUML model](diagrams/composite.svg)
 
 [plantuml code](diagrams/composite.puml)
+
+**Composite** and **Decorator** have similar structure diagrams, reflecting the fact that both rely on recursive composition
+ to organize an open-ended number of objects.
+
+**Composite** can be traversed with **Iterator**. **Visitor** can apply an operation over a Composite. Composite could use **Chain of Responsibility** to let components access global properties through their parent. 
+It could also use Decorator to override these properties on parts of the composition. It could use Observer to tie one object structure to 
+another and State to let a component change its behavior as its state changes.
+Composite can let you compose a **Mediator** out of smaller pieces through recursive composition.
+Decorator is designed to let you add responsibilities to objects without subclassing. Composite's focus is not on embellishment but on representation.
+These intents are distinct but complementary. Consequently, Composite and Decorator are often used in concert.
+
+**Flyweight** is often combined with Composite to implement shared leaf nodes.
+
+## Decorator
+You want to add behavior or state to individual objects at run-time. Inheritance is not feasible because it is static and applies to an entire class
+Decorator attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for 
+extending functionality.
+
+![PlantUML model](diagrams/decorator.svg)
+
+[plantuml code](diagrams/decorator.puml)
+
+
+##Facade
+
 
 ## Flyweight
 The pattern for saving memory (basically) by sharing properties of objects. Imagine a huge number of similar objects which all have most of their properties the same. It is natural to move these properties out of these objects to some external data structure and provide each object with the link to that data structure.
@@ -64,4 +91,4 @@ In Flyweight by making a request we try to reuse as much objects as possible by 
 
 While in Prototype we could clone even one object, Flyweight pattern makes sense to use when in the application we use big number of objects.
 
-
+## Proxy

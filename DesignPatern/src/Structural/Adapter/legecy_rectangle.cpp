@@ -55,6 +55,13 @@ class RectangleAdapter: public Rectangle, private LegacyRectangle
 
 int main()
 {
-  Rectangle *r = new RectangleAdapter(120, 200, 60, 40);
-  r->draw();
+    Coordinate x1, y1;
+    Dimension width, hight;
+    x1=120;
+    y1=200;
+    width=60;
+    width=40;
+
+    Rectangle *r = new RectangleAdapter(x1, y1, width, width);
+    r->draw();
 }

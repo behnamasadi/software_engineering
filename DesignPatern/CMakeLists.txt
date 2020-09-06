@@ -71,8 +71,8 @@ target_link_libraries(logger_singletone)
 
 ###################### (1) Adapter ###########################
 
-add_executable(adapter src/Structural/Adapter/main.cpp)
-target_link_libraries(adapter)
+add_executable(legecy_rectangle src/Structural/Adapter/legecy_rectangle.cpp)
+target_link_libraries(legecy_rectangle)
 
 add_executable(external_polymorphism src/Structural/Adapter/external_polymorphism.cpp)
 target_link_libraries(external_polymorphism)

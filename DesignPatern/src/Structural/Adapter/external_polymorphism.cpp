@@ -1,4 +1,6 @@
-//https://sourcemaking.com/design_patterns/adapter/cpp/2
+/*
+src: https://sourcemaking.com/design_patterns/adapter/cpp/2
+*/
 #include <iostream>
 
 class LegecyRectangle

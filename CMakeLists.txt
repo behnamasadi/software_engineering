@@ -76,3 +76,7 @@ target_link_libraries(message_chains)
 
 add_executable(primitive_obsession Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
 target_link_libraries(primitive_obsession)
+
+
+add_executable(temp DesignPatern/src/temp.cpp)
+target_link_libraries(temp)

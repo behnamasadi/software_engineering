@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Shape
+{
++draw()
+}
+class Circle 
+{
++draw()
+}
+class Group
+{
+-objects:vector<Shape*>
++draw() 
+}
+note "draw() will call for every object in objects call object.draw() " as N1
+Circle -up..|> Shape
+Group -up..|> Shape
+Shape -up..o Group
+N1 .. Group
+@enduml

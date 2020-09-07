@@ -69,15 +69,14 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 [Singleton](DesignPatern/src/Creational/README.md#singleton)  
 
 ## [Structural patterns](DesignPatern/src/Structural)  
-[Adapter](DesignPatern/src/Structural/Adapter)  
-[Bridge](DesignPatern/src/Structural/Bridge)  
-[Composite](DesignPatern/src/Structural/Composite)  
-[Decorator](DesignPatern/src/Structural/Decorator)  
-[Facade](DesignPatern/src/Structural/Facade)  
-[Flyweight](DesignPatern/src/Structural/Flyweight)  
-[Private Class Data](DesignPatern/src/Structural/PrivateClassData)  
-[Proxy](DesignPatern/src/Structural/Proxy)  
-
+[Adapter](DesignPatern/src/Structural/README.md#adapter)  
+[Bridge](DesignPatern/src/Structural/README.md#bridge)  
+[Composite](DesignPatern/src/Structural/README.md#composite)  
+[Decorator](DesignPatern/src/Structural/README.md#decorator)  
+[Facade](DesignPatern/src/Structural/README.md#facade)  
+[Flyweight](DesignPatern/src/Structural/README.md#flyweight)  
+[Private Class Data](DesignPatern/src/Structural/README.md#private-class-data)  
+[Proxy](DesignPatern/src/Structural/README.md#proxy)  
 
 References:
 	[1](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns), 

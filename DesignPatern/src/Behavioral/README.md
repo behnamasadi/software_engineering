@@ -1,5 +1,5 @@
 # Behavioral Patterns
-- [ChainOfResponsibility](#chainofresponsibility)
+- [Chain Of Responsibility](#chain-of-responsibility)
 - [Command](#command)
 - [Interpreter](#interpreter)
 - [Iterator](#iterator)
@@ -9,9 +9,9 @@
 - [Observer](#observer)
 - [State](#state)
 - [Strategy](#strategy)
-- [TemplateMethod](#templatemethod)
+- [Template Method](#template-method)
 - [Visitor](#visitor)
-## ChainOfResponsibility
+## Chain Of Responsibility
 ## Command
 ## Interpreter
 ## Iterator
@@ -25,5 +25,5 @@ Defines a a one to many dependency between objects so that when one object state
 all of its dependencies are noified and updated automatically
 ## State
 ## Strategy
-## TemplateMethod
+## Template Method
 ## Visitor

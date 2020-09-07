@@ -13,3 +13,4 @@ examples/*
 *.kdev4
 docs/*
 outsources/*
+sandbox/*

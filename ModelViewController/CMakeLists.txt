@@ -1,0 +1,2 @@
+add_executable(student_model_view_controller src/student_model_view_controller.cpp)
+target_link_libraries(student_model_view_controller)

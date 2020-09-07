@@ -1,0 +1,8 @@
+add_executable(feature_envy BadCodeSmells/Couplers/Feature_Envy/feature_envy.cpp)
+target_link_libraries(feature_envy)
+
+add_executable(message_chains BadCodeSmells/Couplers/Message_Chains/message_chains.cpp)
+target_link_libraries(message_chains)
+
+add_executable(primitive_obsession BadCodeSmells/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
+target_link_libraries(primitive_obsession)

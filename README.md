@@ -4,7 +4,7 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 ## [UML](UML/) 
 - [Concepts](UML/Concepts) 
 - [Diagrams](UML/)
-  * [Structure Diagrams](UML/#structure-diagrams)
+  * [Structure Diagrams](UML/StructureDiagrams/)
     + [Class Diagram](UML/StructureDiagrams/ClassDiagram)
     + [Component Diagram](UML/StructureDiagrams/ComponentDiagram)
     + [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)

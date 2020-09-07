@@ -1,7 +1,6 @@
 # Behavioral Patterns
 - [ChainOfResponsibility](#chainofresponsibility)
 - [Command](#command)
-- [diagrams](#diagrams)
 - [Interpreter](#interpreter)
 - [Iterator](#iterator)
 - [Mediator](#mediator)
@@ -14,7 +13,6 @@
 - [Visitor](#visitor)
 ## ChainOfResponsibility
 ## Command
-## diagrams
 ## Interpreter
 ## Iterator
 Iterator is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.).

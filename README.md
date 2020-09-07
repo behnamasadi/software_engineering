@@ -46,7 +46,7 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 
 ## [Behavioral patterns](DesignPatern/src/Behavioral)  
 
-[Chain of responsibility](DesignPatern/src/Behavioral/README.md#chainofresponsibility)  
+[Chain of responsibility](DesignPatern/src/Behavioral/README.md#chain-of-responsibility)  
 [Command](DesignPatern/src/Behavioral/README.md#command)  
 [Interpreter](DesignPatern/src/Behavioral/README.md##interpreter)  
 [Iterator](DesignPatern/src/Behavioral/README.md#iterator)  
@@ -56,7 +56,7 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 [Observer](DesignPatern/src/Behavioral/README.md#observer)  
 [State](DesignPatern/src/Behavioral/README.md#state)  
 [Strategy](DesignPatern/src/Behavioral/README.md#strategy)  
-[Template method](DesignPatern/src/Behavioral/README.md#templatemethod)  
+[Template method](DesignPatern/src/Behavioral/README.md#template-method)  
 [Visitor](DesignPatern/src/Behavioral/README.md#visitor)  
 
 ## [Creational patterns](DesignPatern/src/Creational/)

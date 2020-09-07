@@ -4,7 +4,9 @@
 - [Bridge](#bridge)
 - [Composite](#composite)
 - [Decorator](#decorator)
+- [Facade](#facade)
 - [Flyweight](#flyweight)
+- [Private Class Data](#private-class-data)  
 - [Proxy](#proxy)
 
 ## Adapter
@@ -87,7 +89,7 @@ extending functionality.
 [plantuml code](diagrams/decorator.puml)
 
 
-##Facade
+## Facade
 Developers often use the facade design pattern when a system is very complex or difficult to understand because the system has many interdependent classes or because its source code is unavailable. This pattern hides the complexities of the larger system and provides a simpler interface to the client. 
 
 ![PlantUML model](diagrams/facade.svg)
@@ -108,5 +110,7 @@ In Prototype objects' creation go through cloning, it ease object's creation. By
 In Flyweight by making a request we try to reuse as much objects as possible by sharing them. New required object will be created if we don't find such one. It's being done for resource optimization.
 
 While in Prototype we could clone even one object, Flyweight pattern makes sense to use when in the application we use big number of objects.
+
+## Private Class Data
 
 ## Proxy

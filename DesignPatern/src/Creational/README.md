@@ -93,15 +93,48 @@ You can combine Builder with Bridge: the director class plays the role of the ab
 Abstract Factories, Builders and Prototypes can all be implemented as Singletons.
 
 ## Prototype
+Prototype is a creational design pattern that lets you copy existing objects without making your code dependent on their classes.
+If you want to copy object into an other one, you have to create a new object of the same class and then you have to go through 
+all the fields of the original object and copy their values over to the new object but not all objects can be copied that way because some of the object’s fields may be private and not visible from outside of the object itself.
+
+![PlantUML model](diagrams/bullet_prototype.svg)
+
+[plantuml code](diagrams/bullet_prototype.puml)
+
+
+There are cases when either **Prototype** or **Abstract Factory** could be used properly. At other times they are complementary:
+ Abstract Factory might store a set of Prototypes from which to clone and return product objects. **Abstract Factory**, **Builder**, and **Prototype** can use **Singleton** in their implementations.
+
+Abstract Factory classes are often implemented with Factory Methods, but they can be implemented using **Prototype**.
+Factory Method: creation through inheritance. Prototype: creation through delegation.
+Often, designs start out using Factory Method (less complicated, more customizable, subclasses proliferate) and evolve toward Abstract Factory, Prototype, or Builder (more flexible, more complex) as the designer discovers where more flexibility is needed.
+Prototype doesn't require subclassing, but it does require an "initialize" operation. Factory Method requires subclassing, but doesn't require Initialize.
+Designs that make heavy use of the Composite and Decorator patterns often can benefit from Prototype as well.
+Prototype co-opts one instance of a class for use as a breeder of all future instances.
+Prototypes are useful when object initialization is expensive, and you anticipate few variations on the initialization parameters. In this context, Prototype can avoid expensive "creation from scratch", and support cheap cloning of a pre-initialized prototype.
+Prototype is unique among the other creational patterns in that it doesn't require a class – only an object. Object-oriented languages like Self and Omega that do away with classes completely rely on prototypes for creating new objects.
 
 
 ## Singleton
-Private constructor
-static member
-static function
 
+Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance.
+![PlantUML model](diagrams/singleton.svg)
+
+[plantuml code](diagrams/singleton.puml)
+
+Abstract Factory, Builder, and Prototype can use Singleton in their implementation.
+Facade objects are often Singletons because only one Facade object is required.
+State objects are often Singletons.
+The advantage of Singleton over global variables is that you are absolutely sure of the number of instances when you use Singleton, and, you can change your mind and manage any number of instances.
+The Singleton design pattern is one of the most inappropriately used patterns. Singletons are intended to be used when a class must have exactly one instance, no more, no less. Designers frequently use Singletons in a misguided attempt to replace global variables. A Singleton is, for intents and purposes, a global variable. The Singleton does not do away with the global; it merely renames it.
+When is Singleton unnecessary? Short answer: most of the time. Long answer: when it's simpler to pass an object resource as a reference to the objects that need it, rather than letting objects access the resource globally. The real problem with Singletons is that they give you such a good excuse not to think carefully about the appropriate visibility of an object. Finding the right balance of exposure and protection for an object is critical for maintaining flexibility.
+Our group had a bad habit of using global data, so I did a study group on Singleton. The next thing I know Singletons appeared everywhere and none of the problems related to global data went away. The answer to the global data question is not, "Make it a Singleton." The answer is, "Why in the hell are you using global data?" Changing the name doesn't change the problem. In fact, it may make it worse because it gives you the opportunity to say, "Well I'm not doing that, I'm doing this" – even though this and that are the same thing.
 
 Refs:
 	[1](https://www.youtube.com/watch?v=KBkkEKNlE6I),
-	[2](https://www.youtube.com/watch?v=D1CnNAszv_M&list=PLk6CEY9XxSIDZhQURp6d8Sgp-A0yKKDKV&index=6)
+	[2](https://www.youtube.com/watch?v=D1CnNAszv_M&list=PLk6CEY9XxSIDZhQURp6d8Sgp-A0yKKDKV&index=6),
+	[3](https://sourcemaking.com/),
+	[4](https://refactoring.guru/)
+
+
 

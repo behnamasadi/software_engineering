@@ -23,12 +23,12 @@ public:
     static int counter;
     void fire(double direction)
     {
-//        std::cout<<"id: "<<id<<"\n"
-//                 <<"name: "<<name <<"\n"
-//                 << "speed: "<< speed<<"\n"
-//                 << "firePower: "<<firePower<<"\n"
-//                 << "damgePower: "<<damgePower<<"\n"
-//                 << "direction: "<<direction <<std::endl;
+        std::cout<<"id: "<<id<<"\n"
+                 <<"name: "<<name <<"\n"
+                 << "speed: "<< speed<<"\n"
+                 << "firePower: "<<firePower<<"\n"
+                 << "damgePower: "<<damgePower<<"\n"
+                 << "direction: "<<direction <<std::endl;
     }
 
     virtual std::unique_ptr<Bullet> clone()=0;
@@ -115,7 +115,7 @@ int main()
     explosivebullet->fire(30);
 
     explosivebullet->fire(15);
-    for(std::size_t i=0;i<1000000;)
+    for(std::size_t i=0;i<10;i++)
     {
         explosivebullet->fire(i);
     }

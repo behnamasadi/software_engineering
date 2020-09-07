@@ -1,0 +1,60 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+enum BulletType
+{
+    SIMPLE,
+    EXPLOSIVE
+}
+
+class Bullet
+{
+    name:string
+-    speed:double
+-    firePower:double
+-    damgePower:double
+-    direction:double
+-    id:int
+
+
++    fire(double direction):void
++    {abstract} clone():unique_ptr<Bullet>
++    virtual ~Bullet()
++    Bullet(string name, double speed, double firePower, double damgePower)
+}
+
+class ExplosiveBullet
+{
++    clone():unique_ptr<Bullet> 
+}
+
+note "return make_unique<ExplosiveBullet>(*this)" as ExplosiveBulletclone
+ExplosiveBulletclone -up--ExplosiveBullet
+
+class SimpleBullet
+{
++    clone():unique_ptr<Bullet> 
+}
+ 
+
+ExplosiveBullet -up--|> Bullet
+SimpleBullet  -up--|> Bullet
+
+class BulletFactory
+{
+    -unordered_map<BulletType, unique_ptr<Bullet>,hash<int> > bullets
+
+    std::unique_ptr<Bullet> createBullet(BulletType type)
+
+
+}
+
+note "Unordered map is an associative container that contains key-value pairs with unique keys" as unordered_map
+
+
+note "return bullets[BulletType]->clone()" as BulletFactoryCreateBullet
+
+BulletFactoryCreateBullet -up--BulletFactory
+
+unordered_map -down--BulletFactory
+@enduml

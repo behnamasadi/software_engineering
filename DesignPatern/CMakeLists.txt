@@ -69,6 +69,9 @@ target_link_libraries(singleton_before_after)
 add_executable(logger_singletone src/Creational/Singleton/logger_singletone.cpp)
 target_link_libraries(logger_singletone)
 
+add_executable(naive_singleton src/Creational/Singleton/naive_singleton.cpp)
+target_link_libraries(naive_singleton -pthread)
+
 ############################################ Structural ############################################
 
 ###################### (1) Adapter ###########################

@@ -37,29 +37,6 @@ public:
 
 };
 
-class MyClass2
-{
-    MyClass2() {};
-
-    static auto& InternalGetInstance()
-    {
-        static std::shared_ptr<MyClass2> instance { new MyClass2 };
-        return instance;
-    }
-
-public:
-
-    static std::shared_ptr<MyClass2> GetInstance()
-    {
-        return std::atomic_load(std::addressof(InternalGetInstance()));
-    }
-
-    static void reset() {
-        std::atomic_store(std::addressof(InternalGetInstance()),
-                        std::shared_ptr<MyClass2>(new MyClass2));
-
-    }
-};
 
 Logger *Logger::instance=nullptr;
 

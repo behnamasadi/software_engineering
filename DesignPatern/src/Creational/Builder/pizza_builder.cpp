@@ -2,15 +2,55 @@
 #include <iostream>
 #include <string>
 
+class Dough
+{
+    std::string m_name;
+public:
+    Dough(){}
+    Dough(std::string name):m_name(name){}
+    std::string desciption()
+    {
+        return m_name;
+    }
+};
+
+class Sauce
+{
+    std::string m_name;
+public:
+    Sauce(){}
+    Sauce(std::string name):m_name(name){}
+    std::string desciption()
+    {
+        return m_name;
+    }
+};
+
+class Topping
+{
+    std::string m_name;
+
+public:
+    Topping(){}
+    Topping(std::string name):m_name(name){}
+    std::string desciption()
+    {
+        return m_name;
+    }
+};
+
 class Pizza
 {
 public:
-    std::string dough;
-    std::string sauce;
-    std::string topping;
+    Dough m_dough;
+    Sauce m_sauce;
+    Topping m_topping;
+    void setDough(Dough dough){m_dough=dough;}
+    void setSauce(Sauce sauce){m_sauce=sauce;}
+    void setTopping(Topping topping){m_topping=topping;}
     void print()
     {
-        std::cout<<dough <<","<<sauce<<","<<topping <<std::endl;
+        std::cout<<m_dough.desciption()<<","<<m_sauce.desciption()<<","<<m_topping.desciption() <<std::endl;
     }
 };
 
@@ -36,15 +76,15 @@ class HawaiianPizzaBuilder:public PizzaBuilder
 {
     void  buildDough()override
     {
-        pizza->dough="Hawaiian dough";
+        pizza->setDough(Dough("Hawaiian dough"));
     }
     void  buildSauce()override
     {
-        pizza->sauce="Hawaiian Sauce";
+        pizza->setSauce(Sauce("Hawaiian Sauce"));
     }
     void  buildTopping()override
     {
-        pizza->topping="Hawaiian topping";
+        pizza->setTopping(Topping("Hawaiian topping"));
     }
 };
 
@@ -52,15 +92,15 @@ class SpicyPizzaBuilder:public PizzaBuilder
 {
     void  buildDough()override
     {
-        pizza->dough="Spicy dough";
+        pizza->setDough(Dough("Spicy dough"));
     }
     void  buildSauce()override
     {
-        pizza->sauce="Spicy Sauce";
+        pizza->setSauce(Sauce("Spicy Sauce"));
     }
     void  buildTopping()override
     {
-        pizza->topping="Spicy topping";
+        pizza->setTopping(Topping("Spicy topping"));
     }
 
 };

@@ -48,6 +48,8 @@ target_link_libraries(frameworks_factory_method)
 add_executable(parameterized_factory_methods src/Creational/FactoryMethod/parameterized_factory_methods.cpp)
 target_link_libraries(parameterized_factory_methods)
 
+add_executable(factory_method_conceptual src/Creational/FactoryMethod/factory_method_conceptual.cpp)
+target_link_libraries(factory_method_conceptual)
 
 ###################### (4) Prototype ###########################
 

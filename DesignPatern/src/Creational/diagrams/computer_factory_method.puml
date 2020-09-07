@@ -1,0 +1,30 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "<<interafce>> \n Computer" as Computer
+{
+}
+
+class Laptop{}
+class Desktop{}
+class ComputerFactory
+{
++ NewComputer(string description):Computer *
+}
+
+note  "if(description == 'laptop')\n return new Laptop \n if(description == 'desktop')\n return new Desktop \n return nullptr" as NewComputerFactory
+
+Laptop -up..|> Computer
+Desktop -up..|> Computer
+
+NewComputerFactory -right..ComputerFactory
+
+class Client
+{
++main():int
+}
+Client -down--Computer
+Client -up--ComputerFactory
+ComputerFactory -down-- Laptop 
+ComputerFactory -down-- Desktop
+@enduml

@@ -61,13 +61,12 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 
 ## [Creational patterns](DesignPatern/src/Creational/)
 
-[Abstract Factory](DesignPatern/src/Creational/AbstractFactoryMethod)  
-[Builder](DesignPatern/src/Creational/Builder)  
-[Factory Method](DesignPatern/src/Creational/FactoryMethod)  
-[Object Pool](DesignPatern/src/Creational/ObjectPool)  
-[Prototype](DesignPatern/src/Creational/Prototype)  
-[Singleton](DesignPatern/src/Creational/Singleton)  
-
+[Abstract Factory](DesignPatern/src/Creational/README.md#abstractfactory)  
+[Builder](DesignPatern/src/Creational/README.md#builder)  
+[Factory Method](DesignPatern/src/Creational/README.md#factory)  
+[Object Pool](DesignPatern/src/Creational/README.md#Objectpool)  
+[Prototype](DesignPatern/src/Creational/README.md#prototype)  
+[Singleton](DesignPatern/src/Creational/README.md#singleton)  
 
 ## [Structural patterns](DesignPatern/src/Structural)  
 [Adapter](DesignPatern/src/Structural/Adapter)  

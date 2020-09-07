@@ -1,3 +1,8 @@
+- [Factory Method](#factory-method)
+- [AbstractFactory](#abstractfactory)
+- [Builder](#builder)
+- [Prototype](#prototype)
+- [Singleton](#singleton)
 ## Factory Method
 
 Imagine programming a video game, where you would like to add new types of enemies in the future, each of which has different AI functions 

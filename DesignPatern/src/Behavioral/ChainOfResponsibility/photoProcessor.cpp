@@ -5,6 +5,7 @@ class  Photo
 {
 
 };
+
 class PhotoProcessor
 {
 public:

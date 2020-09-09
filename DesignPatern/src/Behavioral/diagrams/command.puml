@@ -1,0 +1,82 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "Interface \n Command" as Command
+{
++{abstract} execute():void
+}
+note "Receiver Class" as ReceiverClassNote
+
+class Light
+{
+    +actionOn():void 
+    +actionOff():void
+}
+
+ReceiverClassNote -left..Light
+
+
+class LightOnCommand 
+{
+    - mLight:Light *
+    + LightOnCommand(Light *light) : 
+    + execute():void
+}
+
+note "mLight->actionOn()" as mLight_actionOn
+
+mLight_actionOn -left.. LightOnCommand::LightOnCommand
+LightOnCommand -up..|>  Command
+
+note "Command for turning on the light" as LightOnCommandNote
+LightOnCommandNote -up.. LightOnCommand
+
+
+
+
+
+class LightOffCommand 
+{
+    - mLight:Light *
+    + LightOffCommand(Light *light) : 
+    + execute():void
+}
+
+note "mLight->actionOn()" as mLight_actionOff
+
+mLight_actionOff -left.. LightOffCommand::LightOffCommand
+LightOffCommand -up..|>  Command
+
+note "Command for turning off the light" as LightOffCommandNote
+LightOffCommandNote -up.. LightOffCommand
+
+
+
+
+
+
+
+note  "Invoker, Stores the ConcreteCommand object" as RemoteControlNote
+
+class RemoteControl
+{
+-    Command *mCmd;
++    setCommand(Command *cmd):void 
++    buttonPressed():void 
+
+}
+
+note "mCmd->execute()" as  RemoteControlbuttonPressed   
+
+RemoteControlbuttonPressed .. RemoteControl::buttonPressed
+RemoteControlNote -up.. RemoteControl
+
+
+class Client{}
+
+Client -up-- Light
+Client -up-- LightOffCommand
+Client -up-- LightOnCommand
+
+RemoteControl *--Command
+@enduml

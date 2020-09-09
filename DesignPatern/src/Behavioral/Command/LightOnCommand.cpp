@@ -14,10 +14,10 @@ public:
 class Light
 {
 public:
-    void on() {
+    void actionOn() {
         cout << "The light is on\n";
     }
-    void off() {
+    void actionOff() {
         cout << "The light is off\n";
     }
 };
@@ -28,7 +28,7 @@ class LightOnCommand : public Command
 public:
         LightOnCommand(Light *light) : mLight(light) {}
     void execute(){
-        mLight->on();
+        mLight->actionOn();
     }
 private:
     Light *mLight;
@@ -40,7 +40,7 @@ class LightOffCommand : public Command
 public:
         LightOffCommand(Light *light) : mLight(light) {}
     void execute(){
-        mLight->off();
+        mLight->actionOff();
     }
 private:
     Light *mLight;

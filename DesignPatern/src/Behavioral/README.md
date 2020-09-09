@@ -26,6 +26,14 @@ Chain of Responsibility is often applied in conjunction with Composite. There, a
 
 
 ## Command
+Command is a behavioral design pattern that turns a request into a stand-alone object that contains all information about the request. This transformation lets you parameterize methods with different requests, delay or queue a request’s execution, and support undoable operations.
+
+The Invoker object calls execute() on a Command1 object. Command1 calls action1() on a Receiver1 object, which performs the request.
+
+![PlantUML model](diagrams/command.svg)
+
+[plantuml code](diagrams/command.puml)
+
 ## Interpreter
 ## Iterator
 Iterator is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.).

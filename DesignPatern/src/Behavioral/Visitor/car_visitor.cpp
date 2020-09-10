@@ -34,10 +34,10 @@ public:
 class CarElementVisitor
 {
 public:
-    void virtual visit(Body *body){}
-    void virtual visit(Car *car){}
-    void virtual visit(Engine *engine){}
-    void virtual visit(Wheel *wheel){}
+    void virtual visit(Body *body)=0;
+    void virtual visit(Car *car)=0;
+    void virtual visit(Engine *engine)=0;
+    void virtual visit(Wheel *wheel)=0;
 };
 
 class Wheel : public CarElement
@@ -166,9 +166,8 @@ class CarElementPrintVisitor : public CarElementVisitor
 
 int  main()
 {
-        Car* car = new Car();
-
-        car->accept(new CarElementPrintVisitor());
-        car->accept(new CarElementDoVisitor());
+    Car* car = new Car();
+    car->accept(new CarElementPrintVisitor());
+    car->accept(new CarElementDoVisitor());
 }
 

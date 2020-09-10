@@ -145,18 +145,18 @@ target_link_libraries(protection_proxy)
 ############################################ Behavioral ############################################
 
 ###################### (1) Chain Of Responsibility ###########################
-add_executable(chain_of_responsibility src/Behavioral/ChainOfResponsibility/main.cpp)
-target_link_libraries(chain_of_responsibility)
+add_executable(chain_of_responsibility_handler src/Behavioral/ChainOfResponsibility/chain_of_responsibility_handler.cpp)
+target_link_libraries(chain_of_responsibility_handler)
 
-add_executable(photo_processor src/Behavioral/ChainOfResponsibility/photoProcessor.cpp)
+add_executable(photo_processor src/Behavioral/ChainOfResponsibility/photo_processor.cpp)
 target_link_libraries(photo_processor)
 ###################### (2) Command ###########################
 
 add_executable(light_on_command src/Behavioral/Command/LightOnCommand.cpp)
 target_link_libraries(light_on_command)
 
-add_executable(command src/Behavioral/Command/main.cpp)
-target_link_libraries(command)
+add_executable(giant_command src/Behavioral/Command/giant_command.cpp)
+target_link_libraries(giant_command)
 
 ###################### (3) Iterator ###########################
 add_executable(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
@@ -183,8 +183,8 @@ target_link_libraries(chat_room_mediator)
 
 ###################### (5) Memento ###########################
 
-add_executable(memento src/Behavioral/Memento/main.cpp)
-target_link_libraries(memento)
+add_executable(notepad_memento src/Behavioral/Memento/notepad_memento.cpp)
+target_link_libraries(notepad_memento)
 
 ###################### (6) NullObject ###########################
 
@@ -193,8 +193,8 @@ target_link_libraries(null_object)
 
 ###################### (7) Observer ###########################
 
-add_executable(observer src/Behavioral/Observer/main.cpp)
-target_link_libraries(observer)
+add_executable(weather_station_observer src/Behavioral/Observer/weather_station_observer.cpp)
+target_link_libraries(weather_station_observer)
 
 add_executable(clocktimer src/Behavioral/Observer/clocktimer.cpp)
 target_link_libraries(clocktimer)
@@ -252,3 +252,8 @@ target_link_libraries(car_visitor)
 
 add_executable(document_visitor src/Behavioral/Visitor/document_visitor.cpp)
 target_link_libraries(document_visitor)
+
+add_executable(color_visitor src/Behavioral/Visitor/color_visitor.cpp)
+target_link_libraries(color_visitor)
+
+

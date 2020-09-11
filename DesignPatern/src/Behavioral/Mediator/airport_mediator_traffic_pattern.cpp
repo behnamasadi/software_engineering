@@ -7,20 +7,20 @@
 class Runway;
 class Flight;
 
-class  IATCMediator
+class  IAirTrafficControlMediator
 {
 public:
 
-    void registerRunway(Runway *runway){}
+    virtual void registerRunway(Runway *runway)=0;
 
-    void registerFlight(Flight *flight){}
+    virtual void registerFlight(Flight *flight)=0;
 
-    bool isLandingOk(){}
+    virtual bool isLandingOk()=0;
 
-    void setLandingStatus(bool status){}
+    virtual void setLandingStatus(bool status)=0;
 };
 
-class ATCMediator : public IATCMediator
+class AirTrafficControlMediator : public IAirTrafficControlMediator
 {
 
 private:
@@ -55,26 +55,26 @@ private:
 class  Command
 {
 public:
-    void land();
+    virtual void land()=0;
 };
 
 class Flight : public Command
 {
 private:
-    IATCMediator *atcMediator;
+    IAirTrafficControlMediator *AirTrafficControlMediator;
 
 public:
-    Flight(IATCMediator *atcMediator)
+    Flight(IAirTrafficControlMediator *AirTrafficControlMediator)
     {
-        this->atcMediator = atcMediator;
+        this->AirTrafficControlMediator = AirTrafficControlMediator;
     }
 
     void land()
     {
-        if (atcMediator->isLandingOk())
+        if (AirTrafficControlMediator->isLandingOk())
         {
             std::cout<<"Successfully Landed."<<std::endl;
-            atcMediator->setLandingStatus(true);
+            AirTrafficControlMediator->setLandingStatus(true);
         }
         else
             std::cout<<"Waiting for landing."<<std::endl;
@@ -90,20 +90,20 @@ public:
 class Runway: public Command
 {
 private:
-    IATCMediator *atcMediator;
+    IAirTrafficControlMediator *AirTrafficControlMediator;
 
 public:
-    Runway(IATCMediator *atcMediator)
+    Runway(IAirTrafficControlMediator *AirTrafficControlMediator)
     {
-        this->atcMediator = atcMediator;
-        atcMediator->setLandingStatus(true);
+        this->AirTrafficControlMediator = AirTrafficControlMediator;
+        AirTrafficControlMediator->setLandingStatus(true);
     }
 
 
     void land()
     {
         std::cout<<"Landing permission granted."<<std::endl;
-        atcMediator->setLandingStatus(true);
+        AirTrafficControlMediator->setLandingStatus(true);
     }
 
 };
@@ -112,11 +112,11 @@ public:
 int main()
 {
 
-    IATCMediator *atcMediator = new ATCMediator();
-    Flight *sparrow101 = new Flight(atcMediator);
-    Runway *mainRunway = new Runway(atcMediator);
-    atcMediator->registerFlight(sparrow101);
-    atcMediator->registerRunway(mainRunway);
+    IAirTrafficControlMediator *airTrafficControlMediator = new AirTrafficControlMediator();
+    Flight *sparrow101 = new Flight(airTrafficControlMediator);
+    Runway *mainRunway = new Runway(airTrafficControlMediator);
+    airTrafficControlMediator->registerFlight(sparrow101);
+    airTrafficControlMediator->registerRunway(mainRunway);
     sparrow101->getReady();
     mainRunway->land();
     sparrow101->land();

@@ -1,0 +1,60 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+interface "Interface \n IAirTrafficControlMediator" as IAirTrafficControlMediator
+{
++{abstract} registerRunway(Runway *runway):void
++{abstract} registerFlight(Flight *flight):void
++{abstract} isLandingOk():void
++{abstract} setLandingStatus(bool status):void
+}
+
+
+
+
+class AirTrafficControlMediator
+{
+    -Flight *flight
+    -Runway *runway
+    +bool land
+    +setLandingStatus(bool status):void
+    isLandingOk():bool
+    registerRunway(Runway *runway):void
+    registerFlight(Flight *flight):void
+}
+
+interface "Interface \n Command" as Command
+{
+    +{abstract}land():void
+}
+
+
+
+class Flight 
+{
+    -IAirTrafficControlMediator *atcMediator;
+    +Flight(IAirTrafficControlMediator *atcMediator)
+    land():void
+    getReady():void
+}
+
+
+
+
+note "cout<<'Ready for landing.'<<endl;" as n2
+
+
+class Runway
+{
+    -IAirTrafficControlMediator *atcMediator;
+    +Runway(IAirTrafficControlMediator *atcMediator)
+    +land():void 
+
+}
+
+
+Runway -up..|> Command
+Flight -up..|> Command
+AirTrafficControlMediator -up..|> IAirTrafficControlMediator
+@enduml

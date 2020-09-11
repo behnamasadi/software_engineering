@@ -1,3 +1,6 @@
+#include <string>
+#include <iostream>
+//http://www.vishalchovatiya.com/mediator-design-pattern-in-modern-cpp/
 /*
 public delegate void MessageReceivedEventHandler(string message, string from);
 
@@ -17,26 +20,35 @@ public class Mediator
 
 public class Person
 {
-    private Mediator _mediator;
+    private:
+    Mediator m_mediator;
+    std::string m_Name;
 
-    public string Name { get; set; }
+public:
+
+    std::string getName(){return m_Name;}
+    setName(std::string name){m_Name(name);}
+
+
+    void Receive(std::string message, std::string from)
+    {
+        if (from != Name)
+            std::cout << Name<<"received "<< message<< " from:" <<from<<std::endl;
+    }
+
+
 
     public Person(Mediator mediator, string name)
     {
         Name = name;
-        _mediator = mediator;
-        _mediator.MessageReceived += new MessageReceivedEventHandler(Receive);
+        m_mediator = mediator;
+        m_mediator.MessageReceived += new MessageReceivedEventHandler(Receive);
     }
 
-    private void Receive(string message, string from)
-    {
-        if (from != Name)
-            Console.WriteLine("{0} received '{1}' from {2}", Name, message, from);
-    }
 
     public void Send(string message)
     {
-        _mediator.Send(message, Name);
+        m_mediator.Send(message, Name);
     }
 }
 */

@@ -1,0 +1,45 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "Interface \n Observer" as Observer{
+- string m_name;
+# Car * m_car;
++ Observer(Car * car, std::string name):m_car(car),m_name(name){}
++{abstract} update():void
+}
+
+
+interface "Interface \n Car(Subject)" as Car{
+    +double m_speed;
+    +int m_temperature;
+    +vector<Observer *> m_ObserverList;
+    +notify():void 
+    +attach(Observer *obs):void
+    +detach(Observer *obs):void
+    +getSpeed():double
+    +setSpeed(double speed):void
+    +getTemperature():int
+    +setTemperature(int temperature):void 
+}
+
+
+class TemperatureObserver{
+  +update():void
+}
+
+class SpeedObserver{
+   +update():void
+}
+
+
+note "for all Observer in m_ObserverList\n Observer.update() " as CarNotify
+note "m_speed=speed\n notify()" as CarSetSpeed
+
+CarNotify -left.. Car::notify
+CarSetSpeed -right.. Car::setSpeed
+
+
+TemperatureObserver -up--|> Observer
+SpeedObserver -up--|>  Observer
+Car *--Observer
+@enduml

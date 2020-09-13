@@ -11,6 +11,7 @@
 - [Strategy](#strategy)
 - [Template Method](#template-method)
 - [Visitor](#visitor)
+
 ## Chain Of Responsibility
 There is a potentially variable number of "handler" or "processing element" or "node" objects, and a stream of requests that must be handled. Need to efficiently process the requests without hard-wiring handler relationships and precedence, or request-to-handler mappings.
 
@@ -54,7 +55,14 @@ Source code examples:
 [iterator](Iterator/iterator.cpp), [notification iterator](Iterator/notification_iterator.cpp), [stack iterator](Iterator/stack_iterator.cpp)
 
 ## Mediator
+Tight coupling between a set of interacting objects should be avoided. It should be possible to change the interaction between a set of objects independently. Mediator design pattern defines a separate (mediator) object that encapsulates the interaction between a set of objects.
+Objects delegate their interaction to a mediator object instead of interacting with each other directly.
 As to overcome the limitation of the Observer Design Pattern which works in a one-to-many relationship, Mediator Design Pattern can be employed for a many-to-many relationship.
+
+
+![PlantUML model](diagrams/chat_mediator.svg)
+
+[plantuml code](diagrams/chat_mediator.puml)
 
 
 Source code examples:
@@ -73,15 +81,23 @@ Source code examples:
 [null object](NullObject/null_object.cpp)
 
 ## Observer
-Defines a a one to many dependency between objects so that when one object state changes, 
-all of its dependencies are noified and updated automatically
+Define **Subject** and **Observer** objects, so that when a subject changes state, all registered observers are notified and updated automatically
+ (and probably asynchronously). Observer is the "View" part of Model-View-Controller.
 
+![PlantUML model](diagrams/diagrams/observer.svg)
+[plantuml code](diagrams/observer.puml)
 
 Source code examples:
 [car parts observer](Observer/car_observer.cpp), [clocktimer](Observer/clocktimer.cpp), [rocket observer](Observer/rocket_observer.cpp), [](), [](), [weather station observer](Observer/weather_station_observer.cpp), [chat room observer](Observer/chat_room_observer.cpp)
 
 ## State
 
+State pattern allows an object to alter its behavior when its internal state changes. This pattern is close to the concept of finite-state machines.
+The state pattern can be interpreted as a strategy pattern, which is able to switch a strategy through invocations of methods defined in the
+ pattern's interface.
+
+![PlantUML model](diagrams/diagrams/music_player_state.svg)
+[plantuml code](diagrams/music_player_state.puml)
 
 Source code examples:
 [music player state](State/music_player_state.cpp), [machine on off state](State/machine_on_off_state.cpp) 
@@ -89,6 +105,14 @@ Source code examples:
 
 
 ## Strategy
+
+Strategy design pattern enables selecting an algorithm at runtime. Instead of implementing a single algorithm directly, code receives 
+run-time instructions as to which in a family of algorithms to use.
+
+
+![PlantUML model](diagrams/diagrams/conceptual_strategy.svg)
+[plantuml code](diagrams/conceptual_strategy.puml)
+
 
 Source code examples:
 [robot strategy](Strategy/robot.cpp), [conceptual strategy](Strategy/conceptual_strategy.cpp), [billing strategy](Strategy/billing_strategy.cpp)

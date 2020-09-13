@@ -39,6 +39,7 @@ public:
         m_strategy->solve();
     }
 };
+
 int main()
 {
     Strategy *strategy1=new ConcreteStrategy1;

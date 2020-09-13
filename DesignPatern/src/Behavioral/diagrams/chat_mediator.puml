@@ -1,0 +1,40 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "Interface \n MediatorInterface" as MediatorInterface{
+   -list<ColleagueInterface*> colleagueList;
+   + getColleagueList():list<ColleagueInterface*>&
+   +{abstract}distributeMessage (const ColleagueInterface*, const std::string&):void
+   +{abstract}registerColleague (ColleagueInterface* colleague):void 
+}
+
+
+interface "Interface \n ColleagueInterface" as ColleagueInterface{
+     -string name;
+     +ColleagueInterface (string& newName)
+     getName():string
+     +{abstract} sendMessage (MediatorInterface&, string&):void
+     +{abstract} receiveMessage (ColleagueInterface*, string&):void
+}
+
+
+
+
+class Colleague {
+   +{abstract} sendMessage (MediatorInterface&, string&):void
+   -{abstract} receiveMessage (ColleagueInterface*, string&):void
+}
+
+
+class Mediator{
+    +{abstract}distributeMessage (ColleagueInterface*, string&):void 
+}
+
+Colleague -up--|> ColleagueInterface
+Mediator  -up--|> MediatorInterface
+
+class Client
+
+Colleague -up--* Client
+Mediator -up--* Client
+@enduml

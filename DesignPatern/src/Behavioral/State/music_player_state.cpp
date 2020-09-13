@@ -47,7 +47,7 @@ class MusicPlayerState
 class StoppedState: public MusicPlayerState
 {
 public:
-    void play(MusicPlayer *player);
+    void play(MusicPlayer *player) override;
     StoppedState();
 
 };
@@ -56,9 +56,9 @@ public:
 class PlayingState: public MusicPlayerState
 {
 public:
-    virtual void pause(MusicPlayer *player) ;
+    void pause(MusicPlayer *player) override;
 
-    virtual void stop(MusicPlayer *player) ;
+    void stop(MusicPlayer *player) override;
     PlayingState();
 
     ~PlayingState();
@@ -68,7 +68,7 @@ public:
 class PausedState: public MusicPlayerState
 {
 public:
-    void play(MusicPlayer *player);
+    void play(MusicPlayer *player) override;
     PausedState();
 
 };

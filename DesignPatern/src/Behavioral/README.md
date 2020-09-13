@@ -84,7 +84,7 @@ Source code examples:
 Define **Subject** and **Observer** objects, so that when a subject changes state, all registered observers are notified and updated automatically
  (and probably asynchronously). Observer is the "View" part of Model-View-Controller.
 
-![PlantUML model](diagrams/diagrams/observer.svg)
+![PlantUML model](diagrams/observer.svg)
 [plantuml code](diagrams/observer.puml)
 
 Source code examples:
@@ -96,7 +96,7 @@ State pattern allows an object to alter its behavior when its internal state cha
 The state pattern can be interpreted as a strategy pattern, which is able to switch a strategy through invocations of methods defined in the
  pattern's interface.
 
-![PlantUML model](diagrams/diagrams/music_player_state.svg)
+![PlantUML model](diagrams/music_player_state.svg)
 [plantuml code](diagrams/music_player_state.puml)
 
 Source code examples:
@@ -110,7 +110,7 @@ Strategy design pattern enables selecting an algorithm at runtime. Instead of im
 run-time instructions as to which in a family of algorithms to use.
 
 
-![PlantUML model](diagrams/diagrams/conceptual_strategy.svg)
+![PlantUML model](diagrams/conceptual_strategy.svg)
 [plantuml code](diagrams/conceptual_strategy.puml)
 
 

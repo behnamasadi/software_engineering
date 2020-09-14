@@ -1,0 +1,39 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+interface "Interface \n OrderProcessTemplate" as OrderProcessTemplate{
+     bool isGift;
+    +{abstract} doSelect():void
+    +{abstract} doPayment():void
+    +{abstract} doDelivery():void
+     giftWrap():void
+     processOrder(bool isGift):void
+}
+
+note " doSelect(); \n doPayment(); \n if (isGift) {\n giftWrap();\n }\n       doDelivery();" as OrderProcessTemplateProcessOrder
+
+OrderProcessTemplate::processOrder -right..OrderProcessTemplateProcessOrder
+
+
+class NetOrder
+{
+public:
+    doSelect():void
+    doPayment():void
+    doDelivery() :void
+}
+
+class StoreOrder
+{
+
+    doSelect():void
+    doPayment():void
+    doDelivery():void
+}
+
+note "Customer chooses the item from shelf" as StoreOrderDoSelect
+note "Item added to online shopping cart" as NetOrderDoSelect
+
+NetOrderDoSelect .. NetOrder::doSelect
+StoreOrderDoSelect .. StoreOrder::doSelect

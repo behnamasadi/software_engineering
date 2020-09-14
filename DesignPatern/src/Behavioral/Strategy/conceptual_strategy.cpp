@@ -29,6 +29,7 @@ class Context
 
 public:
     Context(Strategy *strategy= nullptr):m_strategy(strategy){}
+
     void setStrategy(Strategy *strategy)
     {
         m_strategy=strategy;

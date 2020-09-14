@@ -72,13 +72,46 @@ Source code examples:
 
 
 ## Memento
+
+Memento is a behavioral design pattern that lets you save and restore the previous state of an object without revealing the details of its implementation.
+
+
+![PlantUML model](diagrams/notepad_memento.svg)
+[plantuml code](diagrams/notepad_memento.puml)
+
+You can use **Command** and **Memento** together when implementing “undo”. In this case, commands are responsible for performing various operations over a target object, while mementos save the state of that object just before a command gets executed.
+
+You can use **Memento** along with **Iterator** to capture the current iteration state and roll it back if necessary.
+
+Sometimes **Prototype** can be a simpler alternative to Memento. This works if the object, the state of which you want to store in the history, is fairly straightforward and doesn’t have links to external resources, or the links are easy to re-establish.
+
 Source code examples:
 [notepad memento](Memento/notepad_memento.cpp)
 
+
+
+
 ## NullObject
+Sometimes a class that requires a collaborator does not need the collaborator to do anything. A null object is an object with no referenced value or with defined neutral ("null") behavior. The null object design pattern describes the uses of such objects and their behavior. Instead of using a null reference (nullptr in C++) to convey absence of an object (for instance, 
+a non-existent customer), one uses an object which implements the expected interface, but whose method body is empty. 
+The advantage of this approach over a working default implementation is that a null object is very predictable and has no side effects: 
+it does nothing.
+
+
+
+Consider for example a simple screen saver which displays balls that move about the screen and have special color effects. This is easily achieved by creating a Ball class to represent the balls and using a Strategy pattern [GHJV95, page 315] to control the ball's motion and another Strategy pattern to control the ball's color.
+
+
+Here, the idea is that there are situations where a pointer or reference to an Animal object is required, but there is no appropriate object available. A null reference is impossible in standard-conforming C++. A null Animal* pointer is possible, and could be useful as a place-holder, but may not be used for direct dispatch: a->MakeSound() is undefined behavior if a is a null pointer.
+
+The null object pattern solves this problem by providing a special NullAnimal class which can be instantiated bound to an Animal pointer or reference.
+
+![PlantUML model](diagrams/ball_null_object.svg)
+[plantuml code](diagrams/ball_null_object.puml)
+
 
 Source code examples:
-[null object](NullObject/null_object.cpp)
+[animal null object](NullObject/animal_null_object.cpp), [binary tree null object](NullObject/binary_tree_null_object.cpp),[ball_screen_saver_null_object](NullObject/ball_screen_saver_null_object.cpp)
 
 ## Observer
 Define **Subject** and **Observer** objects, so that when a subject changes state, all registered observers are notified and updated automatically
@@ -119,6 +152,17 @@ Source code examples:
 
 
 ## Template Method
+
+The Template Method defines a skeleton of an algorithm in an operation, and defers some steps to subclasses. Template Method lets subclasses redefine certain steps of that algorithm without changing the algorithm's structure.
+
+![PlantUML model](diagrams/order_process_template.svg)
+[plantuml code](diagrams/order_process_template.puml)
+
+
+**Strategy** is like Template Method except in its granularity.
+Template Method uses inheritance to vary part of an algorithm. **Strategy** uses delegation to vary the entire algorithm.
+Strategy modifies the logic of individual objects. Template Method modifies the logic of an entire class.
+**Factory Method** is a specialization of Template Method.
 
 Source code examples:
 [template method](TemplateMethod/template_method.cpp), [template method order](TemplateMethod/template_method_order.cpp)

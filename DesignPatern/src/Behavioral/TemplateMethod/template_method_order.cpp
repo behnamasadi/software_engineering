@@ -1,103 +1,83 @@
-//https://www.geeksforgeeks.org/template-method-design-pattern/
+//ref: https://www.geeksforgeeks.org/template-method-design-pattern/
+#include <iostream>
 
-/*
-abstract class OrderProcessTemplate
+class OrderProcessTemplate
 {
-    public boolean isGift;
+public:
+    bool isGift;
+    void virtual doSelect()=0;
+    void virtual doPayment()=0;
+    void virtual doDelivery()=0;
 
-    public abstract void doSelect();
-
-    public abstract void doPayment();
-
-    public final void giftWrap()
+    void giftWrap()
     {
-        try
-        {
-            System.out.println("Gift wrap successfull");
-        }
-        catch (Exception e)
-        {
-            System.out.println("Gift wrap unsuccessful");
-        }
+       std::cout<< "Gift wrap successfull"<<std::endl;
     }
 
-    public abstract void doDelivery();
-
-    public final void processOrder(boolean isGift)
+    void processOrder(bool isGift)
     {
         doSelect();
         doPayment();
-        if (isGift) {
+        if (isGift)
+        {
             giftWrap();
         }
         doDelivery();
     }
-}
+};
 
 
-class NetOrder extends OrderProcessTemplate
+class NetOrder: public OrderProcessTemplate
 {
-    @Override
-    public void doSelect()
+public:
+    void doSelect() override
     {
-        System.out.println("Item added to online shopping cart");
-        System.out.println("Get gift wrap preference");
-        System.out.println("Get delivery address.");
+        std::cout<< "Item added to online shopping cart"<<std::endl;
+        std::cout<< "Get gift wrap preference"<<std::endl;
+        std::cout<< "Get delivery address."<<std::endl;
     }
 
-    @Override
-    public void doPayment()
+    void doPayment() override
     {
-        System.out.println
-                ("Online Payment through Netbanking, card or Paytm");
+        std::cout<< "Online Payment through Netbanking, card or Paytm"<<std::endl;
     }
 
-    @Override
-    public void doDelivery()
+    void doDelivery() override
     {
-        System.out.println
-                    ("Ship the item through post to delivery address");
+        std::cout<<"Ship the item through post to delivery address"<<std::endl;
     }
 
-}
+};
 
-class StoreOrder extends OrderProcessTemplate
+class StoreOrder :public OrderProcessTemplate
 {
-
-    @Override
-    public void doSelect()
+public :
+    void doSelect()override
     {
-        System.out.println("Customer chooses the item from shelf.");
+         std::cout<<"Customer chooses the item from shelf."<<std::endl;
     }
 
-    @Override
-    public void doPayment()
+    void doPayment() override
     {
-        System.out.println("Pays at counter through cash/POS");
+        std::cout<<"Pays at counter through cash/POS"<<std::endl;
     }
 
-    @Override
-    public void doDelivery()
+    void doDelivery() override
     {
-        System.out.println("Item deliverd to in delivery counter.");
+        std::cout<<"Item deliverd to in delivery counter."<<std::endl;
     }
+};
 
-}
 
-class TemplateMethodPatternClient
-{
-    public static void main(String[] args)
-    {
-        OrderProcessTemplate netOrder = new NetOrder();
-        netOrder.processOrder(true);
-        System.out.println();
-        OrderProcessTemplate storeOrder = new StoreOrder();
-        storeOrder.processOrder(true);
-    }
-}
 
-*/
 int main()
 {
+    std::cout<<"Online Order" <<std::endl;
+    OrderProcessTemplate* netOrder = new NetOrder();
+    netOrder->processOrder(true);
 
+
+    std::cout<<"Store Order" <<std::endl;
+    OrderProcessTemplate *storeOrder = new StoreOrder();
+    storeOrder->processOrder(true);
 }

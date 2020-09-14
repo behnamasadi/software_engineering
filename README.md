@@ -80,13 +80,20 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 
 References:
 	[1](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns), 
-	[2](https://sourcemaking.com/design_patterns/), 
-	[3](https://cpppatterns.com/), 
-	[4](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
-	[5](https://www.bogotobogo.com/DesignPatterns/),
-	[6](https://www.growingwiththeweb.com/p/explore.html?t=Design%20pattern),
-	[7](https://www.tutorialspoint.com/design_pattern/),
-	[8](http://simpletechtalks.com/tag/design-patterns/),
+	[2](https://sourcemaking.com/design_patterns/),
+	[3](https://refactoring.guru/), 
+	[4](https://cpppatterns.com/), 
+	[5](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc),
+	[6](https://www.bogotobogo.com/DesignPatterns/),
+	[7](https://www.growingwiththeweb.com/p/explore.html?t=Design%20pattern),
+	[8](https://www.tutorialspoint.com/design_pattern/),
+	[9](http://simpletechtalks.com/tag/design-patterns/),
+	[10](http://www.vishalchovatiya.com/iterator-design-pattern-in-modern-cpp/),
+	[11](https://cppcodetips.wordpress.com/category/design-pattern/),
+	[12](https://caiorss.github.io/C-Cpp-Notes/cpp-design-patterns.html),
+	[13](https://readthedocs.org/projects/cpp-design-patterns/downloads/pdf/latest/)
+
+
 
 
 |   |   |   |

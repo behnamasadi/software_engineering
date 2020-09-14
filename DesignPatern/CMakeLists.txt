@@ -159,14 +159,10 @@ add_executable(giant_command src/Behavioral/Command/giant_command.cpp)
 target_link_libraries(giant_command)
 
 ###################### (3) Iterator ###########################
-add_executable(notification_iterator src/Behavioral/Iterator/notification_iterator.cpp)
-target_link_libraries(notification_iterator)
 
 add_executable(stack_iterator src/Behavioral/Iterator/stack_iterator.cpp)
 target_link_libraries(stack_iterator)
 
-add_executable(iterator src/Behavioral/Iterator/iterator.cpp)
-target_link_libraries(iterator)
 
 ###################### (4) Mediator ###########################
 
@@ -188,8 +184,14 @@ target_link_libraries(notepad_memento)
 
 ###################### (6) NullObject ###########################
 
-add_executable(null_object src/Behavioral/NullObject/null_object.cpp)
-target_link_libraries(null_object)
+add_executable(binary_tree_null_object src/Behavioral/NullObject/binary_tree_null_object.cpp)
+target_link_libraries(binary_tree_null_object)
+
+add_executable(animal_null_object src/Behavioral/NullObject/animal_null_object.cpp)
+target_link_libraries(animal_null_object)
+
+add_executable(ball_screen_saver_null_object src/Behavioral/NullObject/ball_screen_saver_null_object.cpp)
+target_link_libraries(ball_screen_saver_null_object)
 
 ###################### (7) Observer ###########################
 

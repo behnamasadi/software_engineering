@@ -5,15 +5,25 @@ unambiguous way and avoid miscommunication.
 
 ## Bloaters 
 
+Bloaters are codes, and classes that have evolved to such gigantic proportions in which they can hardly function. 
+Typically these odors don't pop up immediately, but they accumulate over time as the software progresses
+ (and particularly when no one is trying to remove them).
+
 ### Long Method
-Generally, any method longer than ten lines should make you start asking
-questions.
+Generally, any method longer than ten lines should be avoided. Since writing code is easier than reading it, the "smell" remains unnoticed until the
+ method becomes a hideous, oversized beast.
+
+#### Treatment
+In general, if you feel the need to comment about something inside a method, then you should take this code and bring it into a new method.
+ Even a single line may and should be split into a separate system, if explanations are needed. And if the method has a clear name, 
+no one is going to have to look at the code to see what it does.
 
 ### Large Class
+A class contains many fields/methods/lines of code.
 Extract Class, Extract Subclass to solve the problem.
 
 ### Primitive Obsession
-If you use some data type like stri, int, etc and you pass it to various class,
+If you use some data type like string, int, etc and you pass it to various class,
 method and they have to interpert it and do something about it, i.e. you send
 tax number/ phone number as sting and every consumer has to interpert the number
 / decipher the number/ decompose it to some city code/ office code etc.
@@ -21,7 +31,7 @@ To solve it replace Data Value with Object.
 
 
 ### Long Parameter List
-More than three or four parameters for a method.
+More than three or four parameters for a method should be avoided.
 
 
 ### Data Clumps

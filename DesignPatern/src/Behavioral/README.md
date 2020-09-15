@@ -77,6 +77,7 @@ Memento is a behavioral design pattern that lets you save and restore the previo
 
 
 ![PlantUML model](diagrams/notepad_memento.svg)
+
 [plantuml code](diagrams/notepad_memento.puml)
 
 You can use **Command** and **Memento** together when implementing “undo”. In this case, commands are responsible for performing various operations over a target object, while mementos save the state of that object just before a command gets executed.
@@ -107,6 +108,7 @@ Here, the idea is that there are situations where a pointer or reference to an A
 The null object pattern solves this problem by providing a special NullAnimal class which can be instantiated bound to an Animal pointer or reference.
 
 ![PlantUML model](diagrams/ball_null_object.svg)
+
 [plantuml code](diagrams/ball_null_object.puml)
 
 
@@ -118,6 +120,7 @@ Define **Subject** and **Observer** objects, so that when a subject changes stat
  (and probably asynchronously). Observer is the "View" part of Model-View-Controller.
 
 ![PlantUML model](diagrams/observer.svg)
+
 [plantuml code](diagrams/observer.puml)
 
 Source code examples:
@@ -130,6 +133,7 @@ The state pattern can be interpreted as a strategy pattern, which is able to swi
  pattern's interface.
 
 ![PlantUML model](diagrams/music_player_state.svg)
+
 [plantuml code](diagrams/music_player_state.puml)
 
 Source code examples:
@@ -144,6 +148,7 @@ run-time instructions as to which in a family of algorithms to use.
 
 
 ![PlantUML model](diagrams/conceptual_strategy.svg)
+
 [plantuml code](diagrams/conceptual_strategy.puml)
 
 
@@ -156,6 +161,7 @@ Source code examples:
 The Template Method defines a skeleton of an algorithm in an operation, and defers some steps to subclasses. Template Method lets subclasses redefine certain steps of that algorithm without changing the algorithm's structure.
 
 ![PlantUML model](diagrams/order_process_template.svg)
+
 [plantuml code](diagrams/order_process_template.puml)
 
 

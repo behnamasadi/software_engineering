@@ -58,14 +58,22 @@ private:
 };
 ```
 
-
 After:
 ```cpp
+class Customer
+{
+    std::string customer;
+    //methods operating on customer
+};
+
+class Order
+{
+private:
+    Customer customer;
+};
 ```
 
-
-
-## 
+## Change Value to Reference
 
 Before:
 ```cpp

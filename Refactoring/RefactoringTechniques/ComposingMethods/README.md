@@ -213,13 +213,51 @@ You have a long method in which the local variables are so intertwined that you 
 
 Before refactoring:
 ```cpp
-
+class Order 
+{
+    // vars and methods from Order
+    double price() 
+    {
+        double primaryBasePrice;
+        double secondaryBasePrice;
+        double tertiaryBasePrice;
+        // Perform long computation.
+    }
+};
 ```
 After refactoring:
 ```cpp
 
-```
+class Order
+{
+    // ...
+    double price()
+    {
+        return  PriceCalculator(this).compute();
+    }
+};
 
+class PriceCalculator 
+{
+    double primaryBasePrice;
+    double secondaryBasePrice;
+    double tertiaryBasePrice;
+    
+    PriceCalculator(Order * order) 
+    {
+        // Copy relevant information from the
+        // order object.
+    }
+    
+    double compute() 
+    {
+        // Perform long computation.
+    }
+};
+```
+## Substitute Algorithm
+
+Replace the body of the method that implements the algorithm with a new algorithm.
 
 Before refactoring:
 ```cpp

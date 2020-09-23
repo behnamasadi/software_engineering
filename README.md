@@ -117,7 +117,8 @@ References:
 
 References:
 	[1](https://refactoring.guru/refactoring),
-	[2](https://sourcemaking.com/refactoring)
+	[2](https://sourcemaking.com/refactoring),
+	[3](https://www.refactoring.com/)
 
 
 [![Build Status](https://travis-ci.org/behnamasadi/design_pattern.svg?branch=master)](https://travis-ci.org/behnamasadi/design_pattern)

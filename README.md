@@ -52,12 +52,12 @@ References:
 
 
 ## [Model View Controller](ModelViewController)  
-- [Simple Model View Controller Example](ModelViewController/student_model_view_controller.cpp)
+- [Simple Model View Controller Example](ModelViewController/src/student_model_view_controller.cpp)
 
 ## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)
-- [Rule Of Five](RuleOfThreeFiveZero/rule_of_five.cpp)  
-- [Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
-- [Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
+- [Rule Of Five](RuleOfThreeFiveZero/src/rule_of_five.cpp)  
+- [Rule Of Three](RuleOfThreeFiveZero/src/rule_of_three.cpp)  
+- [Rule Of Zero](RuleOfThreeFiveZero/src/rule_of_zero.cpp)  
 
 ## [DesignPatern](#) 
 - [Behavioral patterns](DesignPatern/src/Behavioral)

@@ -1,5 +1,5 @@
-# Design Pattern, Refactoring and UML
-This repository contains an introduction on "UML" with C++ examples, various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), and few examples for software design such "Model View Controller (MVC)", "SOLID Design Principles" and finally examples of "Clean Code".
+# UML, Design Pattern and Refactoring  (#)
+This repository contains an introduction on **UML** with C++ examples, various example of **Design Pattern** in object oriented programming with C++, **code refactoring**, and few examples for software design such **Model View Controller (MVC)**, **SOLID Design Principles** and finally examples of **Clean Code**.
 
 ## [UML](#) 
 - [Concepts](UML/Concepts) 
@@ -27,7 +27,8 @@ ASCII codes and UML diagrams:
 	[2](https://www.alt-codes.net/), 
 	[3](https://yaytext.com/)
 
-Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/), 
+References:   
+	[1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/), 
 	[2](https://www.learncpp.com/cpp-tutorial/10-1-object-relationships/), 
 	[3](https://www.wikiwand.com/en/Class_diagram),
 	[4](https://www.uml-diagrams.org/),
@@ -43,57 +44,52 @@ Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-expla
 
 
 ## [SOLID Design Principles](SOLID)  
-
-[Single responsibility principle](SOLID/SingleResponsibilityPrinciple)  
-[Open–closed principle](SOLID/OpenClosedPrinciple)  
-[Liskov substitution principle](SOLID/LiskovSubstitutionPrinciple)  
-[Interface segregation principle](SOLID/InterfaceSegregationPrinciple)  
-[Dependency inversion principle](SOLID/DependencyInjection)  
+- [Single responsibility principle](SOLID/SingleResponsibilityPrinciple)  
+- [Open–closed principle](SOLID/OpenClosedPrinciple)  
+- [Liskov substitution principle](SOLID/LiskovSubstitutionPrinciple)  
+- [Interface segregation principle](SOLID/InterfaceSegregationPrinciple)  
+- [Dependency inversion principle](SOLID/DependencyInjection)  
 
 
 ## [Model View Controller](ModelViewController)  
-[Simple Model View Controller Example](ModelViewController/student_model_view_controller.cpp)
+- [Simple Model View Controller Example](ModelViewController/student_model_view_controller.cpp)
 
 ## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)
-[Rule Of Five](RuleOfThreeFiveZero/rule_of_five.cpp)  
-[Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
-[Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
+- [Rule Of Five](RuleOfThreeFiveZero/rule_of_five.cpp)  
+- [Rule Of Three](RuleOfThreeFiveZero/rule_of_three.cpp)  
+- [Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
+## [DesignPatern](#) 
+- [Behavioral patterns](DesignPatern/src/Behavioral)
+  * [Chain of responsibility](DesignPatern/src/Behavioral/README.md#chain-of-responsibility)  
+  * [Command](DesignPatern/src/Behavioral/README.md#command)  
+  * [Interpreter](DesignPatern/src/Behavioral/README.md##interpreter)  
+  * [Iterator](DesignPatern/src/Behavioral/README.md#iterator)  
+  * [Mediator](DesignPatern/src/Behavioral/README.md#mediator)  
+  * [Memento](DesignPatern/src/Behavioral/README.md#memento)  
+  * [Null Object](DesignPatern/src/Behavioral/README.md#nullobject)  
+  * [Observer](DesignPatern/src/Behavioral/README.md#observer)  
+  * [State](DesignPatern/src/Behavioral/README.md#state)  
+  * [Strategy](DesignPatern/src/Behavioral/README.md#strategy)  
+  * [Template method](DesignPatern/src/Behavioral/README.md#template-method)  
+  * [Visitor](DesignPatern/src/Behavioral/README.md#visitor)  
+- [Creational patterns](DesignPatern/src/Creational/)
+  * [Abstract Factory](DesignPatern/src/Creational/README.md#abstractfactory)  
+  * [Builder](DesignPatern/src/Creational/README.md#builder)  
+  * [Factory Method](DesignPatern/src/Creational/README.md#factory-method)  
+  * [Object Pool](DesignPatern/src/Creational/README.md#Objectpool)  
+  * [Prototype](DesignPatern/src/Creational/README.md#prototype)  
+  * [Singleton](DesignPatern/src/Creational/README.md#singleton)  
+- [Structural patterns](DesignPatern/src/Structural)
+  * [Adapter](DesignPatern/src/Structural/README.md#adapter)  
+  * [Bridge](DesignPatern/src/Structural/README.md#bridge)  
+  * [Composite](DesignPatern/src/Structural/README.md#composite)  
+  * [Decorator](DesignPatern/src/Structural/README.md#decorator)  
+  * [Facade](DesignPatern/src/Structural/README.md#facade)  
+  * [Flyweight](DesignPatern/src/Structural/README.md#flyweight)  
+  * [Private Class Data](DesignPatern/src/Structural/README.md#private-class-data)  
+  * [Proxy](DesignPatern/src/Structural/README.md#proxy)  
 
-## DesignPatern
-### [Behavioral patterns](DesignPatern/src/Behavioral)  
-
-[Chain of responsibility](DesignPatern/src/Behavioral/README.md#chain-of-responsibility)  
-[Command](DesignPatern/src/Behavioral/README.md#command)  
-[Interpreter](DesignPatern/src/Behavioral/README.md##interpreter)  
-[Iterator](DesignPatern/src/Behavioral/README.md#iterator)  
-[Mediator](DesignPatern/src/Behavioral/README.md#mediator)  
-[Memento](DesignPatern/src/Behavioral/README.md#memento)  
-[Null Object](DesignPatern/src/Behavioral/README.md#nullobject)  
-[Observer](DesignPatern/src/Behavioral/README.md#observer)  
-[State](DesignPatern/src/Behavioral/README.md#state)  
-[Strategy](DesignPatern/src/Behavioral/README.md#strategy)  
-[Template method](DesignPatern/src/Behavioral/README.md#template-method)  
-[Visitor](DesignPatern/src/Behavioral/README.md#visitor)  
-
-### [Creational patterns](DesignPatern/src/Creational/)
-
-[Abstract Factory](DesignPatern/src/Creational/README.md#abstractfactory)  
-[Builder](DesignPatern/src/Creational/README.md#builder)  
-[Factory Method](DesignPatern/src/Creational/README.md#factory-method)  
-[Object Pool](DesignPatern/src/Creational/README.md#Objectpool)  
-[Prototype](DesignPatern/src/Creational/README.md#prototype)  
-[Singleton](DesignPatern/src/Creational/README.md#singleton)  
-
-### [Structural patterns](DesignPatern/src/Structural)  
-[Adapter](DesignPatern/src/Structural/README.md#adapter)  
-[Bridge](DesignPatern/src/Structural/README.md#bridge)  
-[Composite](DesignPatern/src/Structural/README.md#composite)  
-[Decorator](DesignPatern/src/Structural/README.md#decorator)  
-[Facade](DesignPatern/src/Structural/README.md#facade)  
-[Flyweight](DesignPatern/src/Structural/README.md#flyweight)  
-[Private Class Data](DesignPatern/src/Structural/README.md#private-class-data)  
-[Proxy](DesignPatern/src/Structural/README.md#proxy)  
 
 References:
 	[1](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns), 
@@ -110,15 +106,12 @@ References:
 	[12](https://caiorss.github.io/C-Cpp-Notes/cpp-design-patterns.html),
 	[13](https://readthedocs.org/projects/cpp-design-patterns/downloads/pdf/latest/)
 
-
-
-
 |   |   |   |
 |---|---|---|
 |<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/1484236025/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1484236025&linkCode=as2&tag=rosdev09-20&linkId=974576fff321c67154d6bc7299956ef0"><img border="0" src="images/Design_Patterns_in_Modern_C++__Reusable_Approaches_for_Object-Oriented_Software_Design.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=1484236025" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
 
 ## [Refactoring](#) 
-- [Bad Code Smells](#bad-code-smells)
+- [Bad Code Smells](Refactoring/BadCodeSmells)
   * [Bloaters](Refactoring/BadCodeSmells/Bloaters)
   * [ChangePreventers](Refactoring/BadCodeSmells/ChangePreventers)
   * [Couplers](Refactoring/BadCodeSmells/Couplers)

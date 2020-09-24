@@ -117,20 +117,20 @@ References:
 |---|---|---|
 |<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/1484236025/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1484236025&linkCode=as2&tag=rosdev09-20&linkId=974576fff321c67154d6bc7299956ef0"><img border="0" src="images/Design_Patterns_in_Modern_C++__Reusable_Approaches_for_Object-Oriented_Software_Design.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=1484236025" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
 
-
+## [Refactoring](#) 
 - [Bad Code Smells](#bad-code-smells)
-  * [Bloaters(Refactoring/BadCodeSmells/Bloaters)](#bloaters-refactoring-badcodesmells-bloaters-)
-  * [ChangePreventers(Refactoring/BadCodeSmells/ChangePreventers)](#changepreventers-refactoring-badcodesmells-changepreventers-)
-  * [Couplers(Refactoring/BadCodeSmells/Couplers)](#couplers-refactoring-badcodesmells-couplers-)
-  * [Dispensables(Refactoring/BadCodeSmells/Dispensables)](#dispensables-refactoring-badcodesmells-dispensables-)
-  * [Object-Orientation Abusers(Refactoring/BadCodeSmells/Object-OrientationAbusers)](#object-orientation-abusers-refactoring-badcodesmells-object-orientationabusers-)
-- [Refactoring Techniques](#refactoring-techniques)
-  * [Composing Methods(Refactoring/RefactoringTechniques/ComposingMethods)](#composing-methods-refactoring-refactoringtechniques-composingmethods-)
-  * [Dealing With Generalisation(Refactoring/RefactoringTechniques/DealingWithGeneralisation)](#dealing-with-generalisation-refactoring-refactoringtechniques-dealingwithgeneralisation-)
-  * [Moving Features Between Objects(Refactoring/RefactoringTechniques/MovingFeaturesBetweenObjects)](#moving-features-between-objects-refactoring-refactoringtechniques-movingfeaturesbetweenobjects-)
-  * [Organizing Data(Refactoring/RefactoringTechniques/OrganizingData)](#organizing-data-refactoring-refactoringtechniques-organizingdata-)
-  * [Simplifying Conditional Expressions(Refactoring/RefactoringTechniques/SimplifyingConditionalExpressions)](#simplifying-conditional-expressions-refactoring-refactoringtechniques-simplifyingconditionalexpressions-)
-  * [Simplifying Method Calls(Refactoring/RefactoringTechniques/SimplifyingMethodCalls)](#simplifying-method-calls-refactoring-refactoringtechniques-simplifyingmethodcalls-)
+  * [Bloaters](Refactoring/BadCodeSmells/Bloaters)
+  * [ChangePreventers](Refactoring/BadCodeSmells/ChangePreventers)
+  * [Couplers](Refactoring/BadCodeSmells/Couplers)
+  * [Dispensables](Refactoring/BadCodeSmells/Dispensables)
+  * [Object-Orientation Abusers](Refactoring/BadCodeSmells/Object-OrientationAbusers)
+- [Refactoring Techniques](#)
+  * [Composing Methods](Refactoring/RefactoringTechniques/ComposingMethods)
+  * [Dealing With Generalisation](Refactoring/RefactoringTechniques/DealingWithGeneralisation)
+  * [Moving Features Between Objects](Refactoring/RefactoringTechniques/MovingFeaturesBetweenObjects)
+  * [Organizing Data](Refactoring/RefactoringTechniques/OrganizingData)
+  * [Simplifying Conditional Expressions](Refactoring/RefactoringTechniques/SimplifyingConditionalExpressions)
+  * [Simplifying Method Calls](Refactoring/RefactoringTechniques/SimplifyingMethodCalls)
 
 References:
 	[1](https://refactoring.guru/refactoring),

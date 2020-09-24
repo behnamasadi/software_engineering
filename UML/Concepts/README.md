@@ -1,3 +1,16 @@
+## Concepts
+
+### Structure
+#### Actor
+#### Attribute
+#### Artifact
+#### Class
+#### Component
+#### Interface
+#### Object
+#### Package
+#### Profile diagram
+
 ## Classifier
 Classifier is an abstract metaclass which is the basic modeling element in UML. A classifier represents a group of 
 things with common properties.
@@ -10,6 +23,21 @@ More formally, classifier is (extends):
 - templateable element
 - redefinable element
 - namespace
+
+
+
+
+
+#### Types of UML Classifiers
+Class
+- Component
+- Datatype
+- Interface
+- Node
+- Signal
+- Subsystem
+- Use Case
+
 
 
 ![PlantUML model](diagrams/uml-classifiers.png)

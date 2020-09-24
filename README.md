@@ -1,25 +1,41 @@
 # Design Pattern, Refactoring and UML
 This repository contains an introduction on "UML" with C++ examples, various example of "Design Pattern" in object oriented programming with C++, refactoring (classical bad smell code), and few examples for software design such "Model View Controller (MVC)", "SOLID Design Principles" and finally examples of "Clean Code".
 
-## [UML](UML/) 
+## [UML](#) 
 - [Concepts](UML/Concepts) 
-- [Diagrams](UML/)
-  * [Structure Diagrams](UML/StructureDiagrams/)
-    + [Class Diagram](UML/StructureDiagrams/ClassDiagram)
-    + [Component Diagram](UML/StructureDiagrams/ComponentDiagram)
-    + [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
-    + [Object Diagram](UML/StructureDiagrams/ObjectDiagram)
-    + [Package Diagram](UML/StructureDiagrams/PackageDiagram)
-    + [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
-    + [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
-  * [Behavioral Diagrams](UML/BehavioralDiagrams)
-    + [Use Case Diagram](UML/BehavioralDiagrams/UseCaseDiagram)
-    + [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
-    + [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
-    + [Sequence Diagram](UML/BehavioralDiagrams/SequenceDiagram)
-    + [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram)
-    + [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram)
-    + [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram)
+- [Structure Diagrams](UML/StructureDiagrams/)
+   * [Class Diagram](UML/StructureDiagrams/ClassDiagram)
+   * [Component Diagram](UML/StructureDiagrams/ComponentDiagram)
+   * [Deployment Diagram](UML/StructureDiagrams/DeploymentDiagram)
+   * [Object Diagram](UML/StructureDiagrams/ObjectDiagram)
+   * [Package Diagram](UML/StructureDiagrams/PackageDiagram)
+   * [Profile Diagram](UML/StructureDiagrams/ProfileDiagram)
+   * [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
+- [Behavioral Diagrams](UML/BehavioralDiagrams)
+   * [Use Case Diagram](UML/BehavioralDiagrams/UseCaseDiagram)
+   * [Activity Diagram](UML/BehavioralDiagrams/ActivityDiagram)
+   * [State Machine Diagram](UML/BehavioralDiagrams/StateMachineDiagram)
+   * [Sequence Diagram](UML/BehavioralDiagrams/SequenceDiagram)
+   * [Communication Diagram](UML/BehavioralDiagrams/CommunicationDiagram)
+   * [Interaction Overview Diagram](UML/BehavioralDiagrams/InteractionOverviewDiagram)
+   * [Timing Diagram](UML/BehavioralDiagrams/TimingDiagram)
+- [Extensibility](UML/Extensibility)
+
+
+ASCII codes and UML diagrams:
+	[1](http://www.plantuml.com/plantuml/umla/),
+	[2](https://www.alt-codes.net/), 
+	[3](https://yaytext.com/)
+
+Refs:   [1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/), 
+	[2](https://www.learncpp.com/cpp-tutorial/10-1-object-relationships/), 
+	[3](https://www.wikiwand.com/en/Class_diagram),
+	[4](https://www.uml-diagrams.org/),
+	[5](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/),
+	[6](https://www.ibm.com/support/knowledgecenter/SS8PJ7_9.7.0/com.ibm.xtools.modeler.doc/topics/cdepend.html)
+	[7](http://www.cs.sjsu.edu/~pearce/modules/lectures/oop/basics/interfaces.htm)
+	[8](https://martinfowler.com/bliki/BallAndSocket.html)
+
     
 |   |   |   |
 |---|---|---|
@@ -44,7 +60,8 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 [Rule Of Zero](RuleOfThreeFiveZero/rule_of_zero.cpp)  
 
 
-## [Behavioral patterns](DesignPatern/src/Behavioral)  
+## DesignPatern
+### [Behavioral patterns](DesignPatern/src/Behavioral)  
 
 [Chain of responsibility](DesignPatern/src/Behavioral/README.md#chain-of-responsibility)  
 [Command](DesignPatern/src/Behavioral/README.md#command)  
@@ -59,7 +76,7 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 [Template method](DesignPatern/src/Behavioral/README.md#template-method)  
 [Visitor](DesignPatern/src/Behavioral/README.md#visitor)  
 
-## [Creational patterns](DesignPatern/src/Creational/)
+### [Creational patterns](DesignPatern/src/Creational/)
 
 [Abstract Factory](DesignPatern/src/Creational/README.md#abstractfactory)  
 [Builder](DesignPatern/src/Creational/README.md#builder)  
@@ -68,7 +85,7 @@ This repository contains an introduction on "UML" with C++ examples, various exa
 [Prototype](DesignPatern/src/Creational/README.md#prototype)  
 [Singleton](DesignPatern/src/Creational/README.md#singleton)  
 
-## [Structural patterns](DesignPatern/src/Structural)  
+### [Structural patterns](DesignPatern/src/Structural)  
 [Adapter](DesignPatern/src/Structural/README.md#adapter)  
 [Bridge](DesignPatern/src/Structural/README.md#bridge)  
 [Composite](DesignPatern/src/Structural/README.md#composite)  
@@ -101,24 +118,32 @@ References:
 |<a target="_blank"  href="https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=rosdev09-20&linkId=175fc3c33d5c7f359af5401c1250f192"><img border="0" src="images/Design_Patterns._Elements_of_Reusable_Object-Oriented_Software.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=rosdev09-20&linkId=76b4256e75432f557909a43e0a9de1a2"><img border="0" src="images/Head_First_Design_Patterns_(A_Brain_Friendly_Guide).jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0596007124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/1484236025/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1484236025&linkCode=as2&tag=rosdev09-20&linkId=974576fff321c67154d6bc7299956ef0"><img border="0" src="images/Design_Patterns_in_Modern_C++__Reusable_Approaches_for_Object-Oriented_Software_Design.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=1484236025" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|
 
 
+- [Refactoring(#)](#refactoring---)
+  * [Bad Code Smells](#bad-code-smells)
+    + [Bloaters(Refactoring/BadCodeSmells/Bloaters)](#bloaters-refactoring-badcodesmells-bloaters-)
+    + [ChangePreventers(Refactoring/BadCodeSmells/ChangePreventers)](#changepreventers-refactoring-badcodesmells-changepreventers-)
+    + [Couplers(Refactoring/BadCodeSmells/Couplers)](#couplers-refactoring-badcodesmells-couplers-)
+    + [Dispensables(Refactoring/BadCodeSmells/Dispensables)](#dispensables-refactoring-badcodesmells-dispensables-)
+    + [Object-Orientation Abusers(Refactoring/BadCodeSmells/Object-OrientationAbusers)](#object-orientation-abusers-refactoring-badcodesmells-object-orientationabusers-)
+  * [Refactoring Techniques](#refactoring-techniques)
+    + [Composing Methods(Refactoring/RefactoringTechniques/ComposingMethods)](#composing-methods-refactoring-refactoringtechniques-composingmethods-)
+    + [Dealing With Generalisation(Refactoring/RefactoringTechniques/DealingWithGeneralisation)](#dealing-with-generalisation-refactoring-refactoringtechniques-dealingwithgeneralisation-)
+    + [Moving Features Between Objects(Refactoring/RefactoringTechniques/MovingFeaturesBetweenObjects)](#moving-features-between-objects-refactoring-refactoringtechniques-movingfeaturesbetweenobjects-)
+    + [Organizing Data(Refactoring/RefactoringTechniques/OrganizingData)](#organizing-data-refactoring-refactoringtechniques-organizingdata-)
+    + [Simplifying Conditional Expressions(Refactoring/RefactoringTechniques/SimplifyingConditionalExpressions)](#simplifying-conditional-expressions-refactoring-refactoringtechniques-simplifyingconditionalexpressions-)
+    + [Simplifying Method Calls(Refactoring/RefactoringTechniques/SimplifyingMethodCalls)](#simplifying-method-calls-refactoring-refactoringtechniques-simplifyingmethodcalls-)
 
-## [Refactoring](Refactoring/)
-### [Bloaters](Refactoring/Bloaters)  
-[Primitive Obsession](Refactoring/Bloaters/Primitive_Obsession/primitive_obsession.cpp)
-### [Couplers](Refactoring/Couplers)  
-[Feature Envy](Refactoring/Couplers/Feature_Envy/feature_envy.cpp)  
-[Message Chains](Refactoring/Couplers/Message_Chains/message_chains.cpp)  
+References:
+	[1](https://refactoring.guru/refactoring),
+	[2](https://sourcemaking.com/refactoring),
+	[3](https://www.refactoring.com/)
 
 |   |   |   |
 |---|---|---|
 |<a target="_blank"  href="https://www.amazon.com/gp/product/0132350882/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0132350882&linkCode=as2&tag=rosdev09-20&linkId=949bad73dc39e53caf1caf849ad0f565"><img border="0" src="images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0132350882" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/B07XGR7QQD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07XGR7QQD&linkCode=as2&tag=rosdev09-20&linkId=44172741182e66512df744aa85f17756"><img border="0" src="images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=B07XGR7QQD" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|   |
 
 
-
-References:
-	[1](https://refactoring.guru/refactoring),
-	[2](https://sourcemaking.com/refactoring),
-	[3](https://www.refactoring.com/)
+<small><i>TOC generated with <a href='http://ecotrust-canada.github.io/markdown-toc/'>markdown-toc</a></i></small>
 
 
 [![Build Status](https://travis-ci.com/behnamasadi/software_engineering.svg?branch=master)](https://travis-ci.com/behnamasadi/software_engineering)

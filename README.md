@@ -27,7 +27,7 @@ ASCII codes and UML diagrams:
 	[2](https://www.alt-codes.net/), 
 	[3](https://yaytext.com/)
 
-References:   
+References:
 	[1](https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/), 
 	[2](https://www.learncpp.com/cpp-tutorial/10-1-object-relationships/), 
 	[3](https://www.wikiwand.com/en/Class_diagram),

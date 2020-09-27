@@ -290,7 +290,7 @@ After:
 ```
 
 
-## 
+## Change Bidirectional Association to Unidirectional
 
 Before:
 ```cpp
@@ -302,39 +302,226 @@ After:
 ```
 
 
-## 
+## Replace Magic Number with Symbolic Constant
+Your code uses a number that has a certain meaning to it. Replace this number with a constant that has a human-readable name explaining the meaning of the number.
 
 Before:
 ```cpp
+double potentialEnergy(double mass, double height) 
+{
+    return mass * height * 9.81;
+}
 ```
 
 
 After:
 ```cpp
+double GRAVITATIONAL_CONSTANT = 9.81;
+
+double potentialEnergy(double mass, double height) 
+{
+    return mass * height * GRAVITATIONAL_CONSTANT;
+}
 ```
 
 
-## 
+## Encapsulate Field
+
+You have a public field. Make the field private and create access methods for it.
 
 Before:
 ```cpp
+class Person
+{
+public:
+    std::string name;
+};
 ```
 
 
 After:
 ```cpp
+class Person 
+{
+private: 
+    std::string name;
+public: 
+    std::string getName() 
+    {
+        return name;
+    }
+    void setName(std::string arg) 
+    {
+        name = arg;
+    }
+};
 ```
 
 
-## 
+## Encapsulate Collection
+
+A method returns a collection. Make it return a read-only view and provide add/remove methods.
+A collections should use a protocol different from that for other kinds of data. The
+getter **should not** return the collection object itself, because that allows clients to manipulate the
+contents of the collection without the owning class's knowing what is going on. It also reveals too
+much to clients about the object's internal data structures. A getter for a multivalued attribute
+should return something that prevents manipulation of the collection and hides unnecessary
+details about its structure.
+
+In addition there should not be a setter for collection: rather there should be operations to **add** and **remove** elements. 
+This gives the owning object control over adding and removing elements from the collection.
 
 Before:
 ```cpp
+class Course
+{
+public:
+    std::string m_name;
+    bool m_isAdvanced;
+
+    Course (std::string name, bool isAdvanced)
+    {
+        m_name=name;
+        m_isAdvanced=isAdvanced;
+    }
+
+    bool isAdvanced()
+    {
+        return m_isAdvanced;
+    }
+
+    bool operator ==(const Course& rhs) const
+    {
+        return ((rhs.m_isAdvanced==this->m_isAdvanced )&&(rhs.m_name==this->m_name));
+    }
+    //Course (const Course& rhs)=delete;
+};
+
+class CourseHashFunction
+{
+public:
+    std::size_t operator ()(const Course& k) const
+    {
+        // We use predfined hash functions of string and bool and define our hash function as XOR of the hash values.
+        return (std::hash<std::string>()(k.m_name)) ^ (std::hash<bool>()(k.m_isAdvanced)) ;
+    }
+};
+
+class CoursePtrHashFunction
+{
+public:
+    std::size_t operator ()(const std::shared_ptr<Course> & k_ptr) const
+    {
+        // We use predfined hash functions of string and bool and define our hash function as XOR of the hash values.
+        return (std::hash<std::string>()(k_ptr->m_name)) ^ (std::hash<bool>()(k_ptr->m_isAdvanced)) ;
+    }
+};
+
+
+
+class Person
+{
+private:
+    std::unordered_set<std::shared_ptr<Course>   ,CoursePtrHashFunction > m_courses;
+public:
+    std::unordered_set<std::shared_ptr<Course> ,CoursePtrHashFunction > &getCourses()
+    {
+        return m_courses;
+    }
+    void setCourses(std::unordered_set<std::shared_ptr<Course> ,CoursePtrHashFunction> arg)
+    {
+        m_courses = arg;
+    }
+
+};
+
+
+int main()
+{
+    Person kent;
+    std::unordered_set<std::shared_ptr<Course>,CoursePtrHashFunction > courses;
+    courses.insert(std::shared_ptr<Course>(new Course("Smalltalk Programming", false)));
+    courses.insert(std::shared_ptr<Course>(new Course("Appreciating Single Malts", true)));
+    kent.setCourses(courses);
+    assert(2==kent.getCourses().size());
+
+    std::shared_ptr<Course>  refact =std::shared_ptr<Course>(new Course("Refactoring", true));
+    kent.getCourses().insert(refact);
+    kent.getCourses().insert(std::shared_ptr<Course>(new Course("Brutal Sarcasm", true)));
+
+    assert(4== kent.getCourses().size());
+    kent.getCourses().erase(refact);
+    assert(3== kent.getCourses().size());
+}
 ```
 
 
 After:
 ```cpp
+class Person
+{
+private:
+    std::unordered_set<Course, CourseHashFunction> m_courses;
+public:
+    void addCourse (Course arg)
+    {
+        m_courses.insert(arg);
+    }
+
+    void removeCourse (Course arg)
+    {
+        m_courses.erase(arg);
+    }
+
+    void initializeCourses(const std::unordered_set<Course, CourseHashFunction> arg)
+    {
+        assert(m_courses.size()==0);
+
+        std::unordered_set<Course, CourseHashFunction>::const_iterator it;
+        for( it=arg.begin();it!=arg.end();it++)
+        {
+            m_courses.insert(*it);
+        }
+        //for(const auto& course:m_courses ){}
+    }
+
+    const std::unordered_set<Course, CourseHashFunction>& getCourses()
+    {
+        return m_courses;
+    }
+
+    int getNumberOfAdvanceCourse()
+    {
+        int count=0;
+        std::unordered_set<Course, CourseHashFunction>::const_iterator it=m_courses.begin();
+        while(it!=m_courses.end())
+        {
+            if(it->isAdvanced())
+                count++;
+            it++;
+        }
+    }
+
+    int getnumberOfCourses()
+    {
+        return m_courses.size();
+    }
+};
+
+int main()
+{
+    Person kent;
+    std::unordered_set<Course,CourseHashFunction > courses;
+    courses.insert(Course("Smalltalk Programming", false));
+    courses.insert( Course("Appreciating Single Malts", true));
+    kent.initializeCourses(courses);
+
+    //the follwing is not allowed, adding or removing courses should be done via person class and not from outside
+    //kent.getCourses().insert(Course("Appreciating Single Malts", true));
+
+    kent.getnumberOfCourses();
+    kent.getNumberOfAdvanceCourse();
+}
 ```
 
 

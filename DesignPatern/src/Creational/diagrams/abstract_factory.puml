@@ -1,12 +1,12 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-interface "<<interafce>> \n Button" as Button
+interface "<<interface>> \n Button" as Button
 {
 +{abstract}  draw():void
 }
 
-interface "<<interafce>> \n Menu" as Menu
+interface "<<interface>> \n Menu" as Menu
 {
 +{abstract}  draw():void
 }
@@ -16,7 +16,7 @@ class LinuxMenu{}
 class WindowsButton{}
 class WindowsMenu{}
 
-interface "<<interafce>> \n Factory" as Factory
+interface "<<interface>> \n Factory" as Factory
 {
     +{abstract} create_button(): *Button
     +{abstract} create_menu(): *Menu

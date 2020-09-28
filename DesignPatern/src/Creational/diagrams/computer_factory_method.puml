@@ -1,7 +1,7 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-interface "<<interafce>> \n Computer" as Computer
+interface "<<interface>> \n Computer" as Computer
 {
 }
 

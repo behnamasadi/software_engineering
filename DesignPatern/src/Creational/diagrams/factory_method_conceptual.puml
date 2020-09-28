@@ -1,7 +1,7 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-interface "<<interafce>> \n Product" as Product
+interface "<<interface>> \n Product" as Product
 {
 }
 

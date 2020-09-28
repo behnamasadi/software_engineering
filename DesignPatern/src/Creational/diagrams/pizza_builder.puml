@@ -18,7 +18,7 @@ class "Pizza" as Pizza
 
 }
 
-interface "<<interafce>> \n PizzaBuilder (Builder)" as PizzaBuilder
+interface "<<interface>> \n PizzaBuilder (Builder)" as PizzaBuilder
 {
     {abstract} buildDough():void
     {abstract} buildSauce():void

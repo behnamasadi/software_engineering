@@ -13,7 +13,7 @@
   * [Dependency (uses a) - - - - - ->](#dependency--uses-a--------------)
     + [Types of dependency relationships](#types-of-dependency-relationships)
   * [Inheritance aka Generalization (is a) ────────▷](#inheritance-aka-generalization--is-a-----------)
-  * [Realization - - - - - -▷](#realization-------------)
+  * [Realization - - - - - -▷](#realization)
   * [Class template](#class-template)
 - [Class Relationship in Nutshell](#class-relationship-in-nutshell)
 
@@ -486,7 +486,7 @@ class Ellipse : public Shape
 [plantuml code](diagrams/ShapeCircleEllipse.puml)
 
 
-### Realization - - - - - -▷
+### Realization - - - - - -▷<a id="realization"></a>
 Realization relationship is used when a class implement one or more interface. It is very similar to inheritance but used with interface mainly.
 
 ```cpp

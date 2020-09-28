@@ -5,15 +5,15 @@
     + [Providing an Interface](#providing-an-interface)
 - [Class Relationship](#class-relationship)
   * [Multiplicity in a Relation](#multiplicity-in-a-relation)
-  * [Composition](#composition)
-  * [Aggregation](#aggregation)
+  * [Composition (has a) ◆────────](#composition--has-a-----------)
+  * [Aggregation (has a) ◇────────](#aggregation--has-a-----------)
     + [Composition vs Aggregation](#composition-vs-aggregation)
     + [Summarizing composition and aggregation](#summarizing-composition-and-aggregation)
-  * [Association](#association)
-  * [Dependency](#dependency)
+  * [Association (knows a, Uses-a) ────────](#association--knows-a--uses-a----------)
+  * [Dependency (uses a) - - - - - ->](#dependency--uses-a--------------)
     + [Types of dependency relationships](#types-of-dependency-relationships)
-  * [Inheritance (Generalization)](#inheritance--generalization-)
-  * [Realization](#realization)
+  * [Inheritance aka Generalization (is a) ────────▷](#inheritance-aka-generalization--is-a-----------)
+  * [Realization - - - - - -▷](#realization-------------)
   * [Class template](#class-template)
 - [Class Relationship in Nutshell](#class-relationship-in-nutshell)
 
@@ -127,7 +127,7 @@ The following summarize the relationship between classes:
 
 
 
-### Composition
+### Composition (has a) ◆────────
 In real-life, complex objects are composed of smaller ones, i.e. a car has engine, some tires, a transmission. 
 in C++ when you write a class or struct you are using basic types like int, double or other classes
 when constructing a complex object which is object composition.
@@ -225,7 +225,7 @@ public:
 [plantuml code](diagrams/HospitalDepartment.puml)
 
 
-### Aggregation
+### Aggregation (has a) ◇────────
 Aggregation can occur when a class is a collection or container of other classes, but where the contained classes
 do not have a strong life cycle dependency on the container—essentially, if the container is destroyed,
 its contents are not. You may have confusion between aggregation and association.
@@ -360,7 +360,7 @@ Because these parts exist outside of the scope of the class, when the class is d
 2) Not responsible for creating/destroying parts
 
 
-### Association
+### Association (knows a, Uses-a) ────────
 
 In an association, there is no implication of whole/part relationship (just like we had in aggregation and composition). A good example of such relationship is the relationship between teachers and students (or doctors and patients). The teacher (doctor) has a relationship with the student (patients), but the teacher (doctor) is not a part/whole student (patients). A teacher (doctor) can see many student (patients), and a student (patients) can see many teacher (doctor) and neither teacher (doctor) nor student (patients) manage each other lifespans.
 
@@ -404,7 +404,7 @@ public:
 [plantuml code](diagrams/StudentTeacher.puml)
 
 
-### Dependency
+### Dependency (uses a) - - - - - ->
 A dependency is a semantic connection between dependent and independent model elements. It occurs when one object invokes another object’s functionality in order to accomplish some specific task. Dependency is a weaker relationship than an association, but still, any change to object being depended upon may break functionality in the (dependent) caller. A dependency is always uni-directional.
 One class depends on another if the independent class is a parameter variable or local variable of a method of the dependent class.
 
@@ -449,7 +449,7 @@ class X
 
 
 
-### Inheritance (Generalization)
+### Inheritance aka Generalization (is a) ────────▷
 In Inheritance relationship a class is derived from another class. It is a “is a” relationship between two classes.
 
 ```cpp
@@ -486,7 +486,7 @@ class Ellipse : public Shape
 [plantuml code](diagrams/ShapeCircleEllipse.puml)
 
 
-### Realization
+### Realization - - - - - -▷
 Realization relationship is used when a class implement one or more interface. It is very similar to inheritance but used with interface mainly.
 
 ```cpp

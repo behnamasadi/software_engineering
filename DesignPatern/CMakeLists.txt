@@ -118,6 +118,9 @@ target_link_libraries(ice_cream_decorator)
 add_executable(customized_car_decorater src/Structural/Decorator/customized_car_decorater.cpp)
 target_link_libraries(customized_car_decorater)
 
+add_executable(logger_decorater src/Structural/Decorator/logger_decorater.cpp)
+target_link_libraries(logger_decorater)
+
 ###################### (5) Facade ###########################
 
 add_executable(facade src/Structural/Facade/main.cpp)
@@ -127,6 +130,12 @@ target_link_libraries(facade)
 
 add_executable(flyweight_counter_strike src/Structural/Flyweight/flyweight_counter_strike.cpp)
 target_link_libraries(flyweight_counter_strike)
+
+add_executable(flyweight_millions_of_tree src/Structural/Flyweight/flyweight_millions_of_tree.cpp)
+target_link_libraries(flyweight_millions_of_tree)
+
+add_executable(flyweight_conceptual src/Structural/Flyweight/flyweight_conceptual.cpp)
+target_link_libraries(flyweight_conceptual)
 
 ###################### (7) Proxy ###########################
 

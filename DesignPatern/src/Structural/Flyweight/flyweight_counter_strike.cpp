@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <time.h>
 #include <memory>
+#include <vector>
 /*
 Intrinsic: shared
 Intrinsic state consists of information that is independent of the flyweight's context information.
@@ -62,14 +63,18 @@ public: Terrorist()
 // CounterTerrorist must have weapon and mission
 class CounterTerrorist: public Player
 {
-    // Intrinsic Attribute
+    // Intrinsic Attribute, shared
 private:
     std::string TASK;
 
     // Extrinsic Attribute
     std::string weapon;
 
-public: CounterTerrorist()
+public:
+
+
+
+    CounterTerrorist()
     {
         TASK = "DIFFUSE BOMB";
     }
@@ -149,14 +154,16 @@ int main()
     distributed). */
     srand (time(NULL));
     // All player types and weopons (used by getRandPlayerType() and getRandWeapon()
+
+    std::vector<std::shared_ptr<Player> >players;
     int numberOfPlayer=20;
     for (int i = 0; i <numberOfPlayer; i++)
     {
         std::shared_ptr<Player>p  = PlayerFactory::getPlayer(getRandPlayerType());
+        players.push_back(p);
         /* Assign a weapon chosen randomly uniformly from the weapon array  */
         p->assignWeapon(getRandWeapon());
         // Send this player on a mission
         p->mission();
     }
-
 }

@@ -33,16 +33,20 @@ public:
 
 class OptionsDecorator:public Car
 {
+protected:
+    Car *m_car;
 public:
+    OptionsDecorator(Car *car):m_car(car){}
     virtual std::string getDescription() = 0;
+    virtual double getPrice() = 0;
 
 };
 
 class SoundSystem: public OptionsDecorator
 {
-    Car *m_car;
+
 public:
-    SoundSystem(Car *car):m_car(car){}
+    SoundSystem(Car *car):OptionsDecorator(car){}
 
     double getPrice() override
     {
@@ -55,12 +59,11 @@ public:
     }
 };
 
-
 class Navigation: public OptionsDecorator
 {
-    Car* m_car;
+
 public:
-    Navigation(Car *car):m_car(car){}
+    Navigation(Car *car):OptionsDecorator(car){}
 
     double getPrice() override
     {
@@ -81,4 +84,5 @@ int main()
     Car *base_model_sound_system_navigan=new Navigation(base_model_sound_system);
 
     std::cout<<base_model_sound_system_navigan->getDescription()<<std::endl;
+    std::cout<<"35000.00+1000+500="<<base_model_sound_system_navigan->getPrice()<<std::endl;
 }

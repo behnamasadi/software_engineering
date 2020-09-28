@@ -1,0 +1,109 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+
+interface "<<Interface>>\n Player" as Player
+{
+    +{abstract} assignWeapon(string weapon):void
+    +{abstract} mission(string):void
+}
+
+enum  playerType
+{
+TERRORIST,COUNTERTRRRORIST
+}
+
+
+
+class Terrorist 
+{
+    -TASK:string
+    -weapon:string
+    +Terrorist()
+    +assignWeapon(string weapon):void
+    +mission():void
+}
+
+
+Terrorist -up..|> Player
+note "TASK: Intrinsic Attribute (shared between all instances)" as IntrinsicAttribute 
+
+note "weapon: Extrinsic Attribute (can not be shared)" as ExtrinsicAttribute
+
+note "TASK = 'PLANT A BOMB';" as TerroristCon
+
+    
+note "cout<<'Terrorist with weapon ' << weapon << '|' << ' Task is ' << TASK<<endl;" as Terroristmission
+
+Terroristmission -up-- Terrorist::mission
+
+ExtrinsicAttribute -right-- Terrorist::weapon
+IntrinsicAttribute -right-- Terrorist::Task
+TerroristCon -- Terrorist::Terrorist
+
+
+
+
+class CounterTerrorist 
+{
+    -TASK:string
+    -weapon:string
+    +CounterTerrorist()
+    +assignWeapon(string weapon):void
+    +mission():void
+}
+
+note "TASK = 'DIFFUSE BOMB';" as CounterTerroristCon
+CounterTerroristCon --CounterTerrorist::CounterTerrorist
+
+
+CounterTerrorist -up..|> Player
+
+
+note "unordered map stores the reference to the object of Terrorist(TS) or CounterTerrorist(CT)." as PlayerFactoryDesciption
+
+
+
+class PlayerFactory
+{
+    +{static}  hm: unordered_map<playerType, shared_ptr<Player> >
+    +{static}  getPlayer(playerType type):shared_ptr<Player> 
+}
+
+note as PlayerFactorygetPlayer
+
+If an object for TS or CT has already been created simply return its reference" 
+    
+        shared_ptr<Player> p = nullptr;
+        if (hm.find(type) != hm.end())
+                p = hm[type];
+        else
+        {
+            /* create an object of TS/CT  */
+            switch(type)
+            {
+            case playerType::TERRORIST:
+                cout<<'Terrorist Created'<<'endl;
+                p.reset( new Terrorist());
+                break;
+            case playerType::COUNTERTRRRORIST:
+                cout<<'Counter Terrorist Created'<<endl;
+                p.reset( new CounterTerrorist());
+                break;
+            default :
+                cout<<'Unreachable code'<<endl;
+            }
+            hm[type]= p;
+        }
+        return p;
+endnote
+
+
+PlayerFactorygetPlayer -up--PlayerFactory::getPlayer
+
+
+PlayerFactory -up..> CounterTerrorist
+
+PlayerFactory -up..> Terrorist
+@enduml

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1074px" preserveAspectRatio="none" style="width:1980px;height:1074px;" version="1.1" viewBox="0 0 1980 1074" width="1980px" zoomAndPan="magnify"><defs><filter height="300%" id="f1fjhbz3imnv17" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[2cb47ba637a0d19583e6199456f6ad0b]
+class Player--><rect codeLine="5" fill="#FEFECE" filter="url(#f1fjhbz3imnv17)" height="79.5469" id="Player" style="stroke: #A80036; stroke-width: 1.5;" width="219" x="888" y="7"/><ellipse cx="946.25" cy="25.9688" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M947.2031,22.75 L948.9219,22.75 C949.3125,22.75 949.5,22.7188 949.625,22.6406 C949.8906,22.4844 950.0313,22.2031 950.0313,21.9063 C950.0313,21.6406 949.9219,21.375 949.6875,21.2031 C949.5156,21.0938 949.375,21.0625 948.9219,21.0625 L943.7813,21.0625 C943.3438,21.0625 943.2188,21.0781 943.0625,21.1719 C942.8125,21.3281 942.6563,21.625 942.6563,21.9063 C942.6563,22.1875 942.7969,22.4375 943.0156,22.6094 C943.1719,22.7188 943.3594,22.75 943.7813,22.75 L945.5,22.75 L945.5,29.2656 L943.7813,29.2656 C943.3438,29.2656 943.2188,29.2813 943.0625,29.3906 C942.8125,29.5469 942.6563,29.8281 942.6563,30.125 C942.6563,30.375 942.7969,30.6406 943.0156,30.7969 C943.1719,30.9219 943.375,30.9688 943.7813,30.9688 L948.9219,30.9688 C949.6719,30.9688 950.0313,30.6875 950.0313,30.125 C950.0313,29.8438 949.9219,29.5938 949.6875,29.4219 C949.5156,29.2969 949.375,29.2656 948.9219,29.2656 L947.2031,29.2656 L947.2031,22.75 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="94" x="966.75" y="23.1387">&lt;&lt;Interface&gt;&gt;</text><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="36" x="997.75" y="37.1074">Player</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="889" x2="1106" y1="44.9375" y2="44.9375"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="889" x2="1106" y1="52.9375" y2="52.9375"/><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="207" x="894" y="67.1479">+assignWeapon(string weapon):void</text><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="120" x="894" y="79.9526">+mission(string):void</text><!--MD5=[6d4000bd0a0ad2b69691f2eb2bef5e9a]
+class playerType--><rect codeLine="11" fill="#FEFECE" filter="url(#f1fjhbz3imnv17)" height="60.8047" id="playerType" style="stroke: #A80036; stroke-width: 1.5;" width="193" x="1142" y="16.5"/><ellipse cx="1200.25" cy="32.5" fill="#EB937F" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1199.0469,33.375 L1200.5,33.375 L1200.5,33.4844 C1200.5,33.8906 1200.5313,34.0469 1200.6094,34.2031 C1200.7656,34.4531 1201.0469,34.6094 1201.3438,34.6094 C1201.5938,34.6094 1201.8594,34.4688 1202.0156,34.25 C1202.1406,34.0938 1202.1719,33.9375 1202.1719,33.4844 L1202.1719,31.5625 C1202.1719,31.4063 1202.1719,31.3594 1202.1563,31.2031 C1202.0938,30.7344 1201.7813,30.4219 1201.3281,30.4219 C1201.0781,30.4219 1200.8125,30.5625 1200.6406,30.7813 C1200.5313,30.9531 1200.5,31.1094 1200.5,31.5625 L1200.5,31.6875 L1199.0469,31.6875 L1199.0469,29.2813 L1203.0313,29.2813 L1203.0313,30.1406 C1203.0313,30.5469 1203.0625,30.7188 1203.1406,30.875 C1203.3125,31.125 1203.5938,31.2813 1203.875,31.2813 C1204.1406,31.2813 1204.4063,31.1406 1204.5781,30.9219 C1204.6875,30.75 1204.7188,30.6094 1204.7188,30.1406 L1204.7188,27.5938 L1197.0938,27.5938 C1196.6563,27.5938 1196.5313,27.6094 1196.375,27.7031 C1196.125,27.8594 1195.9688,28.1563 1195.9688,28.4375 C1195.9688,28.7188 1196.1094,28.9688 1196.3281,29.1406 C1196.4844,29.25 1196.6719,29.2813 1197.0938,29.2813 L1197.3438,29.2813 L1197.3438,35.7969 L1197.0938,35.7969 C1196.6875,35.7969 1196.5313,35.8125 1196.375,35.9219 C1196.125,36.0938 1195.9688,36.3594 1195.9688,36.6563 C1195.9688,36.9219 1196.1094,37.1719 1196.3281,37.3281 C1196.4688,37.4531 1196.7031,37.5 1197.0938,37.5 L1205.0938,37.5 L1205.0938,34.9219 C1205.0938,34.4844 1205.0625,34.3438 1204.9844,34.1875 C1204.8125,33.9375 1204.5313,33.7813 1204.25,33.7813 C1203.9844,33.7813 1203.7188,33.8906 1203.5469,34.1406 C1203.4375,34.2969 1203.4063,34.4375 1203.4063,34.9219 L1203.4063,35.7969 L1199.0469,35.7969 L1199.0469,33.375 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="68" x="1220.75" y="36.6543">playerType</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1143" x2="1334" y1="48.5" y2="48.5"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="181" x="1148" y="62.7104">TERRORIST,COUNTERTRRRORIST</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1143" x2="1334" y1="69.3047" y2="69.3047"/><!--MD5=[e97b23bd112cd3fa4e0fd8d5ff6cd5ca]
+class Terrorist--><rect codeLine="18" fill="#FEFECE" filter="url(#f1fjhbz3imnv17)" height="112.0234" id="Terrorist" style="stroke: #A80036; stroke-width: 1.5;" width="219" x="782" y="236"/><ellipse cx="861.25" cy="252" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M863.5938,247.6719 C862.6563,247.2344 862.0625,247.0938 861.1875,247.0938 C858.5625,247.0938 856.5625,249.1719 856.5625,251.8906 L856.5625,253.0156 C856.5625,255.5938 858.6719,257.4844 861.5625,257.4844 C862.7813,257.4844 863.9375,257.1875 864.6875,256.6406 C865.2656,256.2344 865.5938,255.7813 865.5938,255.3906 C865.5938,254.9375 865.2031,254.5469 864.7344,254.5469 C864.5156,254.5469 864.3125,254.625 864.125,254.8125 C863.6719,255.2969 863.6719,255.2969 863.4844,255.3906 C863.0625,255.6563 862.375,255.7813 861.6094,255.7813 C859.5625,255.7813 858.2656,254.6875 858.2656,252.9844 L858.2656,251.8906 C858.2656,250.1094 859.5156,248.7969 861.25,248.7969 C861.8281,248.7969 862.4375,248.9531 862.9063,249.2031 C863.3906,249.4844 863.5625,249.7031 863.6563,250.1094 C863.7188,250.5156 863.75,250.6406 863.8906,250.7656 C864.0313,250.9063 864.2656,251.0156 864.4844,251.0156 C864.75,251.0156 865.0156,250.875 865.1875,250.6563 C865.2969,250.5 865.3281,250.3125 865.3281,249.8906 L865.3281,248.4688 C865.3281,248.0313 865.3125,247.9063 865.2188,247.75 C865.0625,247.4844 864.7813,247.3438 864.4844,247.3438 C864.1875,247.3438 863.9844,247.4375 863.7656,247.75 L863.5938,247.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="52" x="881.75" y="256.1543">Terrorist</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="783" x2="1000" y1="268" y2="268"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="68" x="788" y="282.2104">-TASK:string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="788" y="295.0151">-weapon:string</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="783" x2="1000" y1="301.6094" y2="301.6094"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="64" x="788" y="315.8198">+Terrorist()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="207" x="788" y="328.6245">+assignWeapon(string weapon):void</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="87" x="788" y="341.4292">+mission():void</text><path d="M6,279.5 L6,304.6328 L379,304.6328 L379,289.5 L369,279.5 L6,279.5 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M369,279.5 L369,289.5 L379,289.5 L369,279.5 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="352" x="12" y="296.5669">TASK: Intrinsic Attribute (shared between all instances)</text><path d="M414,279.5 L414,304.6328 A0,0 0 0 0 414,304.6328 L739,304.6328 A0,0 0 0 0 739,304.6328 L739,297.5 L773.728,292 L739,289.5 L739,289.5 L729,279.5 L414,279.5 A0,0 0 0 0 414,279.5 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M729,279.5 L729,289.5 L739,289.5 L729,279.5 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="304" x="420" y="296.5669">weapon: Extrinsic Attribute (can not be shared)</text><path d="M909,147 L909,172.1328 A0,0 0 0 0 909,172.1328 L984.093,172.1328 L939.545,231.85 L992.093,172.1328 L1086,172.1328 A0,0 0 0 0 1086,172.1328 L1086,157 L1076,147 L909,147 A0,0 0 0 0 909,147 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1076,147 L1076,157 L1086,157 L1076,147 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="156" x="915" y="164.0669">TASK = 'PLANT A BOMB';</text><path d="M491.5,500.5 L491.5,525.6328 A0,0 0 0 0 491.5,525.6328 L1027.5,525.6328 A0,0 0 0 0 1027.5,525.6328 L1027.5,510.5 L1017.5,500.5 L770.672,500.5 L855.779,352.265 L762.672,500.5 L491.5,500.5 A0,0 0 0 0 491.5,500.5 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1017.5,500.5 L1017.5,510.5 L1027.5,510.5 L1017.5,500.5 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="515" x="497.5" y="517.5669">cout&lt;&lt;'Terrorist with weapon ' &lt;&lt; weapon &lt;&lt; '|' &lt;&lt; ' Task is ' &lt;&lt; TASK&lt;&lt;endl;</text><!--MD5=[9b9505a5e126d36c203655c13e356509]
+class CounterTerrorist--><rect codeLine="47" fill="#FEFECE" filter="url(#f1fjhbz3imnv17)" height="112.0234" id="CounterTerrorist" style="stroke: #A80036; stroke-width: 1.5;" width="219" x="1133" y="237"/><ellipse cx="1188.75" cy="253" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1191.0938,248.6719 C1190.1563,248.2344 1189.5625,248.0938 1188.6875,248.0938 C1186.0625,248.0938 1184.0625,250.1719 1184.0625,252.8906 L1184.0625,254.0156 C1184.0625,256.5938 1186.1719,258.4844 1189.0625,258.4844 C1190.2813,258.4844 1191.4375,258.1875 1192.1875,257.6406 C1192.7656,257.2344 1193.0938,256.7813 1193.0938,256.3906 C1193.0938,255.9375 1192.7031,255.5469 1192.2344,255.5469 C1192.0156,255.5469 1191.8125,255.625 1191.625,255.8125 C1191.1719,256.2969 1191.1719,256.2969 1190.9844,256.3906 C1190.5625,256.6563 1189.875,256.7813 1189.1094,256.7813 C1187.0625,256.7813 1185.7656,255.6875 1185.7656,253.9844 L1185.7656,252.8906 C1185.7656,251.1094 1187.0156,249.7969 1188.75,249.7969 C1189.3281,249.7969 1189.9375,249.9531 1190.4063,250.2031 C1190.8906,250.4844 1191.0625,250.7031 1191.1563,251.1094 C1191.2188,251.5156 1191.25,251.6406 1191.3906,251.7656 C1191.5313,251.9063 1191.7656,252.0156 1191.9844,252.0156 C1192.25,252.0156 1192.5156,251.875 1192.6875,251.6563 C1192.7969,251.5 1192.8281,251.3125 1192.8281,250.8906 L1192.8281,249.4688 C1192.8281,249.0313 1192.8125,248.9063 1192.7188,248.75 C1192.5625,248.4844 1192.2813,248.3438 1191.9844,248.3438 C1191.6875,248.3438 1191.4844,248.4375 1191.2656,248.75 L1191.0938,248.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="99" x="1209.25" y="257.1543">CounterTerrorist</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1134" x2="1351" y1="269" y2="269"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="68" x="1139" y="283.2104">-TASK:string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="83" x="1139" y="296.0151">-weapon:string</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1134" x2="1351" y1="302.6094" y2="302.6094"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="109" x="1139" y="316.8198">+CounterTerrorist()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="207" x="1139" y="329.6245">+assignWeapon(string weapon):void</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="87" x="1139" y="342.4292">+mission():void</text><path d="M1193,147 L1193,172.1328 L1368,172.1328 L1368,157 L1358,147 L1193,147 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1358,147 L1358,157 L1368,157 L1358,147 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="154" x="1199" y="164.0669">TASK = 'DIFFUSE BOMB';</text><path d="M1370.5,34.5 L1370.5,59.6328 L1968.5,59.6328 L1968.5,44.5 L1958.5,34.5 L1370.5,34.5 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1958.5,34.5 L1958.5,44.5 L1968.5,44.5 L1958.5,34.5 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="577" x="1376.5" y="51.5669">unordered map stores the reference to the object of Terrorist(TS) or CounterTerrorist(CT).</text><!--MD5=[99b3cce71a8301bb50cf9d5850455732]
+class PlayerFactory--><rect codeLine="67" fill="#FEFECE" filter="url(#f1fjhbz3imnv17)" height="73.6094" id="PlayerFactory" style="stroke: #A80036; stroke-width: 1.5;" width="343" x="1071" y="477"/><ellipse cx="1197.75" cy="493" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1200.0938,488.6719 C1199.1563,488.2344 1198.5625,488.0938 1197.6875,488.0938 C1195.0625,488.0938 1193.0625,490.1719 1193.0625,492.8906 L1193.0625,494.0156 C1193.0625,496.5938 1195.1719,498.4844 1198.0625,498.4844 C1199.2813,498.4844 1200.4375,498.1875 1201.1875,497.6406 C1201.7656,497.2344 1202.0938,496.7813 1202.0938,496.3906 C1202.0938,495.9375 1201.7031,495.5469 1201.2344,495.5469 C1201.0156,495.5469 1200.8125,495.625 1200.625,495.8125 C1200.1719,496.2969 1200.1719,496.2969 1199.9844,496.3906 C1199.5625,496.6563 1198.875,496.7813 1198.1094,496.7813 C1196.0625,496.7813 1194.7656,495.6875 1194.7656,493.9844 L1194.7656,492.8906 C1194.7656,491.1094 1196.0156,489.7969 1197.75,489.7969 C1198.3281,489.7969 1198.9375,489.9531 1199.4063,490.2031 C1199.8906,490.4844 1200.0625,490.7031 1200.1563,491.1094 C1200.2188,491.5156 1200.25,491.6406 1200.3906,491.7656 C1200.5313,491.9063 1200.7656,492.0156 1200.9844,492.0156 C1201.25,492.0156 1201.5156,491.875 1201.6875,491.6563 C1201.7969,491.5 1201.8281,491.3125 1201.8281,490.8906 L1201.8281,489.4688 C1201.8281,489.0313 1201.8125,488.9063 1201.7188,488.75 C1201.5625,488.4844 1201.2813,488.3438 1200.9844,488.3438 C1200.6875,488.3438 1200.4844,488.4375 1200.2656,488.75 L1200.0938,488.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="81" x="1218.25" y="497.1543">PlayerFactory</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1072" x2="1413" y1="509" y2="509"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="331" x="1077" y="523.2104">+hm: unordered_map&lt;playerType, shared_ptr&lt;Player&gt; &gt;</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="1072" x2="1413" y1="529.8047" y2="529.8047"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="282" x="1077" y="544.0151">+getPlayer(playerType type):shared_ptr&lt;Player&gt;</text><path d="M982,674 L982,1062.3203 A0,0 0 0 0 982,1062.3203 L1505,1062.3203 A0,0 0 0 0 1505,1062.3203 L1505,684 L1495,674 L1416.9,674 L1415.5,539 L1408.9,674 L982,674 A0,0 0 0 0 982,674 " fill="#FBFB77" filter="url(#f1fjhbz3imnv17)" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1495,674 L1495,684 L1505,684 L1495,674 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="992" y="691.0669"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="498" x="988" y="706.1997">If an object for TS or CT has already been created simply return its reference"</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1004" y="721.3325"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="204" x="1020" y="736.4653">shared_ptr&lt;Player&gt; p = nullptr;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="192" x="1020" y="751.5981">if (hm.find(type) != hm.end())</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="91" x="1052" y="766.731">p = hm[type];</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="26" x="1020" y="781.8638">else</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="9" x="1020" y="796.9966">{</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="196" x="1036" y="812.1294">/* create an object of TS/CT  */</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="1036" y="827.2622">switch(type)</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="9" x="1036" y="842.395">{</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="193" x="1036" y="857.5278">case playerType::TERRORIST:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="218" x="1052" y="872.6606">cout&lt;&lt;'Terrorist Created'&lt;&lt;'endl;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="159" x="1052" y="887.7935">p.reset( new Terrorist());</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="41" x="1052" y="902.9263">break;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="256" x="1036" y="918.0591">case playerType::COUNTERTRRRORIST:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="270" x="1052" y="933.1919">cout&lt;&lt;'Counter Terrorist Created'&lt;&lt;endl;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="210" x="1052" y="948.3247">p.reset( new CounterTerrorist());</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="41" x="1052" y="963.4575">break;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="54" x="1036" y="978.5903">default :</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="221" x="1052" y="993.7231">cout&lt;&lt;'Unreachable code'&lt;&lt;endl;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="9" x="1036" y="1008.856">}</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="87" x="1036" y="1023.9888">hm[type]= p;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="9" x="1020" y="1039.1216">}</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="56" x="1020" y="1054.2544">return p;</text><!--MD5=[ed1188294729d2d3f5ab512c69fa27a8]
+reverse link Player to Terrorist--><path codeLine="28" d="M924.498,100.759 C911.087,114.201 898.978,129.784 891.5,147 C880.096,173.255 878.893,204.831 881.048,231.716 " fill="none" id="Player-backto-Terrorist" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="919.947,95.433,939.402,87.037,929.43,105.733,919.947,95.433" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bc7406b3f2b2bf6e791a139b0df2dc98]
+link IntrinsicAttribute to Terrorist--><path codeLine="41" d="M214.871,279.491 C253.857,258.488 337.413,216.965 414,202 C555.763,174.299 599.658,163.949 739,202 C762.577,208.438 786.218,219.557 807.608,231.829 " fill="none" id="IntrinsicAttribute-Terrorist" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4d35684491278be8c080d32c9fffc62b]
+link CounterTerroristCon to CounterTerrorist--><path codeLine="57" d="M1298.32,172.162 C1315.82,184.779 1341.45,206.665 1352.5,233 C1366.09,265.379 1388.61,312 1353.5,312 " fill="none" id="CounterTerroristCon-CounterTerrorist" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3df121c4d4f782c25033350aedc7a193]
+reverse link Player to CounterTerrorist--><path codeLine="60" d="M1055.01,100.698 C1070.88,115.512 1087.99,131.745 1103.5,147 C1131.74,174.778 1162.39,206.372 1187.71,232.875 " fill="none" id="Player-backto-CounterTerrorist" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="1050.16,105.747,1040.27,87.008,1059.69,95.489,1050.16,105.747" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d1b429a84f4fb6b57585c64e25b69e5a]
+reverse link CounterTerrorist to PlayerFactory--><path codeLine="105" d="M1242.5,356.137 C1242.5,393.86 1242.5,440.586 1242.5,472.989 " fill="none" id="CounterTerrorist-backto-PlayerFactory" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1242.5,351.113,1238.5,360.113,1242.5,356.113,1246.5,360.113,1242.5,351.113" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[718f73209640800e72c2807ce59e2d9a]
+reverse link Terrorist to PlayerFactory--><path codeLine="107" d="M990.831,354.976 C1051.55,392.863 1127.37,440.168 1179.83,472.901 " fill="none" id="Terrorist-backto-PlayerFactory" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="986.486,352.265,992.0032,360.4235,990.7277,354.9123,996.2389,353.6368,986.486,352.265" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2945becddea89a3ac47bf4a1e0a22b55]
+@startuml
+skinparam classAttributeIconSize 0
+
+
+
+interface "<<Interface>>\n Player" as Player
+{
+    +{abstract} assignWeapon(string weapon):void
+    +{abstract} mission(string):void
+}
+
+enum  playerType
+{
+TERRORIST,COUNTERTRRRORIST
+}
+
+
+
+class Terrorist 
+{
+    -TASK:string
+    -weapon:string
+    +Terrorist()
+    +assignWeapon(string weapon):void
+    +mission():void
+}
+
+
+Terrorist -up..|> Player
+note "TASK: Intrinsic Attribute (shared between all instances)" as IntrinsicAttribute 
+
+note "weapon: Extrinsic Attribute (can not be shared)" as ExtrinsicAttribute
+
+note "TASK = 'PLANT A BOMB';" as TerroristCon
+
+    
+note "cout<<'Terrorist with weapon ' << weapon << '|' << ' Task is ' << TASK<<endl;" as Terroristmission
+
+Terroristmission -up- - Terrorist::mission
+
+ExtrinsicAttribute -right- - Terrorist::weapon
+IntrinsicAttribute -right- - Terrorist::Task
+TerroristCon - - Terrorist::Terrorist
+
+
+
+
+class CounterTerrorist 
+{
+    -TASK:string
+    -weapon:string
+    +CounterTerrorist()
+    +assignWeapon(string weapon):void
+    +mission():void
+}
+
+note "TASK = 'DIFFUSE BOMB';" as CounterTerroristCon
+CounterTerroristCon - -CounterTerrorist::CounterTerrorist
+
+
+CounterTerrorist -up..|> Player
+
+
+note "unordered map stores the reference to the object of Terrorist(TS) or CounterTerrorist(CT)." as PlayerFactoryDesciption
+
+
+
+class PlayerFactory
+{
+    +{static}  hm: unordered_map<playerType, shared_ptr<Player> >
+    +{static}  getPlayer(playerType type):shared_ptr<Player> 
+}
+
+note as PlayerFactorygetPlayer
+
+If an object for TS or CT has already been created simply return its reference" 
+    
+        shared_ptr<Player> p = nullptr;
+        if (hm.find(type) != hm.end())
+                p = hm[type];
+        else
+        {
+            /* create an object of TS/CT  */
+            switch(type)
+            {
+            case playerType::TERRORIST:
+                cout<<'Terrorist Created'<<'endl;
+                p.reset( new Terrorist());
+                break;
+            case playerType::COUNTERTRRRORIST:
+                cout<<'Counter Terrorist Created'<<endl;
+                p.reset( new CounterTerrorist());
+                break;
+            default :
+                cout<<'Unreachable code'<<endl;
+            }
+            hm[type]= p;
+        }
+        return p;
+endnote
+
+
+PlayerFactorygetPlayer -up- -PlayerFactory::getPlayer
+
+
+PlayerFactory -up..> CounterTerrorist
+
+PlayerFactory -up..> Terrorist
+@enduml
+
+PlantUML version 1.2020.18beta4(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

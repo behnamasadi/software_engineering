@@ -1,11 +1,15 @@
 @startuml
 skinparam classAttributeIconSize 0
-class Car
+
+
+
+interface "<<Interface>>\n Car" as Car
 {
-    # description:string
+   # description:string
     +{abstract} getDescription():string
     +{abstract} getPrice():double;
 }
+
 class BaseModel
 {
 + getPrice():double
@@ -15,7 +19,10 @@ BaseModelNote -left.. BaseModel
 
 class OptionsDecorator
 {
-    +{abstract} getPrice():double;
+# m_car: Car*
++OptionsDecorator(Car *car)    
++{abstract} getPrice():double;
++{abstract} getDescription():string;
 }
 
 class Navigation
@@ -34,11 +41,26 @@ class LeatherSeat
     getDescription():string
     getPrice():double;
 }
+class Client{}
 OptionsDecorator -up..|> Car
-OptionsDecorator *-- Car
+OptionsDecorator o-- Car
 
-Navigation -up..|> OptionsDecorator
 SoundSystem -up..|> OptionsDecorator
 LeatherSeat -up..|> OptionsDecorator
+Navigation -up..|> OptionsDecorator
+
 BaseModel -up..|> Car
+Client --> Car
+
+
+note "Car *base_model=new BaseModel();\nCar *base_model_sound_system=new SoundSystem(base_model);\nCar *base_model_sound_system_navigan=new Navigation(base_model_sound_system);\nbase_model_sound_system_navigan->getDescription();\nbase_model_sound_system_navigan->getPrice()" as ClientNote
+
+
+ClientNote -left--Client
+
+note "return  m_car->getPrice()+  + 500;" as NavigationgetPrice
+note "return  m_car->getDescription()+ ' + Navigation';" as NavigationgetDescription
+
+NavigationgetDescription -- Navigation::getDescription
+NavigationgetPrice -- Navigation::getPrice
 @enduml

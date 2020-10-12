@@ -108,7 +108,15 @@ Remember that **Adapter** makes two existing interfaces work together as opposed
 **Flyweight** shows how to make lots of little objects, Facade shows how to make a single object represent an entire subsystem.
 
 ## Flyweight
-The pattern for saving memory (basically) by sharing properties of objects. Imagine a huge number of similar objects which all have most of their properties the same. It is natural to move these properties out of these objects to some external data structure and provide each object with the link to that data structure.
+The pattern for saving memory (basically) by sharing properties of objects. Imagine a huge number of similar 
+objects which all have most of their properties the same. It is natural to move these properties out of these
+ objects to some external data structure and provide each object with the link to that data structure.
+ 
+The Flyweight stores a common state (also called intrinsic state) that belongs to multiple real entities. 
+The Flyweight accepts the rest of the state (extrinsic state, unique for each entity) via its  method parameters. 
+The Flyweight Factory creates and manages the Flyweight objects. It ensures  that flyweights are shared correctly. 
+When the client requests a flyweight, the factory either returns an existing instance or creates a new one,
+ if it  doesn't exist yet.
 
 ![PlantUML model](diagrams/flyweight_counter_strike.svg)
 

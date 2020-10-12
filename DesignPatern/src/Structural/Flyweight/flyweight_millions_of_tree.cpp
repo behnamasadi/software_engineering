@@ -83,8 +83,3 @@ class Forest
 };
 
 */
-
-int main()
-{
-
-}

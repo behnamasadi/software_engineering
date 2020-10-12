@@ -88,6 +88,9 @@ extending functionality.
 
 [plantuml code](diagrams/decorator.puml)
 
+![PlantUML model](diagrams/logger_decorater.svg)
+
+[plantuml code](diagrams/logger_decorater.puml)
 
 ## Facade
 Developers often use the facade design pattern when a system is very complex or difficult to understand because the system has many interdependent classes or because its source code is unavailable. This pattern hides the complexities of the larger system and provides a simpler interface to the client. 
@@ -103,6 +106,11 @@ Remember that **Adapter** makes two existing interfaces work together as opposed
 
 ## Flyweight
 The pattern for saving memory (basically) by sharing properties of objects. Imagine a huge number of similar objects which all have most of their properties the same. It is natural to move these properties out of these objects to some external data structure and provide each object with the link to that data structure.
+
+![PlantUML model](diagrams/flyweight_counter_strike.svg)
+
+[plantuml code](diagrams/flyweight_counter_strike.puml)
+
 
 **Prototype** Vs. **Flyweight**:
 In Prototype objects' creation go through cloning, it ease object's creation. By making a request for cloning we create new cloned object each time.

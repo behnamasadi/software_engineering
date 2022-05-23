@@ -29,9 +29,9 @@ want to be able to buy their software a piece at a time, and to be able to upgra
 just like they can upgrade their stereo. They want new pieces to work seamlessly with
 their old pieces, and to be able to upgrade on their own schedule, not the
 manufacturer's schedule. They want to be able to mix and match pieces from various
-manufacturers. This is a very reasonable requirement. It is just hard to satisfy.
+manufacturers. This is a very reasonable requirement. It is just hard to satisfy. **Ralph Johnson**
 
-**Ralph Johnson**
+
 Ref:
 	[1](https://www.geeksforgeeks.org/unified-modeling-language-uml-object-diagrams/),
 	[2](https://www.guru99.com/component-diagram-uml-example.html),

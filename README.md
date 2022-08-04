@@ -1,5 +1,7 @@
 # [UML, Design Pattern and Refactoring](#)
-This repository contains an introduction on **UML** with C++ examples, various example of **Design Pattern** in object oriented programming with C++, **code refactoring**, and few examples for software design such **Model View Controller (MVC)**, **SOLID Design Principles** and finally examples of **Clean Code**.
+
+This repository contains an introduction to **UM**L with C++ examples, various examples of **Design Patterns** in **object-oriented** programming with C++, **code refactoring**, and a few examples for software design such as **Model View Controller (MVC)**, **SOLID Design Principles**, and finally examples of **Clean Code**.
+
 
 ## [UML](#) 
 - [Concepts](UML/Concepts) 

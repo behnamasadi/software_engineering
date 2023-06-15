@@ -1,102 +1,104 @@
-#include <memory>
-#include <string>
-#include <vector>
+
+#include <cmath>
+#include <functional>
 #include <iostream>
-#include <algorithm>
-#include <map>
+#include <list>
 
-class Observer;
+class Car; // Forward declaration for usage in Observer
 
-class Car
-{
-    double m_speed;
-    int m_temperature;
-    std::vector<Observer *> m_ObserverList;
-    //std::map<Observer *> m_ObserverMap;
-
-    void notify();
-
-    void attach(Observer *obs)
-    {
-        //observerList.push_back(obs);
-    }
-    void detach(Observer *obs)
-    {
-        //m_ObserverList.erase(std::remove(m_ObserverList.begin(), m_ObserverList.end(), obs), m_ObserverList.end());
-    }
-
+class Observer {
 public:
-    double getSpeed()
-    {
-        return m_speed;
-    }
-    void setSpeed(double speed)
-    {
-        m_speed=speed;
-        notify();
-    }
+  explicit Observer(Car &subj);
+  virtual ~Observer();
 
-    int getTemperature()
-    {
-        return m_temperature;
-    }
-    void setTemperature(int temperature)
-    {
-        m_temperature=temperature;
-        notify();
-    }
+  Observer(const Observer &) = delete; // rule of three
+  Observer &operator=(const Observer &) = delete;
+
+  virtual void update(Car &car) const = 0;
+
+private:
+  // Reference to a Car object to detach in the destructor
+  Car &subject;
 };
 
-class Observer
-{
-    std::string m_name;
-protected:
-    Car * m_car;
-public:
-    Observer(Car * car, std::string name):m_car(car),m_name(name){}
-    void virtual update()=0;
+// Car is the base class for event generation
+class Car {
+private:
+  double m_speed = NAN;
+  double m_temperature = NAN;
 
+public:
+  using RefObserver = std::reference_wrapper<const Observer>;
+
+  // Notify all the attached observers
+  void notify() {
+    for (const auto &x : observers) {
+      x.get().update(*this);
+    }
+  }
+
+  double getSpeed() { return m_speed; }
+  void setSpeed(double speed) {
+    m_speed = speed;
+    notify();
+  }
+
+  double getTemperature() { return m_temperature; }
+  void setTemperature(double temperature) {
+    m_temperature = temperature;
+    notify();
+  }
+
+  // Add an observer
+  void attach(const Observer &observer) { observers.push_front(observer); }
+
+  // Remove an observer
+  void detach(Observer &observer) {
+    observers.remove_if([&observer](const RefObserver &obj) {
+      return &obj.get() == &observer;
+    });
+  }
+
+private:
+  std::list<RefObserver> observers;
 };
 
-void Car::notify()
-{
-    for(std::vector<Observer *>::iterator it=m_ObserverList.begin();it!=m_ObserverList.end();it++)
-    {
-        (*it)->update();
-    }
-}
+Observer::Observer(Car &subj) : subject(subj) { subject.attach(*this); }
 
-class TemperatureObserver:public Observer
-{
+Observer::~Observer() { subject.detach(*this); }
+
+// Example of usage
+class ConcreteObserver : public Observer {
 public:
-    void update() override
-    {
-        std::cout<<"Car Temperature is: " <<m_car->getTemperature()<<std::endl;
-    }
+  ConcreteObserver(Car &subj) : Observer(subj) {}
 
+  // Get notification
+  void update(Car &) const override {
+    std::cout << "Got a notification" << std::endl;
+  }
 };
-class SpeedObserver:public  Observer
-{
+
+class TemperatureObserver : public Observer {
 public:
-    void update() override
-    {
-        std::cout<<"Car Speed is: " <<m_car->getSpeed()<<std::endl;
-    }
+  TemperatureObserver(Car &subj) : Observer(subj) {}
 
+  void update(Car &car) const override {
+    std::cout << "Car Temperature is: " << car.getTemperature() << std::endl;
+  }
 };
-int main()
-{
-    std::vector<Observer *> observerList;
-    SpeedObserver* speedObserver1, *speedObserver2;
-    TemperatureObserver *temperatureObserver1, *temperatureObserver2,*temperatureObserver3;
-    observerList.push_back(speedObserver1);
-    observerList.push_back(temperatureObserver1);
-    observerList.push_back(speedObserver2);
-    observerList.push_back(temperatureObserver2);
-    observerList.push_back(temperatureObserver3);
-    std::cout<<observerList.size()<<std::endl;
-    std::vector<Observer *>::iterator p = std::find (observerList.begin(), observerList.end(), speedObserver2);
-    observerList.erase(p);
-    std::cout<<observerList.size()<<std::endl;
+class SpeedObserver : public Observer {
+public:
+  SpeedObserver(Car &subj) : Observer(subj) {}
 
+  void update(Car &car) const override {
+    std::cout << "Car Speed is: " << car.getSpeed() << std::endl;
+  }
+};
+
+int main() {
+  Car car;
+  SpeedObserver speedObserver1(car);
+  TemperatureObserver temperatureObserver1(car);
+  car.setSpeed(20);
+  car.setTemperature(-2);
 }

@@ -9,29 +9,24 @@
 // reference.
 #include <string>
 
-class Color{};
+class Color {};
 
-class Texture{};
+class Texture {};
 
-class Canvas{};
+class Canvas {};
 
-class TreeType
-{
-    std::string m_name;
-    Color *m_color;
-    Texture *m_texture;
+class TreeType {
+  std::string m_name;
+  Color *m_color;
+  Texture *m_texture;
+
 public:
-    TreeType(std::string name, Color *color,Texture* texture)
-    {
+  TreeType(std::string name, Color *color, Texture *texture) {}
 
-    }
-
-    void draw(Canvas *canvas, int x, int y)
-    {
-        // 1. Create a bitmap of a given type, color & texture.
-        // 2. Draw the bitmap on the canvas at X and Y coords.
-    }
-
+  void draw(Canvas *canvas, int x, int y) {
+    // 1. Create a bitmap of a given type, color & texture.
+    // 2. Draw the bitmap on the canvas at X and Y coords.
+  }
 };
 
 /*
@@ -83,3 +78,5 @@ class Forest
 };
 
 */
+
+int main() {}

@@ -138,10 +138,12 @@ References:
 
 
 # Systems development life cycle (SDLC)
-## V-Model
+# V-Model
 
 
-<small><i>TOC generated with <a href='http://ecotrust-canada.github.io/markdown-toc/'>markdown-toc</a></i></small>
+# The Flaws of Inheritance
+- [The Flaws of Inheritance](docs/the_flaws_of_inheritance .md)
+
 
 
 [![Build Status](https://travis-ci.com/behnamasadi/software_engineering.svg?branch=master)](https://travis-ci.com/behnamasadi/software_engineering)

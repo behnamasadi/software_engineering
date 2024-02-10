@@ -14,3 +14,5 @@ examples/*
 docs/*
 outsources/*
 sandbox/*
+*.mp4
+*.mkv

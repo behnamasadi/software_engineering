@@ -1,23 +1,25 @@
-- [Class Diagram](#class-diagram)
-  * [Interfaces and Abstract Classes](#interfaces-and-abstract-classes)
-    + [Ball-and-socket Notation And Lollipop Notation](#ball-and-socket-notation-and-lollipop-notation)
-    + [Requiring an Interface](#requiring-an-interface)
-    + [Providing an Interface](#providing-an-interface)
-- [Class Relationship](#class-relationship)
-  * [Multiplicity in a Relation](#multiplicity-in-a-relation)
-  * [Composition (has a) ◆────────](#composition)
-  * [Aggregation (has a) ◇────────](#aggregation)
-    + [Composition vs Aggregation](#composition-vs-aggregation)
-    + [Summarizing composition and aggregation](#summarizing-composition-and-aggregation)
-  * [Association (knows a, Uses-a) ────────](#association)
-  * [Dependency (uses a) - - - - - ->](#dependency)
-    + [Types of dependency relationships](#types-of-dependency-relationships)
-  * [Inheritance aka Generalization (is a) ────────▷](#inheritance)
-  * [Realization - - - - - -▷](#realization)
-  * [Class template](#class-template)
-- [Class Relationship in Nutshell](#class-relationship-in-nutshell)
+- [1. Class Diagram](#1-class-diagram)
+- [2. Class Relationship](#2-class-relationship)
+  * [2.1. Multiplicity in a Relation](#21-multiplicity-in-a-relation)
+  * [2.2. Composition (has a) ◆──────── <a id="composition"></a>](#22-composition--has-a-------------a-id--composition----a-)
+  * [2.3. Aggregation (has a) ◇──────── <a id="aggregation"></a>](#23-aggregation--has-a-------------a-id--aggregation----a-)
+    + [2.3.1 Composition vs Aggregation](#231-composition-vs-aggregation)
+    + [2.3.2 Summarizing composition and aggregation](#232-summarizing-composition-and-aggregation)
+  * [2.4. Association (knows a, Uses-a) ──────── <a id="association"></a>](#24-association--knows-a--uses-a------------a-id--association----a-)
+  * [2.5. Dependency (uses a) - - - - - -><a id="dependency"></a>](#25-dependency--uses-a---------------a-id--dependency----a-)
+    + [2.5.1 Types of dependency relationships](#251-types-of-dependency-relationships)
+  * [2.6. Inheritance aka Generalization (is a) ────────▷<a id="inheritance"></a>](#26-inheritance-aka-generalization--is-a------------a-id--inheritance----a-)
+  * [2.7. Realization - - - - - -▷<a id="realization"></a>](#27-realization--------------a-id--realization----a-)
+    + [2.7.1. Interfaces and Abstract Classes](#271-interfaces-and-abstract-classes)
+    + [2.7.2. Ball-and-socket Notation And Lollipop Notation](#272-ball-and-socket-notation-and-lollipop-notation)
+      - [2.7.2.1. Requiring an Interface](#2721-requiring-an-interface)
+      - [2.7.2.2.  Providing an Interface](#2722--providing-an-interface)
+  * [2.8. Class template](#28-class-template)
+- [3. Class Relationship in Nutshell](#3-class-relationship-in-nutshell)
 
-## Class Diagram
+
+
+## 1. Class Diagram
 
 ```cpp
 class Animal
@@ -47,66 +49,12 @@ Different type of members/ methods in a class diagram
 4) S͟t͟a͟t͟i͟c͟  members are represented as underlined.
 5) 𝘗𝘶𝘳𝘦 𝘷𝘪𝘳𝘵𝘶𝘢𝘭 functions are represented as italics.
 
-### Interfaces and Abstract Classes
-The interfaces are implemented using abstract classes in C++. A class is abstract when at least one of its functions is pure 
-virtual. There are two types of virtual functions in C++:
-
-1) Virtual function
-2) Pure virtual function
-A virtual function just has the keyword virtual in its declaration.
-A pure virtual function is specified by placing "= 0" in its declaration.
-
-A class that has virtual function can be instantiated whereas an abstract class can not be instantiated on its own and a derived class that implements the pure-virtual method(s) must be used. You mark an interface with the keyword «interface».
-
-```cpp
-class Player {
-public:
-    virtual void play() = 0;
-    virtual void stop() = 0;
-    virtual void pause() = 0;
-    virtual void reverse() = 0;
-};
-```
-
-![PlantUML model](diagrams/PlayerInterface.svg)
-
-[plantuml code](diagrams/PlayerInterface.puml)
-
-
-#### Ball-and-socket Notation And Lollipop Notation
-
-"Ball-and-socket" is a new notations that appeared in UML 2.0 was to show interfaces required by a class. "Lollipop" notation (which was popularized by Microsoft) was being sed in UML 1.0 to show a class implementing multiple interfaces.
-
-Classes don't just implement interfaces, they might also require them. Both implementing (providing) and requiring operation can be modeled by 
-ball-and-socket notation and lollipop notation.
-
-Imagine writing a class that can provide information about a music playlists, such ID3 tag (metadata), total length of the playlist, etc. You can acquire these information from iTunes, spotify, last.fm, reading directly from an mp3 etc. You can achive this easily by substituting another implementation.
-
-
-#### Requiring an Interface  
-The required interface notation allows you to show this required interface with a compact socket notation.
-
-![PlantUML model](diagrams/PlaylistTrackData.svg)
-
-[plantuml code](diagrams/PlaylistTrackData.puml)
-
-#### Providing an Interface  
-A class provides an interface when it is implementing the interface or implementing a subtype of the interface.
-
-![PlantUML model](diagrams/PlaylistSpotifyTrackData.svg)
-
-[plantuml code](diagrams/PlaylistSpotifyTrackData.puml)
-
-The following is the Lollipop notation of the top one:
-
-![PlantUML model](diagrams/PlaylistSpotifyTrackDataLollipop.svg)
-
-[plantuml code](diagrams/PlaylistSpotifyTrackDataLollipop.puml)
 
 
 
 
-## Class Relationship
+
+## 2. Class Relationship
 So far we only have had classes that were consist of primitive types such as int, double and string.
 But a class might have relation to other classes, such as inheritance or has a member that is from type of an other class. The following summarize the relationship between classes. 
 The following summarize the relationship between classes:
@@ -119,7 +67,7 @@ The following summarize the relationship between classes:
 6) Realization  - - - - - -▷
 7) Class template
 
-### Multiplicity in a Relation
+### 2.1. Multiplicity in a Relation
 1) “0..1”               No instances, or one instance (optional, may)
 2) “1”                  Exactly one instance
 3) “0..* or *”          Zero or more instances
@@ -127,7 +75,7 @@ The following summarize the relationship between classes:
 
 
 
-### Composition (has a) ◆──────── <a id="composition"></a>
+### 2.2. Composition (has a) ◆──────── <a id="composition"></a>
 In real-life, complex objects are composed of smaller ones, i.e. a car has engine, some tires, a transmission. 
 in C++ when you write a class or struct you are using basic types like int, double or other classes
 when constructing a complex object which is object composition.
@@ -225,7 +173,7 @@ public:
 [plantuml code](diagrams/HospitalDepartment.puml)
 
 
-### Aggregation (has a) ◇──────── <a id="aggregation"></a>
+### 2.3. Aggregation (has a) ◇──────── <a id="aggregation"></a>
 Aggregation can occur when a class is a collection or container of other classes, but where the contained classes
 do not have a strong life cycle dependency on the container—essentially, if the container is destroyed,
 its contents are not. You may have confusion between aggregation and association.
@@ -333,7 +281,7 @@ public:
 
 ```
 
-#### Composition vs Aggregation
+#### 2.3.1 Composition vs Aggregation
 Composition is the stronger form of aggregation. Because aggregations are similar to compositions in that they are both part-whole relationships,
 they are implemented almost identically, and the difference between them is mostly semantic.
 In a composition, we typically add our parts to the composition using normal member variables
@@ -345,7 +293,7 @@ or it begins empty and the subobjects are added later via access functions or op
 Because these parts exist outside of the scope of the class, when the class is destroyed, the pointer or reference member variable will be destroyed (but not deleted). Consequently, the parts themselves will still exist.
 
 
-#### Summarizing composition and aggregation
+#### 2.3.2 Summarizing composition and aggregation
 
 **Compositions**:
 
@@ -360,7 +308,7 @@ Because these parts exist outside of the scope of the class, when the class is d
 2) Not responsible for creating/destroying parts
 
 
-### Association (knows a, Uses-a) ──────── <a id="association"></a>
+### 2.4. Association (knows a, Uses-a) ──────── <a id="association"></a>
 
 In an association, there is no implication of whole/part relationship (just like we had in aggregation and composition). A good example of such relationship is the relationship between teachers and students (or doctors and patients). The teacher (doctor) has a relationship with the student (patients), but the teacher (doctor) is not a part/whole student (patients). A teacher (doctor) can see many student (patients), and a student (patients) can see many teacher (doctor) and neither teacher (doctor) nor student (patients) manage each other lifespans.
 
@@ -404,7 +352,7 @@ public:
 [plantuml code](diagrams/StudentTeacher.puml)
 
 
-### Dependency (uses a) - - - - - -><a id="dependency"></a>
+### 2.5. Dependency (uses a) - - - - - -><a id="dependency"></a>
 A dependency is a semantic connection between dependent and independent model elements. It occurs when one object invokes another object’s functionality in order to accomplish some specific task. Dependency is a weaker relationship than an association, but still, any change to object being depended upon may break functionality in the (dependent) caller. A dependency is always uni-directional.
 One class depends on another if the independent class is a parameter variable or local variable of a method of the dependent class.
 
@@ -432,7 +380,7 @@ class X
 [plantuml code](diagrams/XDependsOnY.puml)
 
 
-#### Types of dependency relationships
+#### 2.5.1 Types of dependency relationships
 <!-- mdformat off(github rendering does not support multiline tables) -->
 |Keyword                                    | Type of dependency       | Description  |
 |---                                        |---                       |---           |
@@ -449,7 +397,7 @@ class X
 
 
 
-### Inheritance aka Generalization (is a) ────────▷<a id="inheritance"></a>
+### 2.6. Inheritance aka Generalization (is a) ────────▷<a id="inheritance"></a>
 In Inheritance relationship a class is derived from another class. It is a “is a” relationship between two classes.
 
 ```cpp
@@ -457,7 +405,7 @@ In Inheritance relationship a class is derived from another class. It is a “is
 ```
 
 
-𝙙𝙧𝙖𝙬() and 𝗴𝗲𝘁𝗔𝗿𝗲𝗮() methods of Shape class are virtual functions, so they are written in italics. Please note that Circle and Ellipse
+**_draw()_**  and **_getArea()_** methods of Shape class are virtual functions, so they are written in italics. Please note that Circle and Ellipse
 don't override `erase()` so if they call `erase()`, the one from Shape will be called.
 
 ```cpp
@@ -486,8 +434,34 @@ class Ellipse : public Shape
 [plantuml code](diagrams/ShapeCircleEllipse.puml)
 
 
-### Realization - - - - - -▷<a id="realization"></a>
+### 2.7. Realization - - - - - -▷<a id="realization"></a>
 Realization relationship is used when a class implement one or more interface. It is very similar to inheritance but used with interface mainly.
+
+#### 2.7.1. Interfaces and Abstract Classes
+The interfaces are implemented using abstract classes in C++. A class is abstract when at least one of its functions is pure 
+virtual. There are two types of virtual functions in C++:
+
+1) Virtual function
+2) Pure virtual function
+A virtual function just has the keyword virtual in its declaration.
+A pure virtual function is specified by placing "= 0" in its declaration.
+
+A class that has virtual function can be instantiated whereas an abstract class can not be instantiated on its own and a derived class that implements the pure-virtual method(s) must be used. You mark an interface with the keyword «interface».
+
+```cpp
+class Player {
+public:
+    virtual void play() = 0;
+    virtual void stop() = 0;
+    virtual void pause() = 0;
+    virtual void reverse() = 0;
+};
+```
+
+![PlantUML model](diagrams/PlayerInterface.svg)
+
+[plantuml code](diagrams/PlayerInterface.puml)
+
 
 ```cpp
 class Player {
@@ -519,8 +493,38 @@ public:
 [plantuml code](diagrams/PlayerRecorderTapePlayer.puml)
 
 
+#### 2.7.2. Ball-and-socket Notation And Lollipop Notation
 
-### Class template
+"Ball-and-socket" is a new notations that appeared in UML 2.0 was to show interfaces required by a class. "Lollipop" notation (which was popularized by Microsoft) was being sed in UML 1.0 to show a class implementing multiple interfaces.
+
+Classes don't just implement interfaces, they might also require them. Both implementing (providing) and requiring operation can be modeled by 
+ball-and-socket notation and lollipop notation.
+
+Imagine writing a class that can provide information about a music playlists, such ID3 tag (metadata), total length of the playlist, etc. You can acquire these information from iTunes, spotify, last.fm, reading directly from an mp3 etc. You can achieve this easily by substituting another implementation.
+
+
+##### 2.7.2.1. Requiring an Interface  
+The required interface notation allows you to show this required interface with a compact socket notation.
+
+![PlantUML model](diagrams/PlaylistTrackData.svg)
+
+[plantuml code](diagrams/PlaylistTrackData.puml)
+
+##### 2.7.2.2.  Providing an Interface  
+A class provides an interface when it is implementing the interface or implementing a subtype of the interface.
+
+![PlantUML model](diagrams/PlaylistSpotifyTrackData.svg)
+
+[plantuml code](diagrams/PlaylistSpotifyTrackData.puml)
+
+The following is the Lollipop notation of the top one:
+
+![PlantUML model](diagrams/PlaylistSpotifyTrackDataLollipop.svg)
+
+[plantuml code](diagrams/PlaylistSpotifyTrackDataLollipop.puml)
+
+
+### 2.8. Class template
 
 Template class mean generic classes.Languages like C++, java, C# supports generic programming.
 
@@ -536,7 +540,11 @@ Foo<double> fooFouble;
 [plantuml code](diagrams/Template.puml)
 
 
-## Class Relationship in Nutshell
+
+
+
+
+## 3. Class Relationship in Nutshell
 Association is a pointer to an other class and life cycle doesn't depend on the class.  
 Aggregation is vague concept and could be similar to Association.  
 Dependency is done via sending an object via function parameter.  

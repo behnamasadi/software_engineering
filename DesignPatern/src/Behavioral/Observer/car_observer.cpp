@@ -77,7 +77,7 @@ public:
     std::cout << "Got a notification" << std::endl;
   }
 };
-
+// Thermometer
 class TemperatureObserver : public Observer {
 public:
   TemperatureObserver(Car &subj) : Observer(subj) {}
@@ -86,6 +86,7 @@ public:
     std::cout << "Car Temperature is: " << car.getTemperature() << std::endl;
   }
 };
+// Odometer
 class SpeedObserver : public Observer {
 public:
   SpeedObserver(Car &subj) : Observer(subj) {}
@@ -99,6 +100,10 @@ int main() {
   Car car;
   SpeedObserver speedObserver1(car);
   TemperatureObserver temperatureObserver1(car);
+  
+  car.attach(speedObserver1);
+  car.attach(temperatureObserver1);
+  
   car.setSpeed(20);
   car.setTemperature(-2);
 }

@@ -52,16 +52,12 @@ References:
 - [Interface segregation principle](SOLID/InterfaceSegregationPrinciple)  
 - [Dependency inversion principle](SOLID/DependencyInjection)  
 
-
-## [Model View Controller](ModelViewController)  
-- [Simple Model View Controller Example](ModelViewController/src/student_model_view_controller.cpp)
-
 ## [Rule Of Three/Five/Zero](RuleOfThreeFiveZero)
 - [Rule Of Five](RuleOfThreeFiveZero/src/rule_of_five.cpp)  
 - [Rule Of Three](RuleOfThreeFiveZero/src/rule_of_three.cpp)  
 - [Rule Of Zero](RuleOfThreeFiveZero/src/rule_of_zero.cpp)  
 
-## [DesignPatern](#) 
+## [Software DesignPatern](#) 
 - [Behavioral patterns](DesignPatern/src/Behavioral)
   * [Chain of responsibility](DesignPatern/src/Behavioral/README.md#chain-of-responsibility)  
   * [Command](DesignPatern/src/Behavioral/README.md#command)  
@@ -91,6 +87,16 @@ References:
   * [Flyweight](DesignPatern/src/Structural/README.md#flyweight)  
   * [Private Class Data](DesignPatern/src/Structural/README.md#private-class-data)  
   * [Proxy](DesignPatern/src/Structural/README.md#proxy)  
+
+## [Software Architectural Patterns](#)
+- [Model View Controller](SoftwareArchitecturalPatterns/ModelViewController/src/student_model_view_controller.cpp)
+- [Entity Component System](SoftwareArchitecturalPatterns/EntityComponentSystem/README.md)
+- [Master-slave Architecture](SoftwareArchitecturalPatterns/#)
+- [Microservices Architecture](SoftwareArchitecturalPatterns/#)
+- [Microkernel Pattern](SoftwareArchitecturalPatterns/#)
+- [Event-driven Architecture](SoftwareArchitecturalPatterns/#)
+- [Client-server Architectur](SoftwareArchitecturalPatterns/#)
+
 
 
 References:

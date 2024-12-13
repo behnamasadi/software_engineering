@@ -29,8 +29,8 @@ add_subdirectory(SOLID/)
 # ########################################### Rule Of Three Five Zero############################################
 add_subdirectory(RuleOfThreeFiveZero/)
 
-# ########################################### Model View Controller############################################
-add_subdirectory(ModelViewController/)
+# ########################################### Software Architectural Patterns ############################################
+add_subdirectory(SoftwareArchitecturalPatterns/)
 
 # ########################################### Clean Code############################################
 add_subdirectory(CleanCode/)

@@ -1,7 +1,17 @@
 # [UML, Design Pattern and Refactoring](#)
 
-This repository contains an introduction to **UM**L with C++ examples, various examples of **Design Patterns** in **object-oriented** programming with C++, **code refactoring**, and a few examples for software design such as **Model View Controller (MVC)**, **SOLID Design Principles**, and finally examples of **Clean Code**.
+This repository serves as a comprehensive resource for learning software design and development with C++. It includes:
 
+- **UML Diagrams**: Explore concepts and detailed examples of various UML diagrams, including structure diagrams (e.g., Class, Component, Deployment) and behavioral diagrams (e.g., Use Case, Sequence, State Machine).  
+- **Design Patterns**: A collection of examples for behavioral, creational, and structural design patterns, showcasing best practices in object-oriented programming.  
+- **Software Design Principles**: Illustrations of SOLID principles, the Rule of Three/Five/Zero, and other foundational concepts for robust software architecture.  
+- **Refactoring Techniques**: Guidance on identifying bad code smells and applying refactoring methods to improve code quality and maintainability.  
+- **Architectural Patterns**: Insights into high-level software architecture patterns such as MVC, Microservices, and Event-Driven Architecture.  
+- **SDLC Models**: Overviews of popular software development lifecycle models like Waterfall, Agile, and DevOps.
+
+This repository is enriched with C++ examples, references, and visual aids to help developers, architects, and students better understand and implement professional-grade software design.
+
+---
 
 ## [UML](#) 
 - [Concepts](UML/Concepts) 
@@ -133,24 +143,23 @@ References:
   * [Simplifying Conditional Expressions](Refactoring/RefactoringTechniques/SimplifyingConditionalExpressions)
   * [Simplifying Method Calls](Refactoring/RefactoringTechniques/SimplifyingMethodCalls)
 
-References:
-	[1](https://refactoring.guru/refactoring),
-	[2](https://sourcemaking.com/refactoring),
-	[3](https://www.refactoring.com/)
+References: [1](https://refactoring.guru/refactoring), [2](https://sourcemaking.com/refactoring), [3](https://www.refactoring.com/)
 
 |   |   |   |
 |---|---|---|
 |<a target="_blank"  href="https://www.amazon.com/gp/product/0132350882/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0132350882&linkCode=as2&tag=rosdev09-20&linkId=949bad73dc39e53caf1caf849ad0f565"><img border="0" src="images/Refactoring_Improving_the_Design_of_Existing_Code_Martin_Fowler.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=0132350882" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|<a target="_blank"  href="https://www.amazon.com/gp/product/B07XGR7QQD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07XGR7QQD&linkCode=as2&tag=rosdev09-20&linkId=44172741182e66512df744aa85f17756"><img border="0" src="images/Clean_Code_A_Handbook_of_Agile_Software_Craftsmanship_Robert_C._Martin.jpg" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rosdev09-20&l=am2&o=1&a=B07XGR7QQD" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />|   |
 
 
-# Systems development life cycle (SDLC)
-# V-Model
+## [Systems Development Life Cycle (SDLC)](#)
+- [Waterfall Model](SDLC/README.md#--1-waterfall-model--)  
+- [V-Model](SDLC/README.md#--2-v-model--)  
+- [Agile Model](SDLC/README.md#--4-agile-model--)  
+- [DevOps Model](SDLC/README.md#--9-devops-model--)  
 
 
-# The Flaws of Inheritance
-- [The Flaws of Inheritance](docs/the_flaws_of_inheritance .md)
 
-
+## The Flaws of Inheritance
+- [The Flaws of Inheritance](docs/the_flaws_of_inheritance.md)
 
 [![Build Status](https://travis-ci.com/behnamasadi/software_engineering.svg?branch=master)](https://travis-ci.com/behnamasadi/software_engineering)
 ![alt text](https://img.shields.io/badge/license-BSD-blue.svg)

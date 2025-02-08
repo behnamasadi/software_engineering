@@ -1,52 +1,56 @@
 #include <iostream>
 #include <memory>
 
-class Strategy
-{
+class Strategy {
 public:
-    void virtual solve()=0;
+  virtual void solve() = 0;
+  virtual ~Strategy() = default; // Virtual destructor to ensure proper cleanup
 };
 
-class ConcreteStrategy1: public Strategy
-{
-    void solve() override
-    {
-        std::cout<<"ConcreteStrategy1 solution" <<std::endl;
-    }
+class ConcreteStrategy1 : public Strategy {
+public:
+  void solve() override {
+    std::cout << "ConcreteStrategy1 solution" << std::endl;
+  }
 };
 
-class ConcreteStrategy2: public Strategy
-{
-    void solve() override
-    {
-        std::cout<<"ConcreteStrategy2 solution" <<std::endl;
-    }
+class ConcreteStrategy2 : public Strategy {
+public:
+  void solve() override {
+    std::cout << "ConcreteStrategy2 solution" << std::endl;
+  }
 };
 
-class Context
-{
-    Strategy *m_strategy;
+class Context {
+  std::shared_ptr<Strategy>
+      m_strategy; // Use shared_ptr to avoid dangling pointer issues
 
 public:
-    Context(Strategy *strategy= nullptr):m_strategy(strategy){}
+  explicit Context(std::shared_ptr<Strategy> strategy = nullptr)
+      : m_strategy(std::move(strategy)) {}
 
-    void setStrategy(Strategy *strategy)
-    {
-        m_strategy=strategy;
-    }
+  void setStrategy(std::shared_ptr<Strategy> strategy) {
+    m_strategy = std::move(strategy);
+  }
 
-    void execute()
-    {
-        m_strategy->solve();
+  void execute() {
+    if (m_strategy) {
+      m_strategy->solve();
+    } else {
+      std::cerr << "Error: No strategy set!" << std::endl;
     }
+  }
 };
 
-int main()
-{
-    Strategy *strategy1=new ConcreteStrategy1;
-    Strategy *strategy2=new ConcreteStrategy2;
-    Context context(strategy1);
-    context.execute();
-    context.setStrategy(strategy2);
-    context.execute();
+int main() {
+  auto strategy1 = std::make_shared<ConcreteStrategy1>();
+  auto strategy2 = std::make_shared<ConcreteStrategy2>();
+
+  Context context(strategy1);
+  context.execute();
+
+  context.setStrategy(strategy2);
+  context.execute();
+
+  return 0;
 }

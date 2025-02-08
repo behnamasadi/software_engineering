@@ -1,4 +1,3 @@
-// https://www.bogotobogo.com/DesignPatterns/command.php
 #include <iostream>
 #include <memory>
 
@@ -8,6 +7,8 @@ using namespace std;
 class Command {
 public:
   virtual void execute() = 0;
+  virtual ~Command() =
+      default; // FIX: Virtual destructor to prevent memory leaks
 };
 
 // Receiver Class
@@ -20,54 +21,53 @@ public:
 // Command for turning on the light
 class LightOnCommand : public Command {
 public:
-  LightOnCommand(Light *light) : mLight(light) {}
-  void execute() { mLight->actionOn(); }
+  explicit LightOnCommand(shared_ptr<Light> light) : mLight(light) {}
+  void execute() override { mLight->actionOn(); }
 
 private:
-  Light *mLight;
+  shared_ptr<Light> mLight; // FIX: Use smart pointer to manage memory
 };
 
 // Command for turning off the light
 class LightOffCommand : public Command {
 public:
-  LightOffCommand(Light *light) : mLight(light) {}
-  void execute() { mLight->actionOff(); }
+  explicit LightOffCommand(shared_ptr<Light> light) : mLight(light) {}
+  void execute() override { mLight->actionOff(); }
 
 private:
-  Light *mLight;
+  shared_ptr<Light> mLight;
 };
 
-// Invoker
-// Stores the ConcreteCommand object
+// Invoker (Stores the ConcreteCommand object)
 class RemoteControl {
 public:
-  void setCommand(Command *cmd) { mCmd = cmd; }
-
-  void buttonPressed() { mCmd->execute(); }
+  void setCommand(shared_ptr<Command> cmd) { mCmd = cmd; }
+  void buttonPressed() {
+    if (mCmd)
+      mCmd->execute(); // FIX: Prevent nullptr dereference
+  }
 
 private:
-  Command *mCmd;
+  shared_ptr<Command> mCmd; // FIX: Use shared_ptr to manage ownership
 };
 
 // The client
 int main() {
   // Receiver
-  Light *light = new Light;
+  auto light = make_shared<Light>();
 
-  // concrete Command objects
-  LightOnCommand *lightOn = new LightOnCommand(light);
-  LightOffCommand *lightOff = new LightOffCommand(light);
+  // Concrete Command objects
+  auto lightOn = make_shared<LightOnCommand>(light);
+  auto lightOff = make_shared<LightOffCommand>(light);
 
-  // invoker objects
-  RemoteControl *control = new RemoteControl;
+  // Invoker object
+  RemoteControl control;
 
-  // execute
-  control->setCommand(lightOn);
-  control->buttonPressed();
-  control->setCommand(lightOff);
-  control->buttonPressed();
+  // Execute
+  control.setCommand(lightOn);
+  control.buttonPressed();
+  control.setCommand(lightOff);
+  control.buttonPressed();
 
-  delete light, lightOn, lightOff, control;
-
-  return 0;
+  return 0; // Smart pointers handle cleanup automatically
 }

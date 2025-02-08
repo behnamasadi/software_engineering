@@ -1,0 +1,45 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class CashDispenser {
+    - next: CashDispenser*
+    + setNext(CashDispenser* nextHandler): void
+    + dispense(int amount): void
+    {abstract} + dispenseCash(int amount): void
+    + CashDispenser()
+}
+
+CashDispenser -down-> CashDispenser: "next"
+
+class HundredDispenser {
+    + dispenseCash(int amount): void
+}
+
+class FiftyDispenser {
+    + dispenseCash(int amount): void
+}
+
+class TwentyDispenser {
+    + dispenseCash(int amount): void
+}
+
+class TenDispenser {
+    + dispenseCash(int amount): void
+}
+
+class FiveDispenser {
+    + dispenseCash(int amount): void
+}
+
+class OneDispenser {
+    + dispenseCash(int amount): void
+}
+
+HundredDispenser -up-|> CashDispenser
+FiftyDispenser -up-|> CashDispenser
+TwentyDispenser -up-|> CashDispenser
+TenDispenser -up-|> CashDispenser
+FiveDispenser -up-|> CashDispenser
+OneDispenser -up-|> CashDispenser
+
+@enduml

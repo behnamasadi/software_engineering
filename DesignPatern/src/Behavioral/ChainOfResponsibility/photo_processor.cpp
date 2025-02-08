@@ -1,90 +1,76 @@
 #include <iostream>
 #include <string>
 
-class  Photo
-{
+class Photo {};
 
-};
+class PhotoProcessor {
+protected:
+  PhotoProcessor *next;
 
-class PhotoProcessor
-{
 public:
-    PhotoProcessor * next;
-    //std::string name;
-    //PhotoProcessor(std::string name):name(name){}
-    void setNext(PhotoProcessor * next)
-    {
-        this->next=next;
-    }
-    void process(Photo *photo)
-    {
-        processImplementation(photo);
-        if(next!=nullptr)
-            next->process(photo);
-    }
+  PhotoProcessor() : next(nullptr) {}
 
-    void virtual processImplementation(Photo *photo)= 0;
+  virtual ~PhotoProcessor() = default; // Virtual destructor
 
-    PhotoProcessor():next(nullptr){}
-    //~PhotoProcessor();
+  void setNext(PhotoProcessor *nextProcessor) { next = nextProcessor; }
+
+  void process(Photo *photo) {
+    processImplementation(photo);
+    if (next != nullptr)
+      next->process(photo);
+  }
+
+  virtual void processImplementation(
+      Photo *photo) = 0; // Correct syntax for pure virtual function
 };
 
-class redEye: public PhotoProcessor
-{
+class RedEye : public PhotoProcessor {
 public:
-    void processImplementation(Photo *photo)
-    {
-        std::cout<<"correcting red eye" <<std::endl;
-    }
-    //redEye():PhotoProcessor(nullptr){}
-    redEye()
-    {
-        this->next=nullptr;
-    }
+  RedEye() = default; // No need to explicitly initialize next
+
+  void processImplementation(Photo *photo) override {
+    std::cout << "Correcting red eye" << std::endl;
+  }
 };
 
-class scaling: public PhotoProcessor
-{
+class Scaling : public PhotoProcessor {
+private:
+  int width, height;
+
 public:
-    int width, height;
-    scaling(int width,int height):width(width), height(height)
-    {
-        this->next=nullptr;
-    }
+  Scaling(int width, int height) : width(width), height(height) {}
 
-    void processImplementation(Photo *photo)
-    {
-        std::cout<<"scaling into " <<std::to_string(width) <<","<<std::to_string(height)  <<std::endl;
-    }
-
+  void processImplementation(Photo *photo) override {
+    std::cout << "Scaling to " << width << "x" << height << std::endl;
+  }
 };
 
-class meanFilter: public PhotoProcessor
-{
-    double mean, var;
+class MeanFilter : public PhotoProcessor {
+private:
+  double mean, var;
+
 public:
-    meanFilter(double mean, double var): mean(mean), var(var)
-    {
-        this->next=nullptr;
-    }
-    void processImplementation(Photo *photo)
-    {
-        std::cout<<"applying mean filter with mean " <<std::to_string(mean) <<", var "<<std::to_string(var)  <<std::endl;
-    }
+  MeanFilter(double mean, double var) : mean(mean), var(var) {}
 
+  void processImplementation(Photo *photo) override {
+    std::cout << "Applying mean filter with mean " << mean << ", variance "
+              << var << std::endl;
+  }
 };
 
-int main()
-{
-    Photo myPhoto;
-    redEye redEye_processor;
-    scaling scaling_processor(600,800) ;
-    meanFilter meanFilter_processor(0,1);
+int main() {
+  Photo myPhoto;
 
-    redEye_processor.setNext(&scaling_processor);
-    scaling_processor.setNext(&meanFilter_processor);
-    redEye_processor.process(&myPhoto);
+  RedEye redEyeProcessor;
+  Scaling scalingProcessor(600, 800);
+  MeanFilter meanFilterProcessor(0.0, 1.0);
+
+  // Creating the processing chain
+  redEyeProcessor.setNext(&scalingProcessor);
+  scalingProcessor.setNext(&meanFilterProcessor);
+
+  // Start processing
+  redEyeProcessor.process(&myPhoto);
+
+  return 0;
 }
-
-
-

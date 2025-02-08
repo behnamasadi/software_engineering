@@ -142,6 +142,10 @@ target_link_libraries(chain_of_responsibility_handler)
 add_executable(photo_processor src/Behavioral/ChainOfResponsibility/photo_processor.cpp)
 target_link_libraries(photo_processor)
 
+add_executable(ATM_chain_of_responsibility src/Behavioral/ChainOfResponsibility/ATM_chain_of_responsibility.cpp)
+target_link_libraries(ATM_chain_of_responsibility)
+
+
 # ##################### (2) Command ###########################
 add_executable(light_on_command src/Behavioral/Command/LightOnCommand.cpp)
 target_link_libraries(light_on_command)
@@ -152,25 +156,33 @@ target_link_libraries(light_on_command_template_based)
 add_executable(giant_command src/Behavioral/Command/giant_command.cpp)
 target_link_libraries(giant_command)
 
-# ##################### (3) Iterator ###########################
-add_executable(stack_iterator src/Behavioral/Iterator/stack_iterator.cpp)
-target_link_libraries(stack_iterator)
+# ##################### (3) Interpreter ###########################
+add_executable(math_expression_interpreter src/Behavioral/Interpreter/math_expression_interpreter.cpp)
+target_link_libraries(math_expression_interpreter)
 
-# ##################### (4) Mediator ###########################
+add_executable(robot_command_interpreter src/Behavioral/Interpreter/robot_command_interpreter.cpp)
+target_link_libraries(robot_command_interpreter)
+
+
+# ##################### (4) Iterator ###########################
+add_executable(iterator_design_pattern src/Behavioral/Iterator/iterator_design_pattern.cpp)
+target_link_libraries(iterator_design_pattern)
+
+# ##################### (5) Mediator ###########################
 add_executable(mediator_before_after src/Behavioral/Mediator/mediator_before_after.cpp)
 target_link_libraries(mediator_before_after)
 
-add_executable(airport_mediator_traffic_pattern src/Behavioral/Mediator/airport_mediator_traffic_pattern.cpp)
-target_link_libraries(airport_mediator_traffic_pattern)
+add_executable(air_traffic_control src/Behavioral/Mediator/air_traffic_control.cpp)
+target_link_libraries(air_traffic_control)
 
 add_executable(chat_room_mediator src/Behavioral/Mediator/chat_room_mediator.cpp)
 target_link_libraries(chat_room_mediator)
 
-# ##################### (5) Memento ###########################
+# ##################### (6) Memento ###########################
 add_executable(notepad_memento src/Behavioral/Memento/notepad_memento.cpp)
 target_link_libraries(notepad_memento)
 
-# ##################### (6) NullObject ###########################
+# ##################### (7) NullObject ###########################
 add_executable(binary_tree_null_object src/Behavioral/NullObject/binary_tree_null_object.cpp)
 target_link_libraries(binary_tree_null_object)
 
@@ -180,7 +192,7 @@ target_link_libraries(animal_null_object)
 add_executable(ball_screen_saver_null_object src/Behavioral/NullObject/ball_screen_saver_null_object.cpp)
 target_link_libraries(ball_screen_saver_null_object)
 
-# ##################### (7) Observer ###########################
+# ##################### (8) Observer ###########################
 add_executable(weather_station_observer src/Behavioral/Observer/weather_station_observer.cpp)
 target_link_libraries(weather_station_observer)
 
@@ -196,14 +208,14 @@ target_link_libraries(rocket_observer)
 add_executable(chat_room_observer src/Behavioral/Observer/chat_room_observer.cpp)
 target_link_libraries(chat_room_observer)
 
-# ##################### (8) State ###########################
+# ##################### (9) State ###########################
 add_executable(machine_on_off_state src/Behavioral/State/machine_on_off_state.cpp)
 target_link_libraries(machine_on_off_state)
 
 add_executable(music_player_state src/Behavioral/State/music_player_state.cpp)
 target_link_libraries(music_player_state)
 
-# ##################### (9) Strategy ###########################
+# ##################### (10) Strategy ###########################
 add_executable(robot src/Behavioral/Strategy/robot.cpp)
 target_link_libraries(robot)
 
@@ -213,14 +225,14 @@ target_link_libraries(billing_strategy)
 add_executable(conceptual_strategy src/Behavioral/Strategy/conceptual_strategy.cpp)
 target_link_libraries(conceptual_strategy)
 
-# ##################### (10) TemplateMethod ###########################
+# ##################### (11) TemplateMethod ###########################
 add_executable(template_method_order src/Behavioral/TemplateMethod/template_method_order.cpp)
 target_link_libraries(template_method_order)
 
 add_executable(template_method src/Behavioral/TemplateMethod/template_method.cpp)
 target_link_libraries(template_method)
 
-# ##################### (11) Visitor ###########################
+# ##################### (12) Visitor ###########################
 add_executable(expression_printer src/Behavioral/Visitor/expression_printer.cpp)
 target_link_libraries(expression_printer)
 

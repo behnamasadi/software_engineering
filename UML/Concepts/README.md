@@ -1,3 +1,16 @@
+## UML Diagram Maker Tools
+First install the package:
+
+```
+sudo apt install plantuml
+```
+Then call:
+
+```
+plantuml -tsvg <file-name.puml>
+```
+
+
 ## Concepts
 
 ### Structure

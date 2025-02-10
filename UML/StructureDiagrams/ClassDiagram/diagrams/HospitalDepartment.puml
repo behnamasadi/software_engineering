@@ -1,5 +1,0 @@
-@startuml
-class Hospital
-class Department
-Hospital "1" *-- "1..*" Department
-@enduml

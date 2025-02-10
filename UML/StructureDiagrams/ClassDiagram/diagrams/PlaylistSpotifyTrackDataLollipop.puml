@@ -1,9 +1,0 @@
-@startuml
-skinparam classAttributeIconSize 0
-
-class Playlist
-class Spotify
-interface "<<interface>>\n TrackData" as TrackData
-Playlist -right..> TrackData
-Spotify -up..|> TrackData
-@enduml

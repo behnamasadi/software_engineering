@@ -1,5 +1,0 @@
-@startuml
-class Student
-class Teacher
-Student  "0..*" -- "0..*" Teacher
-@enduml

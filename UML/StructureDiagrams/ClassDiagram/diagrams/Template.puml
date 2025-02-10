@@ -1,5 +1,0 @@
-@startuml
-class Foo< T > 
-class "Foo<int>" as Foo_int
-class "Foo<double>" as Foo_double
-@enduml

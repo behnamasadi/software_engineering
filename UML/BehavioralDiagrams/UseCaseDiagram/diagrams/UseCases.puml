@@ -1,5 +1,0 @@
-@startuml
-(First usecase)
-(Second usecase) as (UC2)
-usecase ThirdUseCase
-@enduml

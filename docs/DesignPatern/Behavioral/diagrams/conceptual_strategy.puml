@@ -1,0 +1,42 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "Interface \n Strategy" as Strategy
+{
++{abstract}solve():void
+}
+
+class ConcreteStrategy1
+{
+    +solve():void
+}
+
+class ConcreteStrategy2
+{
+    +solve():void
+}
+
+ConcreteStrategy1 -up..|> Strategy
+ConcreteStrategy2 -up..|> Strategy
+
+
+class Context
+{
+    -Strategy *m_strategy;
+    +Context(Strategy *strategy= nullptr)
+    +setStrategy(Strategy *strategy):void
+    +execute():void
+}
+
+note "m_strategy->solve()"  as ContextExecute
+ContextExecute -up..Context::execute
+
+
+note "cout<<ConcreteStrategy2 solution <<endl" as ConcreteStrategy2Solve
+ConcreteStrategy2Solve -up..ConcreteStrategy2::solve
+
+
+note "cout<<ConcreteStrategy1 solution <<endl" as ConcreteStrategy1Solve
+ConcreteStrategy1Solve -up..ConcreteStrategy1::solve
+
+@enduml

@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "Interface \n Memento" as Memento{
+    +{abstract} state():string
+    +{abstract} date():string
+    +{abstract} getName():string
+}
+
+class ConcreteMemento{
+
+- string m_state
+- string m_date
++ ConcreteMemento(string state)
++ string state()
++ string date()
++ string getName()
+}
+
+
+class Originator
+{
+    -string m_state;
+    + Originator(string state) : m_state(state)
+    Memento *Save()
+    Restore(Memento* memento)
+    changeText(string text):void
+}
+
+note "this->m_state = text" as OriginatorChangeText
+
+OriginatorChangeText .. Originator::changeText
+
+class CareTaker
+{
+    -stack<Memento*> m_mementos;
+    -Originator *m_originator;
+    +CareTaker(Originator *originator)
+    +backUp():void
+    +undo():void
+}
+
+
+
+note  "this->m_mementos.push(this->m_originator->Save())" as CareTakerBackUp
+
+
+
+note "Memento* memento= m_mementos.top() \n m_mementos.pop() \n this->m_originator->Restore(memento)" as CareTakerUndo
+       
+
+CareTakerBackUp .. CareTaker::backUp
+CareTaker::undo ..  CareTakerUndo
+
+ConcreteMemento -up..|>  Memento
+Originator -up..> Memento
+Originator <--> ConcreteMemento
+CareTaker -up--> Memento
+@enduml

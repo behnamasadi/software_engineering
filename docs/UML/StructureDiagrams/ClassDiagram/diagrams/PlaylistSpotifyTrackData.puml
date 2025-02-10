@@ -1,0 +1,9 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Playlist
+class Spotify
+circle TrackData 
+Playlist -right--( TrackData
+Spotify -left-- TrackData
+@enduml

@@ -1,0 +1,56 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Sauce{}
+class Topping{}
+class Dough{}
+
+class "Pizza" as Pizza
+{
+
+-    m_dough:Dough 
+-    m_sauce:Sauce 
+-    m_topping:Topping 
++     setDough(Dough dough):void
++     setSauce(Sauce sauce):void
++     setTopping(Topping topping):void 
+
+
+}
+
+interface "<<interface>> \n PizzaBuilder (Builder)" as PizzaBuilder
+{
+    {abstract} buildDough():void
+    {abstract} buildSauce():void
+    {abstract} buildTopping():void
+}
+
+class "Cook (Director)" as Cook
+{
+- m_pizzaBuilder:pizzaBuilder*
+ +   Cook(PizzaBuilder *pizzaBuilder)
+ +   createPizza(): void
+ +   showPizza():void
+
+}
+
+note "pizzaBuilder->createNewPizza() \n pizzaBuilder->buildDough() \n pizzaBuilder->buildSauce() \n pizzaBuilder->buildTopping()" as pizzaBuildercreateNewPizza
+
+
+class SpicyPizzaBuilder{}
+
+SpicyPizzaBuilder -up..|> PizzaBuilder
+
+SpicyPizzaBuilder -up..> Sauce
+SpicyPizzaBuilder -up..> Topping
+SpicyPizzaBuilder -up..> Dough
+
+Cook --> Pizza
+Cook o-- PizzaBuilder
+
+Pizza ..> Sauce
+Pizza ..> Topping
+Pizza ..> Dough
+
+pizzaBuildercreateNewPizza -right--Cook
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+interface Command {
+    +void interpret()
+}
+
+class MoveCommand {
+    -string direction
+    -int distance
+    +MoveCommand(string, int)
+    +void interpret()
+}
+
+class TurnCommand {
+    -string direction
+    -int angle
+    +TurnCommand(string, int)
+    +void interpret()
+}
+
+class CommandParser {
+    +static Command* parse(string)
+}
+
+Command <|.. MoveCommand
+Command <|.. TurnCommand
+CommandParser ..> Command : parses
+
+@enduml
+

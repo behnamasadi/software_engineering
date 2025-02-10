@@ -1,0 +1,37 @@
+@startuml
+class SensorData {
+  +double timestamp
+  +double x, y, z
+  +SensorData(double, double, double, double)
+}
+
+interface Iterator {
+  +bool hasNext()
+  +SensorData* next()
+}
+
+class SensorDataIterator {
+  -vector<SensorData>& data
+  -size_t index
+  +SensorDataIterator(vector<SensorData>&)
+  +bool hasNext()
+  +SensorData* next()
+}
+
+class SensorDataCollection {
+  -vector<SensorData> data
+  +void addData(double, double, double, double)
+  +Iterator* createIterator()
+}
+
+class Client {
+  +main()
+}
+
+Iterator <|.. SensorDataIterator
+SensorDataCollection --> Iterator : "creates"
+SensorDataCollection *-- SensorData
+Client ..> SensorDataCollection : "uses"
+Client ..> Iterator : "uses"
+@enduml
+

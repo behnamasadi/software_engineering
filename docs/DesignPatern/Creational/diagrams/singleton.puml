@@ -1,0 +1,13 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Singleton
+{
+-instance: Singleton*
+-Singleton()
++{static} getInstance():Singleton* 
+}
+
+note " if(instance==nullptr)\n  instance=new Logger();\n return instance;" as n1
+n1 -left--Singleton
+@enduml

@@ -1,0 +1,81 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Ensure vertical layout
+left to right direction
+
+interface "Interface \n CarElement" as CarElement
+{
++{abstract} accept(CarElementVisitor *visitor):void
+}
+
+interface "Interface \n CarElementVisitor" as CarElementVisitor
+{
+    +{abstract} visit(Body *body):void
+    +{abstract} visit(Car *car):void
+    +{abstract} visit(Engine *engine):void
+    +{abstract} visit(Wheel *wheel):void
+}
+
+CarElement <|-- Body
+CarElement <|-- Wheel
+CarElement <|-- Engine
+CarElement <|-- Car
+
+CarElementVisitor <|-- CarElementDoVisitor
+CarElementVisitor <|-- CarElementPrintVisitor
+
+class Wheel
+{
+private:
+    string name;
+public:
+    + Wheel(string name):void
+    + getName():string
+    + accept(CarElementVisitor *visitor):void
+}
+
+note " visitor->visit(this)" as Wheelaccept
+
+class Body 
+{
+   + accept(CarElementVisitor *visitor)
+}
+
+class Engine 
+{
+    accept(CarElementVisitor *visitor):void
+}
+
+class Car
+{
+-   vector<CarElement*> elements;
++   Car()
++    accept(CarElementVisitor *visitor):void
+}
+
+note "this->elements = std::vector<CarElement*>{\n new Wheel('front left'), new Wheel('front right'),\n new Wheel('back left'), new Wheel('back right'),\n new Body(), new Engine()}" as CarConstruct
+
+note "for (CarElement* element : elements)\n {element->accept(visitor);\n  }\n         visitor->visit(this);" as CarAccept
+
+class CarElementDoVisitor 
+{
+    + visit(Body *body):void
+    + visit(Car *car):void
+    + visit(Wheel *wheel):void
+    + visit(Engine *engine):void
+}
+
+class CarElementPrintVisitor
+{
+    +visit(Body *body):void 
+    + visit(Car *car):void 
+    + visit(Engine *engine):void 
+    + visit(Wheel *wheel):void 
+}
+
+Wheelaccept -up..Wheel::accept
+
+CarConstruct -down..Car::Car
+CarAccept -up..Car::accept
+@enduml

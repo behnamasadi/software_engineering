@@ -1,0 +1,10 @@
+@startuml
+skinparam classAttributeIconSize 0
+interface "<<interface>>\n Player" as Player
+{
++   {abstract}  play():void
++   {abstract}  stop() :void
++   {abstract}  pause() :void
++   {abstract}  reverse() :void
+}
+@enduml

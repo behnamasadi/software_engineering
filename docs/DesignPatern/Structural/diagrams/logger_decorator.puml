@@ -1,0 +1,57 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+
+interface "<<Interface>>\n Logger" as Logger
+{
+    +{abstract} log(string):void
+}
+
+class FileLogger
+{
+    +log(string):void
+}
+note "log to text file" as FileLoggerNote
+FileLoggerNote -left.. FileLogger
+
+class LoggerDecorator
+{
+# m_logger: Logger*
++LoggerDecorator(Logger* logger)    
++{abstract} log(string):void
+}
+
+class HTML
+{
++ log(string):void
++ HTMLLog(string):void
+}
+
+class SQL
+{
++ log(string):void
++ sqlLog(string):void
+}
+
+class Client{}
+LoggerDecorator -up..|> Logger
+LoggerDecorator o-- Logger
+
+SQL -up..|> LoggerDecorator
+HTML -up..|> LoggerDecorator
+
+
+FileLogger -up..|> Logger
+Client --> Logger
+
+
+note "Logger *file_logger=new FileLogger();\nLogger *file_logger_HTML=new HTML(file_logger);\nLogger *file_logger_HTML_SQL=new SQL(file_logger_HTML);\ file_logger_HTML_SQL->log(string)" as ClientNote
+
+
+ClientNote -left--Client
+
+note "m_logger->log(string)\nsqlLog(string) ;" as SQLlog
+
+SQLlog -- SQL::log
+@enduml

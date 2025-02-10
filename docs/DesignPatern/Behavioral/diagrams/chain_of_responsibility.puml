@@ -1,0 +1,45 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Photo{}
+
+class PhotoProcessor
+{
+-   next: PhotoProcessor*
++   setNext(PhotoProcessor* nextPhotoProcessor):void
++   process(Photo* photo):void
++   {abstract} processImplementation(Photo *photo):void
++   PhotoProcessor()
+}
+
+note "processImplementation(photo) \n if(next!=nullptr) \n next->process(photo)" as PhotoProcessorProcess
+
+note "next(nullptr){}" as PhotoProcessorConstructor
+
+PhotoProcessor -up..>Photo
+
+PhotoProcessor::PhotoProcessor --left..PhotoProcessorConstructor
+PhotoProcessor::process --right..PhotoProcessorProcess
+
+
+class redEye
+{
++processImplementation(Photo *photo)
+}
+class scaling
+{
++processImplementation(Photo *photo)
+}
+class meanFilter
+{
++processImplementation(Photo *photo)
+}
+
+redEye -up--|> PhotoProcessor
+scaling -up--|> PhotoProcessor
+meanFilter -up--|> PhotoProcessor
+
+
+note "cout<<'applying mean filter'<<endl " as meanFilterprocessImplementation
+meanFilterprocessImplementation -up..meanFilter::processImplementation(Photo *photo)
+@enduml

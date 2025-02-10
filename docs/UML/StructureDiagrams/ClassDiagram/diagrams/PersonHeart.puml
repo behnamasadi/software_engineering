@@ -1,0 +1,5 @@
+@startuml
+class Person
+class Heart
+Person "1" *-- "1" Heart : has
+@enduml

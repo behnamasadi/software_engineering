@@ -1,0 +1,5 @@
+@startuml
+class Folder
+class File
+Folder "1" *-- "0..*" File : contains
+@enduml

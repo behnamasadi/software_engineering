@@ -1,0 +1,41 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+interface "Interface \n BallMotionStrategy" as BallMotionStrategy{
++{abstract} move(Ball ball):void
+}
+
+interface "Interface \n BallColorStrategy" as BallColorStrategy{
++{abstract}changeColor(Ball ball):void
+}
+
+
+class Ball
+{
+- BallMotionStrategy * ballMotionStrategy
+- BallColorStrategy *ballColorStrategy
+ +setBallColorStrategy(BallColorStrategy *):void
+ +setBallMotionStrategy(BallMotionStrategy*):void
+}
+
+
+class NullBallMotionStrategy
+{
+   move(Ball ball) :void
+}
+
+class NullBallColorStrategy
+{
+    void changeColor(Ball ball):void
+}
+
+note "{do nothing here}" as DoNothing
+
+NullBallMotionStrategy -up...|> BallMotionStrategy
+NullBallColorStrategy -up...|>  BallColorStrategy
+DoNothing -up..NullBallMotionStrategy::Move
+DoNothing -up..NullBallColorStrategy::Move
+Ball -up..> BallColorStrategy
+Ball -up..> BallMotionStrategy
+@enduml

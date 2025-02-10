@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+interface "<<Interface>>\n Shape" as Shape
+{
++display(int x1, int y1, int width, int hight)
+}
+class Rectangle
+{
++display(int x1, int y1, int width, int hight)
+}
+class "<<Adaptee>>\n LegecyRectangle" as LegecyRectangle
+{
++display(int x1, int y1, int x2, int y2)
+}
+Rectangle -up..|> Shape
+Rectangle -right-> LegecyRectangle
+note bottom of Rectangle: this will call draw from LegecyRectangle
+@enduml

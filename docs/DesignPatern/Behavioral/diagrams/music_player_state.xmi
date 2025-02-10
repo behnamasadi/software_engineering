@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><XMI xmlns:UML="href://org.omg/UML/1.3" xmi.version="1.1">
+<XMI.header>
+<XMI.metamodel xmi.name="UML" xmi.version="1.3"/>
+</XMI.header>
+<XMI.content>
+<UML:Model name="PlantUML" xmi.id="model1">
+<UML:Namespace.ownedElement>
+<UML:Class isInterface="true" name="Interface " namespace="model1" xmi.id="cl0002">
+<UML:Classifier.feature>
+<UML:Attribute name="string statuseName;" visibility="private" xmi.id="att20"/>
+<UML:Operation name="play(MusicPlayer *player):void" visibility="public" xmi.id="att21"/>
+<UML:Operation name="pause(MusicPlayer *player):void" visibility="public" xmi.id="att22"/>
+<UML:Operation name="stop(MusicPlayer *player):void" visibility="public" xmi.id="att23"/>
+<UML:Operation name="MusicPlayerState(string statuseName):void" visibility="public" xmi.id="att24"/>
+<UML:Operation name="getName():string" visibility="public" xmi.id="att25"/>
+</UML:Classifier.feature>
+</UML:Class>
+<UML:Class name="MusicPlayer" namespace="model1" xmi.id="cl0003">
+<UML:Classifier.feature>
+<UML:Attribute name="MusicPlayerState *status;" visibility="public" xmi.id="att26"/>
+<UML:Operation name="play():void" visibility="public" xmi.id="att27"/>
+<UML:Operation name="pause():void" visibility="public" xmi.id="att28"/>
+<UML:Operation name="stop():void" visibility="public" xmi.id="att29"/>
+<UML:Operation name="MusicPlayer():void" visibility="public" xmi.id="att30"/>
+<UML:Operation name="setState(MusicPlayerState *state):void" visibility="public" xmi.id="att31"/>
+</UML:Classifier.feature>
+</UML:Class>
+<UML:Class name="StoppedState" namespace="model1" xmi.id="cl0004">
+<UML:Classifier.feature>
+<UML:Attribute name="public:" xmi.id="att32"/>
+<UML:Operation name="play(MusicPlayer *player):void" visibility="public" xmi.id="att33"/>
+<UML:Operation name="StoppedState();" xmi.id="att34"/>
+</UML:Classifier.feature>
+</UML:Class>
+<UML:Class name="PlayingState" namespace="model1" xmi.id="cl0005">
+<UML:Classifier.feature>
+<UML:Operation name="pause(MusicPlayer *player):void" xmi.id="att35"/>
+<UML:Operation name="stop(MusicPlayer *player):void" xmi.id="att36"/>
+<UML:Operation name="PlayingState()" xmi.id="att37"/>
+</UML:Classifier.feature>
+</UML:Class>
+<UML:Class name="PausedState" namespace="model1" xmi.id="cl0006">
+<UML:Classifier.feature>
+<UML:Operation name="play(MusicPlayer *player):void" visibility="public" xmi.id="att38"/>
+<UML:Operation name="PausedState();" xmi.id="att39"/>
+</UML:Classifier.feature>
+</UML:Class>
+</UML:Namespace.ownedElement>
+</UML:Model>
+</XMI.content>
+</XMI>

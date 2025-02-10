@@ -1,0 +1,36 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Alarm
+{
++   alarmOn():void
++   alarmOff():void
+}
+
+class Ac
+{
++ acOn():void
++ acOff():void
+}
+
+class Tv
+{
++     tvOn():void
++     tvOff():void
+}
+
+Class HouseFacade
+{
+    goToWork():void
+    comeHome():void
+}
+HouseFacade *--Tv
+HouseFacade *--Ac
+HouseFacade *--Alarm
+
+note "goToWork will call:\n ac.acOff(); \n tv.tvOff(); \n alarm.alarmOn();" as goToWorkNote
+note "comeHome will call:\n alarm.alarmOff(); \n ac.acOn(); \n tv.tvOn();" as comeHomeNote
+
+goToWorkNote -right-- HouseFacade
+comeHomeNote-left-- HouseFacade
+@enduml

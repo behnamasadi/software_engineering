@@ -11,8 +11,5 @@ build/*
 examples/*
 *.user
 *.kdev4
-docs/*
-outsources/*
-sandbox/*
-*.mp4
-*.mkv
+youtube/*
+.vscode/*

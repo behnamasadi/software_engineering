@@ -1,0 +1,17 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Y
+{
++     foo():void
++     {static} StaticFoo():void
+}
+class X
+{
+	f1(Y y):void  
+	f2(Y *y):void 
+	f3(Y &y) :void
+	f4():void     
+	f5():void     
+}
+X  ..>  Y
+@enduml

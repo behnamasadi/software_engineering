@@ -1,0 +1,22 @@
+@startuml
+interface IMediator {
+    void notify(Airplane* sender, const std::string& event);
+}
+
+class ATCTower implements IMediator {
+    void notify(Airplane* sender, const std::string& event)
+}
+
+class Airplane {
+    - string name
+    - IMediator* mediator
+    + Airplane(string name, IMediator* mediator)
+    + requestLanding()
+    + requestTakeoff()
+}
+
+ATCTower o-- Airplane
+Airplane --> IMediator
+
+@enduml
+

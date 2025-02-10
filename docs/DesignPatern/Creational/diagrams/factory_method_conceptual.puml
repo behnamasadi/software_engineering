@@ -1,0 +1,37 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "<<interface>> \n Product" as Product
+{
+}
+
+class ConcreteProductA{}
+class ConcreteProductB{}
+
+ConcreteProductA -up..|> Product
+ConcreteProductB -up..|> Product
+
+class Creator
+{
++ createPoduct():Product *
+}
+
+
+class ConcreteCreatorA
+{
++ createPoduct():Product *
+}
+class ConcreteCreatorB
+{
++ createPoduct():Product *
+}
+
+ConcreteCreatorA -up--|>Creator
+ConcreteCreatorB -up--|>Creator
+
+ConcreteCreatorA ..> ConcreteProductA
+ConcreteCreatorB ..> ConcreteProductB
+
+note  "return new ConcreteCreatorB" as createPoductConcreteCreatorB
+createPoductConcreteCreatorB -left--ConcreteCreatorB
+@enduml

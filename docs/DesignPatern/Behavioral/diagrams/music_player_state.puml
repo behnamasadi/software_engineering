@@ -1,0 +1,60 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface "Interface \n MusicPlayerState" as MusicPlayerState{
+   -string statuseName;
+   +{abstract}play(MusicPlayer *player):void
+   +{abstract}pause(MusicPlayer *player):void
+   +{abstract}stop(MusicPlayer *player):void
+   +MusicPlayerState(string statuseName):void
+   +getName():string
+}
+
+class MusicPlayer{
+    +MusicPlayerState *status;
+    +play():void
+    +pause():void
+    +stop():void
+    +MusicPlayer():void
+    +setState(MusicPlayerState *state):void
+}
+
+
+class StoppedState{
+public:
+    +play(MusicPlayer *player):void 
+    StoppedState();
+}
+
+ 
+class PlayingState{
+    pause(MusicPlayer *player):void
+    stop(MusicPlayer *player):void
+    PlayingState()
+}
+
+
+class PausedState{
+    + play(MusicPlayer *player):void
+    PausedState();
+}
+
+StoppedState --|>  MusicPlayerState
+PlayingState --|> MusicPlayerState
+PausedState --|>  MusicPlayerState
+
+note "cout<<'Illegal state transition from '<<statuseName<<' to play' <<endl" as MusicPlayerStatePlay
+
+
+note "cout<<'Illegal state transition from '<<statuseName<<' to pause' <endl" as MusicPlayerStatePause
+
+note "cout<<'Illegal state transition from '<<statuseName<<' to stop' <<endl" as MusicPlayerStateStop
+
+
+
+MusicPlayerStatePause -left.. MusicPlayerState::pause
+MusicPlayerState::play -left.. MusicPlayerStatePlay
+MusicPlayerStateStop -up.. MusicPlayerState::stop
+
+MusicPlayer o..MusicPlayerState
+@enduml

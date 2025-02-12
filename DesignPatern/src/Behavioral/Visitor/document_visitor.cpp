@@ -1,102 +1,87 @@
-//http://www.vishalchovatiya.com/double-dispatch-visitor-design-pattern-in-modern-cpp/
 #include <string>
 #include <vector>
 #include <iostream>
+#include <memory>
 
 class DocumentVisitor;
 class Document
 {
 protected:
-public:
     std::vector<std::string> content;
 
-    virtual void addToList(std::string)=0;
-    virtual void visit(DocumentVisitor* dv)=0;
+public:
+    virtual void appendItem(const std::string&) = 0;
+    virtual void accept(std::shared_ptr<DocumentVisitor> dv) = 0;
+    virtual ~Document() = default;
+    std::vector<std::string> getContent() const { return content; }
 };
 
-/*
-<ul>
-  <li>item1</li>
-  <li>item2</li>
-  <li>item3</li>
-</ul>
-*/
-
-class HTMLDocument:public Document
+class HTMLDocument : public Document
 {
 public:
-    std::string start="<li>";
-    std::string end="</li>";
-    void addToList(std::string s)override
+    const std::string tagStart = "<li>";
+    const std::string tagEnd = "</li>";
+    
+    void appendItem(const std::string& item) override
     {
-        content.push_back(s);
+        content.push_back(item);
     }
-    void visit(DocumentVisitor* dv) override;
+    void accept(std::shared_ptr<DocumentVisitor> dv) override;
 };
 
-/*
-* Item 1
-* Item 2
-  * Item 2a
-  * Item 2b
-*/
-
-class MarkdownDocument:public Document
+class MarkdownDocument : public Document
 {
 public:
-
-    void visit(DocumentVisitor* dv) override ;
-    std::string start="* ";
-    void addToList(std::string s)override
+    const std::string prefix = "- ";
+    
+    void appendItem(const std::string& item) override
     {
-        content.push_back(s);
+        content.push_back(item);
     }
-
+    void accept(std::shared_ptr<DocumentVisitor> dv) override;
 };
 
 class DocumentVisitor
 {
 public:
-    void virtual visit(HTMLDocument*)=0;
-    void virtual visit(MarkdownDocument*)=0;
+    virtual void visit(std::shared_ptr<HTMLDocument>) = 0;
+    virtual void visit(std::shared_ptr<MarkdownDocument>) = 0;
+    virtual ~DocumentVisitor() = default;
 };
 
-class DocumentPrinter: public DocumentVisitor
+class DocumentPrinter : public DocumentVisitor
 {
 public:
-    void visit(MarkdownDocument * md) {
-        for (auto &&item : md->content)
-            std::cout << md->start << item << std::endl;
+    void visit(std::shared_ptr<MarkdownDocument> md) override {
+        for (const auto& item : md->getContent())
+            std::cout << md->prefix << item << std::endl;
     }
-    void visit(HTMLDocument* hd) {
+    void visit(std::shared_ptr<HTMLDocument> hd) override {
         std::cout << "<ul>" << std::endl;
-        for (auto &&item : hd->content)
-            std::cout << "\t" << hd->start << item << hd->end << std::endl;
+        for (const auto& item : hd->getContent())
+            std::cout << "\t" << hd->tagStart << item << hd->tagEnd << std::endl;
         std::cout << "</ul>" << std::endl;
     }
 };
 
-class DocumentRenderer: public DocumentVisitor{};
+class DocumentRenderer : public DocumentVisitor {};
 
-void HTMLDocument::visit(DocumentVisitor* dv) { dv->visit(this); }
-void MarkdownDocument::visit(DocumentVisitor* dv)  { dv->visit(this); }
-
-
+void HTMLDocument::accept(std::shared_ptr<DocumentVisitor> dv) { dv->visit(std::make_shared<HTMLDocument>(*this)); }
+void MarkdownDocument::accept(std::shared_ptr<DocumentVisitor> dv) { dv->visit(std::make_shared<MarkdownDocument>(*this)); }
 
 int main()
 {
     {
-        Document* d=new HTMLDocument;
-        d->addToList("first");
-        d->addToList("second");
-        d->visit(new DocumentPrinter);
+        auto d = std::make_shared<HTMLDocument>();
+        d->appendItem("Item A");
+        d->appendItem("Item B");
+        d->accept(std::make_shared<DocumentPrinter>());
     }
 
-
     {
-        Document* d=new MarkdownDocument;
-        d->addToList("first");
-        d->addToList("second");
-        d->visit(new DocumentPrinter);
+        auto d = std::make_shared<MarkdownDocument>();
+        d->appendItem("Item A");
+        d->appendItem("Item B");
+        d->accept(std::make_shared<DocumentPrinter>());
     }
 }

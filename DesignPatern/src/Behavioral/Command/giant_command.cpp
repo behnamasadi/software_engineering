@@ -1,92 +1,83 @@
 #include <iostream>
+#include <vector>
+#include <memory>
 
-
-
-class Giant
+class Colossus
 {
-  public:
-    Giant()
-    {
-        m_id = s_next++;
-    }
-    void fee()
-    {
-        std::cout << m_id << "-fee  ";
-    }
-    void phi()
-    {
-        std::cout << m_id << "-phi  ";
-    }
-    void pheaux()
-    {
-        std::cout << m_id << "-pheaux  ";
-    }
-  private:
+public:
+    Colossus() { m_id = s_next++; }
+
+    void alpha() { std::cout << m_id << "-alpha  "; }
+    void beta() { std::cout << m_id << "-beta  "; }
+    void gamma() { std::cout << m_id << "-gamma  "; }
+
+private:
     int m_id;
     static int s_next;
 };
-int Giant::s_next = 0;
 
-class Command
+int Colossus::s_next = 0;
+
+class Task
 {
-  public:
-    typedef void(Giant:: *Action)();
-    Command(Giant *object, Action method)
-    {
-        m_object = object;
-        m_method = method;
-    }
-    void execute()
-    {
-        (m_object->*m_method)();
-    }
-  private:
-    Giant *m_object;
+public:
+    using Action = void(Colossus::*)();
+
+    Task(Colossus *object, Action method) : m_object(object), m_method(method) {}
+
+    void execute() { (m_object->*m_method)(); }
+
+private:
+    Colossus *m_object;
     Action m_method;
 };
 
-template <typename T> class Queue
+template <typename T>
+class TaskQueue
 {
-  public:
-    Queue()
+public:
+    void enqueue(std::unique_ptr<T> task)
     {
-        m_add = m_remove = 0;
+        m_tasks.push_back(std::move(task));
     }
-    void enque(T *c)
+
+    std::unique_ptr<T> dequeue()
     {
-        m_array[m_add] = c;
-        m_add = (m_add + 1) % SIZE;
+        if (m_tasks.empty())
+            return nullptr;
+
+        std::unique_ptr<T> task = std::move(m_tasks.front());
+        m_tasks.erase(m_tasks.begin());
+        return task;
     }
-    T *deque()
-    {
-        int temp = m_remove;
-        m_remove = (m_remove + 1) % SIZE;
-        return m_array[temp];
-    }
-  private:
-    enum
-    {
-        SIZE = 8
-    };
-    T *m_array[SIZE];
-    int m_add, m_remove;
+
+private:
+    std::vector<std::unique_ptr<T>> m_tasks;
 };
 
 int main()
 {
-  Queue<Command> que;
-  Command *input[] = 
-  {
-    new Command(new Giant, &Giant::fee), new Command(new Giant, &Giant::phi),
-      new Command(new Giant, &Giant::pheaux), new Command(new Giant, &Giant
-      ::fee), new Command(new Giant, &Giant::phi), new Command(new Giant,
-      &Giant::pheaux)
-  };
+    TaskQueue<Task> queue;
+    
+    std::vector<std::unique_ptr<Task>> commands;
+    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::alpha));
+    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::beta));
+    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::gamma));
+    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::alpha));
+    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::beta));
+    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::gamma));
 
-  for (int i = 0; i < 6; i++)
-    que.enque(input[i]);
+    for (auto &cmd : commands)
+        queue.enqueue(std::move(cmd));
 
-  for (int i = 0; i < 6; i++)
-    que.deque()->execute();
-  std::cout << '\n';
+    for (int i = 0; i < 6; i++)
+    {
+        auto task = queue.dequeue();
+        if (task)
+            task->execute();
+    }
+    
+    std::cout << '\n';
+
+    return 0;
 }

@@ -1,38 +1,49 @@
 #include <iostream>
+#include <memory>
 
-class Animal {
- public:
-  virtual ~Animal() = default;
-
-  virtual void MakeSound() const = 0;
+class Creature {
+public:
+    virtual ~Creature() = default;
+    virtual void makeSound() const = 0;
+    virtual std::string getType() const = 0;
 };
 
-class Dog : public Animal {
- public:
-  virtual void MakeSound() const override { std::cout << "woof!" << std::endl; }
+class Hound : public Creature {
+public:
+    void makeSound() const override { std::cout << "Bark! (Hound)\n"; }
+    std::string getType() const override { return "Hound"; }
 };
 
-class NullAnimal : public Animal {
- public:
-  virtual void MakeSound() const override {}
+class SilentCreature : public Creature {
+public:
+    void makeSound() const override {} // No sound
+    std::string getType() const override { return "Silent"; }
 };
 
-void DoSomething(const Animal& animal) {
-  // |animal| may never be null here.
-    animal.MakeSound();
+void interactWithCreature(const Creature& creature) {
+    std::cout << "Creature type: " << creature.getType() << " - ";
+    creature.makeSound();
 }
 
-// Function which may accept an |Animal| instance or null.
-void DoSomething(const Animal* animal) {
-  // |animal| may be null.
-    animal->MakeSound();
+// Function that handles both real creatures and silent ones safely.
+void interactWithCreature(const Creature* creature) {
+    if (creature) {
+        std::cout << "Pointer-based Creature type: " << creature->getType() << " - ";
+        creature->makeSound();
+    } else {
+        std::cout << "Received a null pointer. No action taken.\n";
+    }
 }
 
-int main()
-{
-    Animal* null_animal_ptr=new NullAnimal();
-    DoSomething(null_animal_ptr);
+int main() {
+    std::unique_ptr<Creature> silentPtr = std::make_unique<SilentCreature>();
+    interactWithCreature(silentPtr.get());
 
-    NullAnimal null_animal;
-    DoSomething(null_animal);
+    SilentCreature silentInstance;
+    interactWithCreature(silentInstance);
+
+    std::unique_ptr<Creature> hound = std::make_unique<Hound>();
+    interactWithCreature(hound.get());
+
+    return 0;
 }

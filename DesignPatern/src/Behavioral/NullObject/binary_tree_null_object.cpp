@@ -1,68 +1,51 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include <memory>
 
-//size of a tree is the number of nodes
-
-class Node
-{
+// Represents a node in the tree
+class TreeNode {
 public:
-    Node* left, *right;
-    Node(int value)
-    {
-        this->left=nullptr;
-        this->right=nullptr;
-        this->value=value;
-    }
+    std::unique_ptr<TreeNode> left, right;
     int value;
+
+    explicit TreeNode(int val) : value(val) {}
+
+    virtual bool isNull() const { return false; }
 };
 
-int treeSizeAfter(std::nullptr_t)
-{
-    std::cout<<"Passed a null pointer" <<std::endl;
+// Null object to replace nullptr
+class NullTreeNode : public TreeNode {
+public:
+    NullTreeNode() : TreeNode(0) {}  // Default value for null nodes
+
+    bool isNull() const override { return true; }
+};
+
+// Utility function to create a null node
+std::unique_ptr<TreeNode> createNullNode() {
+    return std::make_unique<NullTreeNode>();
+}
+
+// Computes tree size
+int treeSizeAfter(const TreeNode* node) {
+    if (!node || node->isNull()) {
+        std::cout << "Encountered a null node\n";
+        return 0;
+    }
+    return 1 + treeSizeAfter(node->left.get()) + treeSizeAfter(node->right.get());
+}
+
+int main() {
+    // Creating tree nodes
+    auto root = std::make_unique<TreeNode>(9);
+    root->left = std::make_unique<TreeNode>(8);
+    root->right = std::make_unique<TreeNode>(6);
+
+    root->left->left = std::make_unique<TreeNode>(7);
+    root->left->right = std::make_unique<TreeNode>(4);
+
+    root->right->right = std::make_unique<TreeNode>(2);
+
+    std::cout << "Tree size: " << treeSizeAfter(root.get()) << std::endl;
+
     return 0;
-}
-
-int treeSizeAfter(Node *node)
-{
-    return 1+treeSizeAfter(node->left)+treeSizeAfter(node->right);
-}
-
-//int main()
-//{
-
-///*
-
-//                    9
-//                  /   \
-//                8       6
-//              /  \        \
-//             7    4        2
-//*/
-
-//    Node * n9, * n8,* n7,* n4,* n6,* n2;
-
-//    std::cout<<treeSizeAfter(n9) <<std::endl;
-
-//    n9=new Node(9);
-//    n8=new Node(8);
-//    n7=new Node(7);
-//    n4=new Node(4);
-//    n6=new Node(6);
-//    n2=new Node(2);
-
-//    n9->left=n8;
-//    n9->right=n6;
-
-//    n9->left=n7;
-//    n9->right=n4;
-
-//    n6->right=n2;
-
-//    std::cout<<treeSizeAfter(n9) <<std::endl;
-//}
-
-int main()
-{
 }

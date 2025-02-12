@@ -1,48 +1,50 @@
 #include <iostream>
 #include <memory>
+#include <functional>
 
 using namespace std;
 
-class Command {
+class Operation {
 public:
-  // declares an interface for executing an operation.
-  virtual void execute() = 0;
-  virtual ~Command() = default;
+    // Declares an interface for triggering an action.
+    virtual void run() = 0;
+    virtual ~Operation() = default;
 
 protected:
-  Command() = default;
+    Operation() = default;
 };
 
 template <typename Receiver>
-class SimpleCommand : public Command { // ConcreteCommand
+class ActionInvoker : public Operation { // Concrete Command
 public:
-  typedef void (Receiver::*Action)();
-  // defines a binding between a Receiver object and an action.
-  SimpleCommand(std::shared_ptr<Receiver> receiver_, Action action_)
-      : receiver(receiver_.get()), action(action_) {}
-  SimpleCommand(const SimpleCommand &) = delete; // rule of three
-  const SimpleCommand &operator=(const SimpleCommand &) = delete;
-  // implements execute by invoking the corresponding operation(s) on Receiver.
-  virtual void execute() { (receiver->*action)(); }
+    using Action = std::function<void(Receiver&)>;
+
+    // Binds a Receiver object with an action function.
+    ActionInvoker(shared_ptr<Receiver> receiver_, Action action_)
+        : receiver(receiver_), action(action_) {}
+
+    ActionInvoker(const ActionInvoker&) = delete; // Rule of three
+    const ActionInvoker& operator=(const ActionInvoker&) = delete;
+
+    // Triggers the action on the receiver.
+    virtual void run() override { action(*receiver); }
 
 private:
-  Receiver *receiver;
-  Action action;
+    shared_ptr<Receiver> receiver;
+    Action action;
 };
 
 class MyClass { // Receiver
 public:
-  // knows how to perform the operations associated with carrying out a request.
-  // Any class may serve as a Receiver.
-  void action() { std::cout << "MyClass::action\n"; }
+    void performTask() { cout << "MyClass is executing a task...\n"; }
 };
 
 int main() {
-  // The smart pointers prevent memory leaks.
-  std::shared_ptr<MyClass> receiver = std::make_shared<MyClass>();
-  // ...
-  std::unique_ptr<Command> command =
-      std::make_unique<SimpleCommand<MyClass>>(receiver, &MyClass::action);
-  // ...
-  command->execute();
+    shared_ptr<MyClass> receiver = make_shared<MyClass>();
+
+    // Using std::function to bind a member function to an ActionInvoker.
+    unique_ptr<Operation> command =
+        make_unique<ActionInvoker<MyClass>>(receiver, &MyClass::performTask);
+
+    command->run();
 }

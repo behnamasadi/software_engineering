@@ -1,101 +1,73 @@
 #include <iostream>
-using namespace std;
+#include <memory>
 
+class Device;  // Forward declaration
 
-class Machine
-{
-  class State *current;
-  public:
-    Machine();
-    void setCurrent(State *s)
-    {
-        current = s;
+class PowerState {
+public:
+    virtual ~PowerState() = default;
+    virtual void turnOn(Device *device) {
+        std::cout << "   Already ON\n";
     }
-    void on();
-    void off();
+    virtual void turnOff(Device *device) {
+        std::cout << "   Already OFF\n";
+    }
+    virtual std::string getName() const = 0;
 };
 
-class State
-{
-  public:
-    virtual void on(Machine *m)
-    {
-        cout << "   already ON\n";
-    }
-    virtual void off(Machine *m)
-    {
-        cout << "   already OFF\n";
-    }
+class ActiveState : public PowerState {
+public:
+    void turnOff(Device *device) override;
+    std::string getName() const override { return "ON"; }
 };
 
-void Machine::on()
-{
-  current->on(this);
-}
-
-void Machine::off()
-{
-  current->off(this);
-}
-
-class ON: public State
-{
-  public:
-    ON()
-    {
-        cout << "   ON-ctor ";
-    }
-    ~ON()
-    {
-        cout << "   dtor-ON\n";
-    }
-    void off(Machine *m);
+class InactiveState : public PowerState {
+public:
+    void turnOn(Device *device) override;
+    std::string getName() const override { return "OFF"; }
 };
 
-class OFF: public State
-{
-  public:
-    OFF()
-    {
-        cout << "   OFF-ctor ";
-    };
-    ~OFF()
-    {
-        cout << "   dtor-OFF\n";
-    };
-    void on(Machine *m)
-    {
-        cout << "   going from OFF to ON";
-        m->setCurrent(new ON());
-        delete this;
+class Device {
+private:
+    std::unique_ptr<PowerState> currentState;
+
+public:
+    Device() : currentState(std::make_unique<InactiveState>()) {
+        std::cout << "Device initialized in state: " << currentState->getName() << "\n";
+    }
+
+    void setCurrent(std::unique_ptr<PowerState> newState) {
+        std::cout << "   Switching state from " << currentState->getName() 
+                  << " to " << newState->getName() << "\n";
+        currentState = std::move(newState);
+    }
+
+    void turnOn() {
+        currentState->turnOn(this);
+    }
+
+    void turnOff() {
+        currentState->turnOff(this);
     }
 };
 
-void ON::off(Machine *m)
-{
-  cout << "   going from ON to OFF";
-  m->setCurrent(new OFF());
-  delete this;
+void ActiveState::turnOff(Device *device) {
+    std::cout << "   Turning OFF...\n";
+    device->setCurrent(std::make_unique<InactiveState>());
 }
 
-Machine::Machine()
-{
-  current = new OFF();
-  cout << '\n';
+void InactiveState::turnOn(Device *device) {
+    std::cout << "   Turning ON...\n";
+    device->setCurrent(std::make_unique<ActiveState>());
 }
 
-int main()
-{
-//  void(Machine:: *ptrs[])() =
-//  {
-//    Machine::off, Machine::on
-//  };
-//  Machine fsm;
-//  int num;
-//  while (1)
-//  {
-//    cout << "Enter 0/1: ";
-//    cin >> num;
-//    (fsm. *ptrs[num])();
-//  }
+int main() {
+    Device device;
+    
+    device.turnOn();
+    device.turnOff();
+    device.turnOff();  // No state change should occur
+    device.turnOn();
+    
+    return 0;
 }

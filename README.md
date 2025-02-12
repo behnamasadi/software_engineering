@@ -12,7 +12,47 @@ This repository serves as a comprehensive resource for learning software design 
 This repository is enriched with C++ examples, references, and visual aids to help developers, architects, and students better understand and implement professional-grade software design.
 
 ---
+### How to build on your machine 
+configure it:
 
+```
+cmake -G "Ninja Multi-Config"  -S . -B build
+```
+
+build it:
+
+```
+cmake --build build --config Release
+```
+
+or 
+
+```
+cmake --build build --config Debug
+```
+
+or be more specific:
+
+```
+cmake --build build --target all --config Release
+```
+
+If you prefer `preset` use:
+
+```
+cmake --preset ninja-multi
+```
+and 
+
+```
+cmake --build --preset ninja-multi-debug
+```
+or 
+```
+cmake --build --preset ninja-multi-release
+```
+
+---
 ## [UML](#) 
 - [UML Diagram Maker Tools](docs/UML/Concepts/README.md) 
 - [Concepts](docs/UML/Concepts) 

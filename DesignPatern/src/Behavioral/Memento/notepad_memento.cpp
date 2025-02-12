@@ -2,118 +2,104 @@
 #include <string>
 #include <memory>
 #include <ctime>
-#include <stack>
+#include <vector>
 
-class Memento
-{
+class Snapshot {
 public:
-    virtual std::string state()=0;
-    virtual std::string date()=0;
-    virtual std::string getName()=0;
+    virtual std::string getState() = 0;
+    virtual std::string getTimestamp() = 0;
+    virtual std::string getName() = 0;
+    virtual ~Snapshot() = default;
 };
 
-class ConcreteMemento: public Memento
-{
+class TextSnapshot : public Snapshot {
 private:
-    std::string m_state;
-    std::string m_date;
+    std::string textState;
+    std::string timestamp;
+
 public:
-    ConcreteMemento(std::string state)
-    {
-        this->m_state=state;
-        std::time_t now =std::time(0);
-        this->m_date = std::ctime(&now);
+    TextSnapshot(std::string state) : textState(state) {
+        std::time_t now = std::time(nullptr);
+        timestamp = std::ctime(&now);
+        timestamp.pop_back(); // Remove newline added by ctime
     }
 
-
-    std::string state() override
-    {
-        return this->m_state;
+    std::string getState() override {
+        return textState;
     }
 
-    std::string date() override
-    {
-        return this->m_date;
-    }
-    std::string getName() override
-    {
-        return this->m_date + " / " + this->m_state;
+    std::string getTimestamp() override {
+        return timestamp;
     }
 
-
-};
-
-class Originator
-{
-    std::string m_state;
-public:
-    Originator(std::string state) : m_state(state) {
-        std::cout << "Originator: My initial state is: " << this->m_state << "\n";
-      }
-
-    Memento *Save()
-    {
-        return new ConcreteMemento(this->m_state);
-    }
-    void Restore(Memento* memento)
-    {
-        this->m_state=memento->state();
-        std::cout << "Originator: My state has changed to: " << this->m_state << "\n";
-    }
-
-    void changeText(std::string text)
-    {
-        this->m_state = text;
-        std::cout << "Originator: My state has changed to: " << this->m_state << "\n";
-
+    std::string getName() override {
+        return timestamp + " / " + textState;
     }
 };
 
-class CareTaker
-{
-    std::stack<Memento*> m_mementos;
-    Originator *m_originator;
+class Editor {
+    std::string textContent;
 
 public:
-    CareTaker(Originator *originator)
-    {
-         this->m_originator=originator;
+    Editor(std::string initialText) : textContent(initialText) {
+        std::cout << "Editor: Initial content set to: \"" << textContent << "\"\n";
     }
 
-    void backUp()
-    {
-        this->m_mementos.push(this->m_originator->Save());
+    std::unique_ptr<Snapshot> save() {
+        return std::make_unique<TextSnapshot>(textContent);
     }
 
-    void undo()
-    {
-       Memento* memento= m_mementos.top();
-       m_mementos.pop();
-       std::cout << "Caretaker: Restoring state to: " << memento->getName() << "\n";
-       this->m_originator->Restore(memento);
+    void restore(Snapshot* snapshot) {
+        textContent = snapshot->getState();
+        std::cout << "Editor: Restored content to: \"" << textContent << "\"\n";
+    }
+
+    void updateText(const std::string& newText) {
+        textContent = newText;
+        std::cout << "Editor: Updated content to: \"" << textContent << "\"\n";
     }
 };
 
+class HistoryManager {
+    std::vector<std::unique_ptr<Snapshot>> history;
+    Editor* editor;
 
+public:
+    HistoryManager(Editor* editor) : editor(editor) {}
 
-int main()
-{
-    Originator* originator=new Originator("intial state");
-    CareTaker *caretaker = new CareTaker(originator);
+    void saveState() {
+        history.push_back(editor->save());
+        std::cout << "HistoryManager: Saved current state.\n";
+    }
 
-    originator->changeText("mumbo");
-    caretaker ->backUp();
+    void undo() {
+        if (history.empty()) {
+            std::cout << "HistoryManager: No states to restore.\n";
+            return;
+        }
 
-    originator->changeText("jumbo");
-    caretaker ->backUp();
+        std::unique_ptr<Snapshot> lastSnapshot = std::move(history.back());
+        history.pop_back();
+        std::cout << "HistoryManager: Restoring to: " << lastSnapshot->getName() << "\n";
+        editor->restore(lastSnapshot.get());
+    }
+};
 
-    caretaker->undo();
+int main() {
+    Editor editor("Initial Draft");
+    HistoryManager historyManager(&editor);
 
-    originator->changeText("dumbo");
-    caretaker ->backUp();
+    editor.updateText("First Edit");
+    historyManager.saveState();
 
+    editor.updateText("Second Edit");
+    historyManager.saveState();
 
-    caretaker->undo();
-    caretaker->undo();
+    historyManager.undo();
 
+    editor.updateText("Final Edit");
+    historyManager.saveState();
+
+    historyManager.undo();
+    historyManager.undo();
 }

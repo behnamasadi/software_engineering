@@ -1,83 +1,76 @@
-//ref: https://www.geeksforgeeks.org/template-method-design-pattern/
 #include <iostream>
+#include <memory>
 
-class OrderProcessTemplate
-{
+// Base class that outlines the "template method" structure
+class OrderWorkflow {
 public:
-    bool isGift;
-    void virtual doSelect()=0;
-    void virtual doPayment()=0;
-    void virtual doDelivery()=0;
+    virtual ~OrderWorkflow() = default;
 
-    void giftWrap()
-    {
-       std::cout<< "Gift wrap successfull"<<std::endl;
-    }
-
-    void processOrder(bool isGift)
-    {
-        doSelect();
-        doPayment();
-        if (isGift)
-        {
-            giftWrap();
+    // Template method
+    void placeOrder(bool isGift) {
+        selectItem();
+        makePayment();
+        if (isGift) {
+            wrapGift();
         }
-        doDelivery();
+        deliverOrder();
+    }
+
+protected:
+    virtual void selectItem() = 0;
+    virtual void makePayment() = 0;
+    virtual void deliverOrder() = 0;
+
+    // Common optional step
+    void wrapGift() {
+        std::cout << "[Common Step] Gift has been wrapped successfully.\n";
     }
 };
 
-
-class NetOrder: public OrderProcessTemplate
-{
-public:
-    void doSelect() override
-    {
-        std::cout<< "Item added to online shopping cart"<<std::endl;
-        std::cout<< "Get gift wrap preference"<<std::endl;
-        std::cout<< "Get delivery address."<<std::endl;
+// Concrete class for online orders
+class OnlineOrder : public OrderWorkflow {
+protected:
+    void selectItem() override {
+        std::cout << "[OnlineOrder] Item has been added to the digital cart.\n";
+        std::cout << "[OnlineOrder] Gift preference noted.\n";
+        std::cout << "[OnlineOrder] Delivery address collected.\n";
     }
 
-    void doPayment() override
-    {
-        std::cout<< "Online Payment through Netbanking, card or Paytm"<<std::endl;
+    void makePayment() override {
+        std::cout << "[OnlineOrder] Payment through online gateway.\n";
     }
 
-    void doDelivery() override
-    {
-        std::cout<<"Ship the item through post to delivery address"<<std::endl;
-    }
-
-};
-
-class StoreOrder :public OrderProcessTemplate
-{
-public :
-    void doSelect()override
-    {
-         std::cout<<"Customer chooses the item from shelf."<<std::endl;
-    }
-
-    void doPayment() override
-    {
-        std::cout<<"Pays at counter through cash/POS"<<std::endl;
-    }
-
-    void doDelivery() override
-    {
-        std::cout<<"Item deliverd to in delivery counter."<<std::endl;
+    void deliverOrder() override {
+        std::cout << "[OnlineOrder] Product shipped via courier.\n";
     }
 };
 
+// Concrete class for in-store orders
+class InStoreOrder : public OrderWorkflow {
+protected:
+    void selectItem() override {
+        std::cout << "[InStoreOrder] Customer picks item from store shelf.\n";
+    }
 
+    void makePayment() override {
+        std::cout << "[InStoreOrder] Payment made at the billing counter.\n";
+    }
 
-int main()
-{
-    std::cout<<"Online Order" <<std::endl;
-    OrderProcessTemplate* netOrder = new NetOrder();
-    netOrder->processOrder(true);
+    void deliverOrder() override {
+        std::cout << "[InStoreOrder] Item handed over at store delivery counter.\n";
+    }
+};
 
+int main() {
+    // Create an OnlineOrder and place an order with a gift request
+    std::cout << "=== Online Order ===\n";
+    std::unique_ptr<OrderWorkflow> onlineOrder = std::make_unique<OnlineOrder>();
+    onlineOrder->placeOrder(true);
 
-    std::cout<<"Store Order" <<std::endl;
-    OrderProcessTemplate *storeOrder = new StoreOrder();
-    storeOrder->processOrder(true);
+    std::cout << "\n=== In-Store Order ===\n";
+    // Create an InStoreOrder and place an order without gift wrapping
+    std::unique_ptr<OrderWorkflow> inStoreOrder = std::make_unique<InStoreOrder>();
+    inStoreOrder->placeOrder(false);
+
+    return 0;
 }

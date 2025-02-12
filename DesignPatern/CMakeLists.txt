@@ -169,8 +169,7 @@ add_executable(iterator_design_pattern src/Behavioral/Iterator/iterator_design_p
 target_link_libraries(iterator_design_pattern)
 
 # ##################### (5) Mediator ###########################
-add_executable(mediator_before_after src/Behavioral/Mediator/mediator_before_after.cpp)
-target_link_libraries(mediator_before_after)
+
 
 add_executable(air_traffic_control src/Behavioral/Mediator/air_traffic_control.cpp)
 target_link_libraries(air_traffic_control)
@@ -202,8 +201,7 @@ target_link_libraries(clocktimer)
 add_executable(car_observer src/Behavioral/Observer/car_observer.cpp)
 target_link_libraries(car_observer)
 
-add_executable(rocket_observer src/Behavioral/Observer/rocket_observer.cpp)
-target_link_libraries(rocket_observer)
+
 
 add_executable(chat_room_observer src/Behavioral/Observer/chat_room_observer.cpp)
 target_link_libraries(chat_room_observer)
@@ -224,6 +222,7 @@ target_link_libraries(billing_strategy)
 
 add_executable(conceptual_strategy src/Behavioral/Strategy/conceptual_strategy.cpp)
 target_link_libraries(conceptual_strategy)
+
 
 # ##################### (11) TemplateMethod ###########################
 add_executable(template_method_order src/Behavioral/TemplateMethod/template_method_order.cpp)

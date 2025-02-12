@@ -1,72 +1,77 @@
 #include <iostream>
-using namespace std;
+#include <memory>
+#include <vector>
 
 class Base
 {
-    void a()
+protected:
+    void stepA()
     {
-        cout << "a  ";
+        std::cout << "Step A -> ";
     }
-    void c()
+    void stepC()
     {
-        cout << "c  ";
+        std::cout << "Step C -> ";
     }
-    void e()
+    void stepE()
     {
-        cout << "e  ";
+        std::cout << "Step E";
     }
-    // 2. Steps requiring peculiar implementations are "placeholders" in base class
-    virtual void ph1() = 0;
-    virtual void ph2() = 0;
-  public:
-    // 1. Standardize the skeleton of an algorithm in a base class "template method"
-    void execute()
+
+    // Abstract methods (placeholders)
+    virtual void stepB() = 0;
+    virtual void stepD() = 0;
+
+public:
+    virtual ~Base() = default;
+
+    void run()
     {
-        a();
-        ph1();
-        c();
-        ph2();
-        e();
+        stepA();
+        stepB();
+        stepC();
+        stepD();
+        stepE();
+        std::cout << '\n';
     }
 };
 
-class One: public Base
+class DerivedOne : public Base
 {
-    // 3. Derived classes implement placeholder methods
-     /*virtual*/void ph1()
+protected:
+    void stepB() override
     {
-        cout << "b  ";
+        std::cout << "Step B1 -> ";
     }
-     /*virtual*/void ph2()
+    void stepD() override
     {
-        cout << "d  ";
+        std::cout << "Step D1 -> ";
     }
 };
 
-class Two: public Base
+class DerivedTwo : public Base
 {
-     /*virtual*/void ph1()
+protected:
+    void stepB() override
     {
-        cout << "2  ";
+        std::cout << "Step B2 -> ";
     }
-     /*virtual*/void ph2()
+    void stepD() override
     {
-        cout << "4  ";
+        std::cout << "Step D2 -> ";
     }
 };
 
 int main()
 {
+    std::vector<std::unique_ptr<Base>> objects;
+    objects.push_back(std::make_unique<DerivedOne>());
+    objects.push_back(std::make_unique<DerivedTwo>());
 
-
-    Base *array[] =
+    for (const auto& obj : objects)
     {
-       new One(), new Two()
-    };
-    for (int i = 0; i < 2; i++)
-    {
-        array[i]->execute();
-        cout << '\n';
+        obj->run();
     }
-    //delete []array;
+
+    return 0;
 }

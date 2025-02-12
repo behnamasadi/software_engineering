@@ -1,98 +1,89 @@
+/*
+*/
+#include <string>
 #include <iostream>
 #include <vector>
-#include <list>
 
+class Literal;
+class Addition;
 
-class  IBillingStrategy
+class IExpressionVisitor
 {
     public:
-    double virtual GetActPrice(double rawPrice){}//{        std::cout<<"IBillingStrategy"<<std::endl;}
+    void Visit(Literal *literal){}
+    void Visit(Addition *addition){}
 };
 
-
-// Normal billing strategy (unchanged price)
-class NormalStrategy : public IBillingStrategy
-{
-    public:
-    double  GetActPrice(double rawPrice) override
-    {
-        return rawPrice;
-    }
-};
-
-// Strategy for Happy hour (50% discount)
-class HappyHourStrategy : public IBillingStrategy
+class IExpression
 {
 public:
-    double  GetActPrice(double rawPrice) override
+    void Accept(IExpressionVisitor *visitor);
+};
+
+class Literal :public IExpression
+{
+public:
+    double Value;
+
+    Literal(double value)
     {
-        return rawPrice * 0.5;
+      this->Value = value;
+    }
+    void Accept(IExpressionVisitor *visitor)
+    {
+      visitor->Visit(this);
     }
 };
 
-class Customer
+class Addition :public IExpression
 {
-    private:
-    std::list<double> drinks;
+public:
+    IExpression *Left;
+    IExpression *Right;
+
+    Addition(IExpression *left, IExpression *right)
+    {
+        this->Left = left;
+        this->Right = right;
+    }
+
+    void Accept(IExpressionVisitor *visitor)
+    {
+        visitor->Visit(this);
+    }
+};
+
+class ExpressionPrinter :public IExpressionVisitor
+{
+    std::string sb;
 
 public:
-    IBillingStrategy *Strategy;
-
-public :
-    Customer(IBillingStrategy *strategy)
+    ExpressionPrinter(std::string sb)
     {
-
-        this->Strategy = strategy;
+        this->sb = sb;
     }
 
-    void Add(double price, int quantity)
+    void Visit(Literal *literal)
     {
-        this->drinks.push_back(this->Strategy->GetActPrice(price * quantity));
+        sb.append(std::to_string(literal->Value) );
     }
 
-    // Payment of bill
-    void PrintBill()
+    void Visit(Addition *addition)
     {
-        double sum = 0;
-        for(auto i : this->drinks)
-        {
-            sum += i;
-        }
-        std::cout<<"Total due: " << sum <<std::endl;
+        sb.append("(");
+        addition->Left->Accept(this);
+        sb.append("+");
+        addition->Right->Accept(this);
+        sb.append(")");
     }
 };
-
-
 
 int main()
 {
-    // Prepare strategies
-    IBillingStrategy *normalStrategy=new NormalStrategy;
-    IBillingStrategy *happyHourStrategy=new  HappyHourStrategy;
-
-    Customer firstCustomer =  Customer(normalStrategy);
-
-    // Normal billing
-    firstCustomer.Add(1.0, 1);
-
-    // Start Happy Hour
-    firstCustomer.Strategy = happyHourStrategy;
-    firstCustomer.Add(1.0, 2);
-
-    // New Customer
-    Customer secondCustomer =  Customer(happyHourStrategy);
-    secondCustomer.Add(0.8, 1);
-    // The Customer pays
-    firstCustomer.PrintBill();
-
-    // End Happy Hour
-    secondCustomer.Strategy = normalStrategy;
-    secondCustomer.Add(1.3, 2);
-    secondCustomer.Add(2.5, 1);
-    secondCustomer.PrintBill();
-    delete normalStrategy,happyHourStrategy;
+    // emulate 1+2+3
+    auto e = new Addition( new Addition( new Literal(1),  new Literal(2) ), new Literal(3) );
+    std::string sb;
+    IExpressionVisitor * expressionPrinter = new ExpressionPrinter(sb);
+    e->Accept(expressionPrinter);
+    std::cout<< sb<<std::endl;
 }
-
-
-
-

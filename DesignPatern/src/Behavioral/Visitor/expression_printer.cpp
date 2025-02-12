@@ -1,89 +1,75 @@
-/*
-*/
-#include <string>
 #include <iostream>
-#include <vector>
+#include <memory>
+#include <string>
 
 class Literal;
 class Addition;
 
-class IExpressionVisitor
-{
-    public:
-    void Visit(Literal *literal){}
-    void Visit(Addition *addition){}
-};
-
-class IExpression
-{
+class IExpressionVisitor {
 public:
-    void Accept(IExpressionVisitor *visitor);
+    virtual ~IExpressionVisitor() = default;
+    virtual void Visit(const Literal& literal) = 0;
+    virtual void Visit(const Addition& addition) = 0;
 };
 
-class Literal :public IExpression
-{
+class IExpression {
 public:
-    double Value;
-
-    Literal(double value)
-    {
-      this->Value = value;
-    }
-    void Accept(IExpressionVisitor *visitor)
-    {
-      visitor->Visit(this);
-    }
+    virtual ~IExpression() = default;
+    virtual void Accept(IExpressionVisitor& visitor) const = 0;
 };
 
-class Addition :public IExpression
-{
+class Literal : public IExpression {
 public:
-    IExpression *Left;
-    IExpression *Right;
-
-    Addition(IExpression *left, IExpression *right)
-    {
-        this->Left = left;
-        this->Right = right;
-    }
-
-    void Accept(IExpressionVisitor *visitor)
-    {
-        visitor->Visit(this);
+    double value;
+    explicit Literal(double val) : value(val) {}
+    void Accept(IExpressionVisitor& visitor) const override {
+        visitor.Visit(*this);
     }
 };
 
-class ExpressionPrinter :public IExpressionVisitor
-{
-    std::string sb;
+class Addition : public IExpression {
+public:
+    std::unique_ptr<IExpression> left;
+    std::unique_ptr<IExpression> right;
+
+    Addition(std::unique_ptr<IExpression> lhs, std::unique_ptr<IExpression> rhs)
+        : left(std::move(lhs)), right(std::move(rhs)) {}
+
+    void Accept(IExpressionVisitor& visitor) const override {
+        visitor.Visit(*this);
+    }
+};
+
+class ExpressionPrinter : public IExpressionVisitor {
+    std::string output;
 
 public:
-    ExpressionPrinter(std::string sb)
-    {
-        this->sb = sb;
+    void Visit(const Literal& literal) override {
+        output += std::to_string(literal.value);
     }
 
-    void Visit(Literal *literal)
-    {
-        sb.append(std::to_string(literal->Value) );
+    void Visit(const Addition& addition) override {
+        output += "(";
+        addition.left->Accept(*this);
+        output += " + ";
+        addition.right->Accept(*this);
+        output += ")";
     }
 
-    void Visit(Addition *addition)
-    {
-        sb.append("(");
-        addition->Left->Accept(this);
-        sb.append("+");
-        addition->Right->Accept(this);
-        sb.append(")");
+    std::string GetResult() const {
+        return output;
     }
 };
 
-int main()
-{
-    // emulate 1+2+3
-    auto e = new Addition( new Addition( new Literal(1),  new Literal(2) ), new Literal(3) );
-    std::string sb;
-    IExpressionVisitor * expressionPrinter = new ExpressionPrinter(sb);
-    e->Accept(expressionPrinter);
-    std::cout<< sb<<std::endl;
+int main() {
+    // Construct (1 + 2) + 3 using smart pointers
+    auto expr = std::make_unique<Addition>(
+        std::make_unique<Addition>(std::make_unique<Literal>(1), std::make_unique<Literal>(2)),
+        std::make_unique<Literal>(3)
+    );
+
+    ExpressionPrinter printer;
+    expr->Accept(printer);
+    
+    std::cout << printer.GetResult() << std::endl;
 }

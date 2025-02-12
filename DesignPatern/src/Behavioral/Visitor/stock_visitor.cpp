@@ -1,126 +1,111 @@
-//Write CPP code here 
+#include <iostream>
+#include <vector>
+#include <memory>
 
-#include <iostream> 
-using namespace std; 
+class Visitor; // Forward declaration
 
-class Stock 
-{ 
-public: 
-	virtual void accept(class Visitor *) = 0; 
-	
-}; 
+class Stock {
+public:
+    virtual ~Stock() = default;
+    virtual void accept(std::shared_ptr<Visitor> visitor) = 0;
+};
 
-class Apple : public Stock 
-{ 
-public: 
-	/*virtual*/ void accept(Visitor *); 
-	void buy() 
-	{ 
-		cout << "Apple::buy\n"; 
-	} 
-	void sell() 
-	{ 
-		cout << "Apple::sell\n"; 
-	} 
-	
-}; 
-class Google : public Stock 
-{ 
-public: 
-	/*virtual*/ void accept(Visitor *); 
-	void buy() 
-	{ 
-		cout << "Google::buy\n"; 
-	} 
+// Inherit from enable_shared_from_this so that you can safely call shared_from_this()
+class Apple : public Stock, public std::enable_shared_from_this<Apple> {
+public:
+    void accept(std::shared_ptr<Visitor> visitor) override;
+    void buy()  { std::cout << "Apple::buy\n"; }
+    void sell() { std::cout << "Apple::sell\n"; }
+};
 
-	void sell() 
-	{ 
-		cout << "Google::sell\n"; 
-	} 
-}; 
+class Google : public Stock, public std::enable_shared_from_this<Google> {
+public:
+    void accept(std::shared_ptr<Visitor> visitor) override;
+    void buy()  { std::cout << "Google::buy\n"; }
+    void sell() { std::cout << "Google::sell\n"; }
+};
 
-class Visitor 
-{ 
-public: 
-	virtual void visit(Apple *) = 0; 
-	virtual void visit(Google *) = 0; 
-	//private: 
-	static int m_num_apple, m_num_google; 
-	void total_stocks() 
-	{ 
-		cout << "m_num_apple " << m_num_apple 
-			<< ", m_num_google " << m_num_google << '\n'; 
-	} 
-}; 
-int Visitor::m_num_apple = 0; 
-int Visitor::m_num_google = 0; 
-class BuyVisitor : public Visitor 
-{ 
-public: 
-	BuyVisitor() 
-	{ 
-		m_num_apple = m_num_google = 0; 
-	} 
-	/*virtual*/ void visit(Apple *r) 
-	{ 
-		++m_num_apple; 
-		r->buy(); 
-		cout << "m_num_apple " << m_num_apple << endl; 
-	} 
-	/*virtual*/ void visit(Google *b) 
-	{ 
-		++m_num_google; 
-		b->buy(); 
-		cout << " m_num_google " << m_num_google << '\n'; 
-	} 
-}; 
+class Visitor {
+protected:
+    int num_apple  = 0;
+    int num_google = 0;
 
-class SellVisitor : public Visitor 
-{ 
-public: 
-	/*virtual*/ void visit(Apple *a) 
-	{ 
-		
-		--m_num_apple; 
-		a->sell(); 
-		cout << "m_num_apple " << m_num_apple << endl; 
-	} 
-	/*virtual*/ void visit(Google *g) 
-	{ 
-		--m_num_google; 
-		g->sell(); 
-		cout << "m_num_google " << m_num_google << endl; 
-	} 
-}; 
+public:
+    virtual ~Visitor() = default;
+    virtual void visit(std::shared_ptr<Apple> apple)   = 0;
+    virtual void visit(std::shared_ptr<Google> google) = 0;
 
-void Apple::accept(Visitor *v) 
-{ 
-	v->visit(this); 
-} 
+    void total_stocks() const {
+        std::cout << "Total Apple stocks: " << num_apple 
+                  << ", Total Google stocks: " << num_google << '\n';
+    }
+};
 
-void Google::accept(Visitor *v) 
-{ 
-	v->visit(this); 
-} 
+class BuyVisitor : public Visitor {
+public:
+    void visit(std::shared_ptr<Apple> apple) override {
+        ++num_apple;
+        apple->buy();
+        std::cout << "Current Apple stocks: " << num_apple << '\n';
+    }
 
-int main() 
-{ 
-	Stock *set[] = { new Apple, new Google, new Google, 
-					new Apple, new Apple, 0 }; 
+    void visit(std::shared_ptr<Google> google) override {
+        ++num_google;
+        google->buy();
+        std::cout << "Current Google stocks: " << num_google << '\n';
+    }
+};
 
-	BuyVisitor buy_operation; 
-	SellVisitor sell_operation; 
-	for (int i = 0; set[i]; i++) 
-	{ 
-		set[i]->accept(&buy_operation); 
-	} 
-	buy_operation.total_stocks(); 
+class SellVisitor : public Visitor {
+public:
+    void visit(std::shared_ptr<Apple> apple) override {
+        if (num_apple > 0) {
+            --num_apple;
+        }
+        apple->sell();
+        std::cout << "Current Apple stocks: " << num_apple << '\n';
+    }
 
-	for (int i = 0; set[i]; i++) 
-	{ 
+    void visit(std::shared_ptr<Google> google) override {
+        if (num_google > 0) {
+            --num_google;
+        }
+        google->sell();
+        std::cout << "Current Google stocks: " << num_google << '\n';
+    }
+};
 
-		set[i]->accept(&sell_operation); 
-	} 
-	sell_operation.total_stocks(); 
-} 
+void Apple::accept(std::shared_ptr<Visitor> visitor) {
+    // 'shared_from_this()' is valid because Apple inherits 'enable_shared_from_this<Apple>'
+    visitor->visit(std::static_pointer_cast<Apple>(shared_from_this()));
+}
 
+void Google::accept(std::shared_ptr<Visitor> visitor) {
+    // 'shared_from_this()' is valid because Google inherits 'enable_shared_from_this<Google>'
+    visitor->visit(std::static_pointer_cast<Google>(shared_from_this()));
+}
+
+int main() {
+    std::vector<std::shared_ptr<Stock>> stocks = {
+        std::make_shared<Apple>(),
+        std::make_shared<Google>(),
+        std::make_shared<Google>(),
+        std::make_shared<Apple>(),
+        std::make_shared<Apple>()
+    };
+
+    auto buy_operation  = std::make_shared<BuyVisitor>();
+    auto sell_operation = std::make_shared<SellVisitor>();
+
+    for (const auto& stock : stocks) {
+        stock->accept(buy_operation);
+    }
+    buy_operation->total_stocks();
+
+    for (const auto& stock : stocks) {
+        stock->accept(sell_operation);
+    }
+    sell_operation->total_stocks();
+
+    return 0;
+}

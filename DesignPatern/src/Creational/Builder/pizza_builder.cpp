@@ -2,134 +2,150 @@
 #include <iostream>
 #include <string>
 
+// Dough class
 class Dough
 {
     std::string m_name;
 public:
-    Dough(){}
-    Dough(std::string name):m_name(name){}
-    std::string desciption()
-    {
-        return m_name;
-    }
+    explicit Dough(std::string name = "Unknown Dough") : m_name(std::move(name)) {}
+    std::string description() const { return m_name; }
 };
 
+// Sauce class
 class Sauce
 {
     std::string m_name;
 public:
-    Sauce(){}
-    Sauce(std::string name):m_name(name){}
-    std::string desciption()
-    {
-        return m_name;
-    }
+    explicit Sauce(std::string name = "Unknown Sauce") : m_name(std::move(name)) {}
+    std::string description() const { return m_name; }
 };
 
+// Topping class
 class Topping
 {
     std::string m_name;
-
 public:
-    Topping(){}
-    Topping(std::string name):m_name(name){}
-    std::string desciption()
-    {
-        return m_name;
-    }
+    explicit Topping(std::string name = "Unknown Topping") : m_name(std::move(name)) {}
+    std::string description() const { return m_name; }
 };
 
+// Pizza class
 class Pizza
 {
-public:
     Dough m_dough;
     Sauce m_sauce;
     Topping m_topping;
-    void setDough(Dough dough){m_dough=dough;}
-    void setSauce(Sauce sauce){m_sauce=sauce;}
-    void setTopping(Topping topping){m_topping=topping;}
-    void print()
+
+public:
+    void setDough(const Dough& dough) { m_dough = dough; }
+    void setSauce(const Sauce& sauce) { m_sauce = sauce; }
+    void setTopping(const Topping& topping) { m_topping = topping; }
+
+    void displayPizza() const
     {
-        std::cout<<m_dough.desciption()<<","<<m_sauce.desciption()<<","<<m_topping.desciption() <<std::endl;
+        std::cout << "🍕 Pizza with " << m_dough.description()
+                  << ", " << m_sauce.description()
+                  << ", and " << m_topping.description() << ".\n";
     }
 };
 
+// Abstract Builder
 class PizzaBuilder
 {
 protected:
     std::unique_ptr<Pizza> pizza;
+
 public:
-    virtual void buildDough()=0;
-    virtual void buildSauce()=0;
-    virtual void buildTopping()=0;
-    void createNewPizza()
+    virtual ~PizzaBuilder() = default;
+
+    void preparePizza()
     {
         pizza = std::make_unique<Pizza>();
     }
-    Pizza* getPizza()
+
+    virtual void buildDough() = 0;
+    virtual void buildSauce() = 0;
+    virtual void buildTopping() = 0;
+
+    std::unique_ptr<Pizza> retrievePizza()
     {
-        return pizza.release();
+        return std::move(pizza);
     }
 };
 
-class HawaiianPizzaBuilder:public PizzaBuilder
+// Concrete Builder: Hawaiian Pizza
+class HawaiianPizzaBuilder : public PizzaBuilder
 {
-    void  buildDough()override
+public:
+    void buildDough() override
     {
-        pizza->setDough(Dough("Hawaiian dough"));
+        pizza->setDough(Dough("Hawaiian crust"));
     }
-    void  buildSauce()override
+
+    void buildSauce() override
     {
-        pizza->setSauce(Sauce("Hawaiian Sauce"));
+        pizza->setSauce(Sauce("Sweet pineapple sauce"));
     }
-    void  buildTopping()override
+
+    void buildTopping() override
     {
-        pizza->setTopping(Topping("Hawaiian topping"));
+        pizza->setTopping(Topping("Ham and pineapple"));
     }
 };
 
-class SpicyPizzaBuilder:public PizzaBuilder
+// Concrete Builder: Spicy Pizza
+class SpicyPizzaBuilder : public PizzaBuilder
 {
-    void  buildDough()override
+public:
+    void buildDough() override
     {
-        pizza->setDough(Dough("Spicy dough"));
-    }
-    void  buildSauce()override
-    {
-        pizza->setSauce(Sauce("Spicy Sauce"));
-    }
-    void  buildTopping()override
-    {
-        pizza->setTopping(Topping("Spicy topping"));
+        pizza->setDough(Dough("Spicy thin crust"));
     }
 
+    void buildSauce() override
+    {
+        pizza->setSauce(Sauce("Hot chili sauce"));
+    }
+
+    void buildTopping() override
+    {
+        pizza->setTopping(Topping("Pepperoni and jalapeños"));
+    }
 };
 
+// Director class
 class Cook
 {
-    PizzaBuilder *pizzaBuilder;
+private:
+    std::unique_ptr<PizzaBuilder> pizzaBuilder;
+
 public:
-    Cook(PizzaBuilder *pizzaBuilder):pizzaBuilder(pizzaBuilder){}
-    void createPizza()
+    explicit Cook(std::unique_ptr<PizzaBuilder> builder) : pizzaBuilder(std::move(builder)) {}
+
+    std::unique_ptr<Pizza> createPizza()
     {
-        pizzaBuilder->createNewPizza();
+        pizzaBuilder->preparePizza();
         pizzaBuilder->buildDough();
         pizzaBuilder->buildSauce();
         pizzaBuilder->buildTopping();
-    }
-
-    void showPizza() const
-    {
-        pizzaBuilder->getPizza()->print();
+        return pizzaBuilder->retrievePizza();
     }
 };
 
+// Main function
 int main()
 {
-    //std::unique_ptr<PizzaBuilder> pizzaBuilder_ptr=std::make_unique<SpicyPizzaBuilder>;
-    PizzaBuilder *pizzaBuilder_ptr=new SpicyPizzaBuilder;
-    Cook cooker(pizzaBuilder_ptr);
-    cooker.createPizza();
-    cooker.showPizza();
+    std::cout << "👨‍🍳 Making a Spicy Pizza:\n";
+    std::unique_ptr<PizzaBuilder> spicyBuilder = std::make_unique<SpicyPizzaBuilder>();
+    Cook spicyCook(std::move(spicyBuilder));
+    std::unique_ptr<Pizza> spicyPizza = spicyCook.createPizza();
+    spicyPizza->displayPizza();
 
+    std::cout << "\n👨‍🍳 Making a Hawaiian Pizza:\n";
+    std::unique_ptr<PizzaBuilder> hawaiianBuilder = std::make_unique<HawaiianPizzaBuilder>();
+    Cook hawaiianCook(std::move(hawaiianBuilder));
+    std::unique_ptr<Pizza> hawaiianPizza = hawaiianCook.createPizza();
+    hawaiianPizza->displayPizza();
+
+    return 0;
 }

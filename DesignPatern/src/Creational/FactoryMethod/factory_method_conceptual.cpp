@@ -1,116 +1,76 @@
-#include <string>
 #include <iostream>
-using namespace std;
-//Ref: https://refactoring.guru/design-patterns/factory-method/cpp/example
-/**
- * The Product interface declares the operations that all concrete products must
- * implement.
- */
+#include <memory>
+#include <string>
 
+// Abstract Product
 class Product {
- public:
-  virtual ~Product() {}
-  virtual std::string Operation() const = 0;
+public:
+    virtual ~Product() = default;
+    virtual std::string getInfo() const = 0;
 };
 
-/**
- * Concrete Products provide various implementations of the Product interface.
- */
-class ConcreteProduct1 : public Product {
- public:
-  std::string Operation() const override {
-    return "{Result of the ConcreteProduct1}";
-  }
-};
-class ConcreteProduct2 : public Product {
- public:
-  std::string Operation() const override {
-    return "{Result of the ConcreteProduct2}";
-  }
+// Concrete Product: Alpha
+class AlphaProduct : public Product {
+public:
+    std::string getInfo() const override {
+        return "{AlphaProduct: Advanced Processing}";
+    }
 };
 
-/**
- * The Creator class declares the factory method that is supposed to return an
- * object of a Product class. The Creator's subclasses usually provide the
- * implementation of this method.
- */
-
-class Creator {
-  /**
-   * Note that the Creator may also provide some default implementation of the
-   * factory method.
-   */
- public:
-  virtual ~Creator(){};
-  virtual Product* FactoryMethod() const = 0;
-  /**
-   * Also note that, despite its name, the Creator's primary responsibility is
-   * not creating products. Usually, it contains some core business logic that
-   * relies on Product objects, returned by the factory method. Subclasses can
-   * indirectly change that business logic by overriding the factory method and
-   * returning a different type of product from it.
-   */
-
-  std::string SomeOperation() const {
-    // Call the factory method to create a Product object.
-    Product* product = this->FactoryMethod();
-    // Now, use the product.
-    std::string result = "Creator: The same creator's code has just worked with " + product->Operation();
-    delete product;
-    return result;
-  }
+// Concrete Product: Beta
+class BetaProduct : public Product {
+public:
+    std::string getInfo() const override {
+        return "{BetaProduct: Efficient Performance}";
+    }
 };
 
-/**
- * Concrete Creators override the factory method in order to change the
- * resulting product's type.
- */
-class ConcreteCreator1 : public Creator {
-  /**
-   * Note that the signature of the method still uses the abstract product type,
-   * even though the concrete product is actually returned from the method. This
-   * way the Creator can stay independent of concrete product classes.
-   */
- public:
-  Product* FactoryMethod() const override {
-    return new ConcreteProduct1();
-  }
+// Abstract Creator
+class ProductCreator {
+public:
+    virtual ~ProductCreator() = default;
+    
+    // Factory Method using smart pointers
+    virtual std::unique_ptr<Product> createProduct() const = 0;
+
+    // Business logic using factory method
+    std::string generateReport() const {
+        auto product = this->createProduct();
+        return "ProductCreator: Successfully worked with " + product->getInfo();
+    }
 };
 
-class ConcreteCreator2 : public Creator {
- public:
-  Product* FactoryMethod() const override {
-    return new ConcreteProduct2();
-  }
+// Concrete Creator: Alpha
+class AlphaCreator : public ProductCreator {
+public:
+    std::unique_ptr<Product> createProduct() const override {
+        return std::make_unique<AlphaProduct>();
+    }
 };
 
-/**
- * The client code works with an instance of a concrete creator, albeit through
- * its base interface. As long as the client keeps working with the creator via
- * the base interface, you can pass it any creator's subclass.
- */
-void ClientCode(const Creator& creator) {
-  // ...
-  std::cout << "Client: I'm not aware of the creator's class, but it still works.\n"
-            << creator.SomeOperation() << std::endl;
-  // ...
+// Concrete Creator: Beta
+class BetaCreator : public ProductCreator {
+public:
+    std::unique_ptr<Product> createProduct() const override {
+        return std::make_unique<BetaProduct>();
+    }
+};
+
+// Client Code
+void clientProcess(const ProductCreator& creator) {
+    std::cout << "Client: Executing process...\n"
+              << creator.generateReport() << std::endl;
 }
 
-/**
- * The Application picks a creator's type depending on the configuration or
- * environment.
- */
-
+// Main Function
 int main() {
-  std::cout << "App: Launched with the ConcreteCreator1.\n";
-  Creator* creator = new ConcreteCreator1();
-  ClientCode(*creator);
-  std::cout << std::endl;
-  std::cout << "App: Launched with the ConcreteCreator2.\n";
-  Creator* creator2 = new ConcreteCreator2();
-  ClientCode(*creator2);
+    std::cout << "🚀 App: Running with AlphaCreator.\n";
+    std::unique_ptr<ProductCreator> alphaCreator = std::make_unique<AlphaCreator>();
+    clientProcess(*alphaCreator);
+    
+    std::cout << "\n🚀 App: Running with BetaCreator.\n";
+    std::unique_ptr<ProductCreator> betaCreator = std::make_unique<BetaCreator>();
+    clientProcess(*betaCreator);
 
-  delete creator;
-  delete creator2;
-  return 0;
+    return 0;
 }

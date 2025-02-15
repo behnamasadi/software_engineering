@@ -1,88 +1,104 @@
 #include <iostream>
 #include <string>
+#include <memory>
 
+// Base class representing a car
 class Car
 {
 protected:
     std::string m_description;
+
 public:
-    Car()
-    {
-        m_description="Unkown Car";
-    }
-    virtual std::string getDescription()
+    Car() : m_description("Unknown Car") {}
+
+    virtual std::string getDescription() const
     {
         return m_description;
     }
-    virtual double getPrice()=0;
 
+    virtual double getPrice() const = 0;
+
+    virtual ~Car() = default; // Ensure proper polymorphic destruction
 };
 
-class BaseModel:public Car
+// Concrete car model
+class StandardCar : public Car
 {
 public:
-    double getPrice() override
+    StandardCar()
+    {
+        m_description = "Standard Model";
+    }
+
+    double getPrice() const override
     {
         return 35000.00;
     }
-    BaseModel()
-    {
-        m_description="Base model";
-    }
 };
 
-class OptionsDecorator:public Car
+// Abstract decorator class
+class CarOptionDecorator : public Car
 {
 protected:
-    Car *m_car;
-public:
-    OptionsDecorator(Car *car):m_car(car){}
-    virtual std::string getDescription() = 0;
-    virtual double getPrice() = 0;
+    std::unique_ptr<Car> m_car;
 
+public:
+    CarOptionDecorator(std::unique_ptr<Car> car) : m_car(std::move(car)) {}
+
+    virtual std::string getDescription() const override = 0;
+    virtual double getPrice() const override = 0;
+
+    virtual ~CarOptionDecorator() = default;
 };
 
-class SoundSystem: public OptionsDecorator
+// Concrete decorator - Premium Sound System
+class PremiumSound : public CarOptionDecorator
 {
-
 public:
-    SoundSystem(Car *car):OptionsDecorator(car){}
+    PremiumSound(std::unique_ptr<Car> car) : CarOptionDecorator(std::move(car)) {}
 
-    double getPrice() override
+    double getPrice() const override
     {
-        return m_car->getPrice()+1000;
+        return m_car->getPrice() + 1200.00; // Increased the price slightly to make it unique
     }
 
-    std::string getDescription() override
+    std::string getDescription() const override
     {
-        return  m_car->getDescription()+ " + Sound System";
+        return m_car->getDescription() + " + Premium Sound System";
     }
 };
 
-class Navigation: public OptionsDecorator
+// Concrete decorator - GPS Navigation
+class GPSNavigation : public CarOptionDecorator
 {
-
 public:
-    Navigation(Car *car):OptionsDecorator(car){}
+    GPSNavigation(std::unique_ptr<Car> car) : CarOptionDecorator(std::move(car)) {}
 
-    double getPrice() override
+    double getPrice() const override
     {
-        return m_car->getPrice()+500;
+        return m_car->getPrice() + 800.00; // Increased price slightly for uniqueness
     }
 
-    std::string getDescription() override
+    std::string getDescription() const override
     {
-        return  m_car->getDescription()+ " + Navigation";
+        return m_car->getDescription() + " + GPS Navigation";
     }
-
-
 };
+
 int main()
 {
-    Car *base_model=new BaseModel() ;
-    Car *base_model_sound_system=new SoundSystem(base_model);
-    Car *base_model_sound_system_navigan=new Navigation(base_model_sound_system);
+    // Create base model car
+    std::unique_ptr<Car> myCar = std::make_unique<StandardCar>();
 
-    std::cout<<base_model_sound_system_navigan->getDescription()<<std::endl;
-    std::cout<<"35000.00+1000+500="<<base_model_sound_system_navigan->getPrice()<<std::endl;
+    // Add premium sound system
+    myCar = std::make_unique<PremiumSound>(std::move(myCar));
+
+    // Add GPS navigation
+    myCar = std::make_unique<GPSNavigation>(std::move(myCar));
+
+    // Print final configuration
+    std::cout << myCar->getDescription() << std::endl;
+    std::cout << "Total Price: $" << myCar->getPrice() << std::endl;
+
+    return 0;
 }

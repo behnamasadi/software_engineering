@@ -1,78 +1,84 @@
-//http://www.vishalchovatiya.com/composite-design-pattern-in-modern-cpp/
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 class Shape
 {
 protected:
     std::string m_name;
-public:
-    Shape(std::string name=""):m_name(name){}
 
-    void virtual draw()=0;
+public:
+    explicit Shape(std::string name = "") : m_name(std::move(name)) {}
+
+    virtual void draw() const = 0;
+
+    virtual ~Shape() = default;  // Ensure proper polymorphic destruction
 };
 
-class Circle: public Shape
+class Circle : public Shape
 {
-
 public:
-    Circle(std::string name):Shape(name){}
-    void draw()override
+    explicit Circle(std::string name) : Shape(std::move(name)) {}
+
+    void draw() const override
     {
-        std::cout<<"drawing circle name:"<<m_name <<std::endl;
+        std::cout << "Drawing Circle: " << m_name << std::endl;
     }
 };
 
-
-class Rectangle: public Shape
+class Rectangle : public Shape
 {
-
 public:
-    Rectangle(std::string name):Shape(name){}
-    void draw()override
+    explicit Rectangle(std::string name) : Shape(std::move(name)) {}
+
+    void draw() const override
     {
-        std::cout<<"drawing rectangle name:"<<m_name <<std::endl;
+        std::cout << "Drawing Rectangle: " << m_name << std::endl;
     }
 };
 
-
-class Group: public Shape
+class Group : public Shape
 {
-    std::vector<Shape*> m_objects;
+private:
+    std::vector<std::unique_ptr<Shape>> m_objects;
+
 public:
-    Group(std::string name):Shape(name){}
-    void draw()
+    explicit Group(std::string name) : Shape(std::move(name)) {}
+
+    void draw() const override
     {
-        std::cout<<"drawing "<<m_name <<std::endl;
-        for(std::vector<Shape*>::iterator it=m_objects.begin();it!=m_objects.end();it++)
+        std::cout << "Drawing Group: " << m_name << std::endl;
+        for (const auto& obj : m_objects)
         {
-             (*it)->draw();
+            obj->draw();
         }
     }
 
-    void add(Shape* m_object)
+    void add(std::unique_ptr<Shape> object)
     {
-        m_objects.push_back(m_object);
+        m_objects.push_back(std::move(object));
     }
 };
 
 int main()
 {
+    auto root = std::make_unique<Group>("Root");
 
+    auto circle1 = std::make_unique<Circle>("Circle1");
+    auto circle2 = std::make_unique<Circle>("Circle2");
+    auto rectangle1 = std::make_unique<Rectangle>("Rectangle1");
 
+    auto subgroup = std::make_unique<Group>("Subgroup1");
+    subgroup->add(std::make_unique<Circle>("Circle3"));
+    subgroup->add(std::make_unique<Rectangle>("Rectangle2"));
 
-    Shape *circle1=new Circle("circle1");
-    Group *subgroup=new Group("subgroup1");
-    subgroup->add(circle1);
+    root->add(std::move(circle1));
+    root->add(std::move(circle2));
+    root->add(std::move(rectangle1));
+    root->add(std::move(subgroup));
 
-    Shape *circle2=new Circle("circle2");
-    Shape *circle3=new Circle("circle3");
+    root->draw();  // Displays the full hierarchy
 
-    Group *root=new Group("root");
-    root->add(circle2);
-    root->add(circle3);
-    root->add(subgroup);
-    root->draw();
-
+    return 0;
 }

@@ -1,114 +1,102 @@
-//https://cppcodetips.wordpress.com/2016/10/31/decorator-pattern-explained-with-c-sample/
-
 #include <memory>
 #include <iostream>
 #include <string>
 
-
-class IiceCream
+// Base class for Ice Cream
+class IceCreamBase
 {
 public:
-    virtual void Make() = 0;
-    virtual ~IiceCream() { }
-
+    virtual void make() const = 0;
+    virtual ~IceCreamBase() = default; // Ensures proper polymorphic destruction
 };
 
-class SimpleIceCream: public IiceCream
+// Concrete Ice Cream Base
+class BasicIceCream : public IceCreamBase
 {
 public:
-    virtual void Make()
+    void make() const override
     {
-        std::cout<<"\n milk + sugar +  Ice cream Powder";
+        std::cout << "\nMilk + Sugar + Ice Cream Base";
     }
-
-
 };
 
-class IceCreamDecorator: public IiceCream
+// Abstract Decorator Class
+class IceCreamDecorator : public IceCreamBase
 {
+protected:
+    std::unique_ptr<IceCreamBase> m_decorator;
 
 public:
-    IceCreamDecorator(IiceCream& decorator):m_Decorator(decorator)
-    {
+    explicit IceCreamDecorator(std::unique_ptr<IceCreamBase> decorator)
+        : m_decorator(std::move(decorator)) {}
 
-    }
-
-    virtual void Make()
+    void make() const override
     {
-        m_Decorator.Make();
+        m_decorator->make();
     }
-    private:
-    IiceCream& m_Decorator;
 };
 
-class WithFruits : public IceCreamDecorator
+// Concrete Decorator - Fruit Topping
+class FruitTopping : public IceCreamDecorator
 {
-
 public:
-     WithFruits(IiceCream& decorator):IceCreamDecorator(decorator)
-     {
+    explicit FruitTopping(std::unique_ptr<IceCreamBase> decorator)
+        : IceCreamDecorator(std::move(decorator)) {}
 
-     }
-     virtual void Make()
-     {
-         IceCreamDecorator::Make();
-         std::cout<<" + Fruits";
-     }
-
+    void make() const override
+    {
+        IceCreamDecorator::make();
+        std::cout << " + Fresh Fruits";
+    }
 };
 
-class WithNuts : public IceCreamDecorator
+// Concrete Decorator - Nut Topping
+class NutTopping : public IceCreamDecorator
 {
-
 public:
-    WithNuts(IiceCream& decorator):IceCreamDecorator(decorator)
+    explicit NutTopping(std::unique_ptr<IceCreamBase> decorator)
+        : IceCreamDecorator(std::move(decorator)) {}
+
+    void make() const override
     {
-
+        IceCreamDecorator::make();
+        std::cout << " + Crunchy Nuts";
     }
-
-    virtual void Make()
-    {
-        IceCreamDecorator::Make();
-        std::cout<<" + Nuts";
-    }
-
 };
 
-class WithWafers : public IceCreamDecorator
+// Concrete Decorator - Wafer Crunch
+class WaferCrunch : public IceCreamDecorator
 {
-
 public:
-    WithWafers(IiceCream& decorator):IceCreamDecorator(decorator)
+    explicit WaferCrunch(std::unique_ptr<IceCreamBase> decorator)
+        : IceCreamDecorator(std::move(decorator)) {}
+
+    void make() const override
     {
-
+        IceCreamDecorator::make();
+        std::cout << " + Crispy Wafers";
     }
-
-    virtual void Make()
-    {
-        IceCreamDecorator::Make();
-        std::cout<<" + Wafers";
-    }
-
 };
 
 int main()
 {
-    IiceCream* pIceCreamSimple = new SimpleIceCream();
-    pIceCreamSimple->Make();
+    // Start with a basic ice cream
+    std::unique_ptr<IceCreamBase> iceCream = std::make_unique<BasicIceCream>();
+    iceCream->make();
 
-    IiceCream* pIceCreamFruits = new WithFruits(*pIceCreamSimple);
-    pIceCreamFruits->Make();
+    std::cout << "\n\nAdding Toppings:\n";
+    
+    // Add fruit topping
+    iceCream = std::make_unique<FruitTopping>(std::move(iceCream));
+    iceCream->make();
 
-    IiceCream* pIceCreamNuts   = new WithNuts(*pIceCreamFruits);
-    pIceCreamNuts->Make();
+    // Add nut topping
+    iceCream = std::make_unique<NutTopping>(std::move(iceCream));
+    iceCream->make();
 
-    IiceCream* pIceCreamWafers = new WithWafers(*pIceCreamNuts);
-    pIceCreamWafers->Make();
-
-    delete pIceCreamSimple;
-    delete pIceCreamFruits;
-    delete pIceCreamNuts;
-    delete pIceCreamWafers;
+    // Add wafer topping
+    iceCream = std::make_unique<WaferCrunch>(std::move(iceCream));
+    iceCream->make();
 
     return 0;
 }

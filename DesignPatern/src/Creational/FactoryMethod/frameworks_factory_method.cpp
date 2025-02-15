@@ -1,95 +1,77 @@
 #include <iostream>
-#include <cstring>
+#include <memory>
+#include <vector>
+#include <string>
+
 using namespace std;
 
 /* Abstract base class declared by framework */
-class Document
-{
-  public:
-    Document(char *fn)
-    {
-        strcpy(name, fn);
-    }
+class Document {
+public:
+    explicit Document(const string& fn) : name(fn) {}
+    virtual ~Document() = default;
     virtual void Open() = 0;
     virtual void Close() = 0;
-    char *GetName()
-    {
-        return name;
-    }
-  private:
-    char name[20];
+    string GetName() const { return name; }
+
+private:
+    string name;
 };
 
 /* Concrete derived class defined by client */
-class MyDocument: public Document
-{
-  public:
-    MyDocument(char *fn): Document(fn){}
-    void Open()
-    {
+class MyDocument : public Document {
+public:
+    explicit MyDocument(const string& fn) : Document(fn) {}
+    void Open() override {
         cout << "   MyDocument: Open()" << endl;
     }
-    void Close()
-    {
+    void Close() override {
         cout << "   MyDocument: Close()" << endl;
     }
 };
 
 /* Framework declaration */
-class Application
-{
-  public:
-    Application(): _index(0)
-    {
-        cout << "Application: ctor" << endl;
-    }
-    /* The client will call this "entry point" of the framework */
-    void NewDocument(char *name)
-    {
+class Application {
+public:
+    Application() { cout << "Application: ctor" << endl; }
+    
+    void NewDocument(const string& name) {
         cout << "Application: NewDocument()" << endl;
-        /* Framework calls the "hole" reserved for client customization */
-        _docs[_index] = CreateDocument(name);
-        _docs[_index++]->Open();
+        auto doc = CreateDocument(name);
+        doc->Open();
+        _docs.push_back(move(doc));
     }
-    void OpenDocument(){}
-    void ReportDocs();
-    /* Framework declares a "hole" for the client to customize */
-    virtual Document *CreateDocument(char*) = 0;
-  private:
-    int _index;
-    /* Framework uses Document's base class */
-    Document *_docs[10];
-};
+    
+    void ReportDocs() {
+        cout << "Application: ReportDocs()" << endl;
+        for (const auto& doc : _docs) {
+            cout << "   " << doc->GetName() << endl;
+        }
+    }
 
-void Application::ReportDocs()
-{
-  cout << "Application: ReportDocs()" << endl;
-  for (int i = 0; i < _index; i++)
-    cout << "   " << _docs[i]->GetName() << endl;
-}
+protected:
+    virtual unique_ptr<Document> CreateDocument(const string&) = 0;
+
+private:
+    vector<unique_ptr<Document>> _docs;
+};
 
 /* Customization of framework defined by client */
-class MyApplication: public Application
-{
-  public:
-    MyApplication()
-    {
-        cout << "MyApplication: ctor" << endl;
-    }
-    /* Client defines Framework's "hole" */
-    Document *CreateDocument(char *fn)
-    {
+class MyApplication : public Application {
+public:
+    MyApplication() { cout << "MyApplication: ctor" << endl; }
+    
+protected:
+    unique_ptr<Document> CreateDocument(const string& fn) override {
         cout << "   MyApplication: CreateDocument()" << endl;
-        return new MyDocument(fn);
+        return make_unique<MyDocument>(fn);
     }
 };
 
-int main()
-{
-  /* Client's customization of the Framework */
-  MyApplication myApp;
-
-  myApp.NewDocument("foo");
-  myApp.NewDocument("bar");
-  myApp.ReportDocs();
+int main() {
+    MyApplication myApp;
+    myApp.NewDocument("foo");
+    myApp.NewDocument("bar");
+    myApp.ReportDocs();
+    return 0;
 }

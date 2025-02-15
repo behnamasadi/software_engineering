@@ -14,9 +14,6 @@ target_link_libraries(shape_abstract_factory)
 add_executable(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
 target_link_libraries(car_abstract_factory)
 
-add_executable(maze_abstract_factory src/Creational/AbstractFactoryMethod/maze_abstract_factory.cpp)
-target_link_libraries(maze_abstract_factory)
-
 # ##################### (2) Builder ###########################
 add_executable(pizza_builder src/Creational/Builder/pizza_builder.cpp)
 target_link_libraries(pizza_builder)
@@ -62,6 +59,15 @@ target_link_libraries(logger_singletone)
 
 add_executable(naive_singleton src/Creational/Singleton/naive_singleton.cpp)
 target_link_libraries(naive_singleton -pthread)
+
+
+# ##################### (6) ObjectPool ###########################
+add_executable(expensive_object src/Creational/ObjectPool/expensive_object.cpp)
+target_link_libraries(expensive_object )
+
+add_executable(thread_safe_object_pool src/Creational/ObjectPool/thread_safe_object_pool.cpp)
+target_link_libraries(thread_safe_object_pool )
+
 
 # ########################################### Structural ############################################
 

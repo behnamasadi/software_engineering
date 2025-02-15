@@ -71,118 +71,141 @@ when you want to change you abstract class and concrete class independet of each
 
 //abstract class for tv1, tv2 with DVD, etc
 
+#include <iostream>
+#include <memory>
+
+// Base class for entertainment devices
 class EntertainmentDevice
 {
 public:
-    int deviceState;//either current channel ro current DVD chapter
-    int maxSetting;//max channel / DVD chanpter
+    int deviceState; // Either current channel or current DVD chapter
+    int maxSetting;  // Maximum channel or DVD chapter
     int volume;
 
-    virtual void buttonFivePressed(){}
-    virtual void buttonSixPressed(){}
+    EntertainmentDevice(int state, int max) : deviceState(state), maxSetting(max), volume(10) {}
 
-    void buttonSevenPressed()
+    virtual void buttonFivePressed() = 0;
+    virtual void buttonSixPressed() = 0;
+
+    void buttonSevenPressed() { volume++; }
+    void buttonEightPressed() { volume--; }
+
+    void deviceFeedback() const
     {
-        volume++;
+        std::cout << "Currently on: " << deviceState << std::endl;
     }
 
-    void buttonEightPressed()
-    {
-        volume--;
-    }
-
-    void deviceFeedback()
-    {
-        std::cout<<"On: "<<deviceState <<std::endl;
-    }
-
+    virtual ~EntertainmentDevice() = default;
 };
 
-class TVDevice: public EntertainmentDevice
+// TV Device implementation
+class TVDevice : public EntertainmentDevice
 {
-    void buttonFivePressed()
+public:
+    TVDevice() : EntertainmentDevice(1, 100) {} // Channels range from 1 to 100
+
+    void buttonFivePressed() override
     {
-        std::cout<<"previous channel"<<std::endl;
-        deviceState--;
+        if (deviceState > 1)
+        {
+            deviceState--;
+            std::cout << "Previous channel: " << deviceState << std::endl;
+        }
     }
-    void buttonSixPressed()
+
+    void buttonSixPressed() override
     {
-        std::cout<<"next channel"<<std::endl;
-        deviceState++;
+        if (deviceState < maxSetting)
+        {
+            deviceState++;
+            std::cout << "Next channel: " << deviceState << std::endl;
+        }
     }
 };
 
-class DVDDevice: public EntertainmentDevice
+// DVD Device implementation
+class DVDDevice : public EntertainmentDevice
 {
-   public:
-    void buttonFivePressed()
+public:
+    DVDDevice() : EntertainmentDevice(1, 12) {} // Assume a DVD has 12 chapters
+
+    void buttonFivePressed() override
     {
-        std::cout<<"previous chapter on DVD"<<std::endl;
-        deviceState--;
+        if (deviceState > 1)
+        {
+            deviceState--;
+            std::cout << "Previous DVD chapter: " << deviceState << std::endl;
+        }
     }
-    void buttonSixPressed()
+
+    void buttonSixPressed() override
     {
-        std::cout<<"next chapter on DVD"<<std::endl;
-        deviceState++;
+        if (deviceState < maxSetting)
+        {
+            deviceState++;
+            std::cout << "Next DVD chapter: " << deviceState << std::endl;
+        }
     }
 };
 
+// Remote control base class
 class RemoteButton
 {
-    private:
-        EntertainmentDevice *theDevice;
-    public:
-        RemoteButton(EntertainmentDevice *theDevice):theDevice(theDevice){}
+protected:
+    std::unique_ptr<EntertainmentDevice> theDevice;
 
-        void buttonFivePressed()
-        {
-            theDevice->buttonFivePressed();
-        }
+public:
+    RemoteButton(std::unique_ptr<EntertainmentDevice> device) : theDevice(std::move(device)) {}
 
-        void buttonSixPressed()
-        {
-            theDevice->buttonSixPressed();
-        }
+    virtual ~RemoteButton() = default;
 
-        void deviceFeedback()
-        {
-            theDevice->deviceFeedback();
-        }
+    void buttonFivePressed() { theDevice->buttonFivePressed(); }
+    void buttonSixPressed() { theDevice->buttonSixPressed(); }
+    void buttonSevenPressed() { theDevice->buttonSevenPressed(); }
+    void buttonEightPressed() { theDevice->buttonEightPressed(); }
+    void deviceFeedback() const { theDevice->deviceFeedback(); }
 
+    virtual void buttonNinePressed() = 0; // Abstract function for additional feature
 };
 
-class TVRemoteMute: public RemoteButton
+// TV Remote with Mute functionality
+class TVRemoteMute : public RemoteButton
 {
 public:
-    TVRemoteMute(EntertainmentDevice *theDevice):RemoteButton(theDevice)
+    TVRemoteMute(std::unique_ptr<EntertainmentDevice> device) : RemoteButton(std::move(device)) {}
+
+    void buttonNinePressed() override
     {
-
-    }
-
-    void buttonNinePressed()
-    {
-        std::cout<<"Tv was muted"<<std::endl;
-
+        std::cout << "TV is now muted." << std::endl;
     }
 };
 
-class TVRemotePause: public RemoteButton
+// TV Remote with Pause functionality
+class TVRemotePause : public RemoteButton
 {
 public:
-    TVRemotePause(EntertainmentDevice *theDevice):RemoteButton(theDevice)
+    TVRemotePause(std::unique_ptr<EntertainmentDevice> device) : RemoteButton(std::move(device)) {}
+
+    void buttonNinePressed() override
     {
-
-    }
-
-    void buttonNinePressed()
-    {
-        std::cout<<"Tv was paused"<<std::endl;
-
+        std::cout << "TV is now paused." << std::endl;
     }
 };
 
 int main()
 {
-    RemoteButton *theTv1=new TVRemoteMute(new TVDevice);
-    RemoteButton *theTv2=new TVRemotePause(new TVDevice);
+    std::unique_ptr<RemoteButton> theTv1 = std::make_unique<TVRemoteMute>(std::make_unique<TVDevice>());
+    std::unique_ptr<RemoteButton> theTv2 = std::make_unique<TVRemotePause>(std::make_unique<TVDevice>());
+
+    std::cout << "Using TV Remote with Mute:\n";
+    theTv1->buttonSixPressed();
+    theTv1->deviceFeedback();
+    theTv1->buttonNinePressed();
+
+    std::cout << "\nUsing TV Remote with Pause:\n";
+    theTv2->buttonFivePressed();
+    theTv2->deviceFeedback();
+    theTv2->buttonNinePressed();
+
+    return 0;
 }

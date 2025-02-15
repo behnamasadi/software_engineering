@@ -1,64 +1,54 @@
-/*
-src: https://sourcemaking.com/design_patterns/adapter/cpp/2
-*/
 #include <iostream>
+#include <memory>
 
-class LegecyRectangle
+class LegacyRectangle
 {
 public:
-    void draw()
+    void render()
     {
-        std::cout<<"Legecy Rectangle draw()" <<std::endl;
+        std::cout << "Legacy Rectangle render()" << std::endl;
     }
 };
 
-class LegecyCircle
+class LegacyCircle
 {
 public:
-    void draw()
+    void render()
     {
-        std::cout<<"Legecy Circle draw()" <<std::endl;
+        std::cout << "Legacy Circle render()" << std::endl;
     }
 };
 
 class ExecuteInterface
 {
 public:
-    virtual ~ExecuteInterface(){};
-    virtual void execute()=0;
+    virtual ~ExecuteInterface() = default;
+    virtual void execute() = 0;
 };
 
-template<class ClassType>
-class ExecuteAdapter:public ExecuteInterface
+template <class ClassType>
+class ExecuteAdapter : public ExecuteInterface
 {
-    ClassType *m_object ;
-/*
-    Here we are declaring a function with the signature void (funcname)() that should come from a clas called ClassType
-*/
-    void (ClassType:: *m_method)();
+    std::unique_ptr<ClassType> m_object;
+    void (ClassType::*m_method)();
 
 public:
-    ExecuteAdapter(ClassType *object ,void (ClassType:: *method)() )
-    {
-       m_object=object;
-       m_method=method;
-    }
+    ExecuteAdapter(std::unique_ptr<ClassType> object, void (ClassType::*method)())
+        : m_object(std::move(object)), m_method(method) {}
 
     void execute() override
     {
-        (m_object->*m_method)();
-    }
-    ~ExecuteAdapter()
-    {
-          delete m_object;
+        (m_object.get()->*m_method)();
     }
 };
 
 int main()
 {
-    ExecuteInterface *shape1=new ExecuteAdapter<LegecyRectangle>(new LegecyRectangle(), &LegecyRectangle::draw);
+    std::unique_ptr<ExecuteInterface> shape1 = std::make_unique<ExecuteAdapter<LegacyRectangle>>(
+        std::make_unique<LegacyRectangle>(), &LegacyRectangle::render);
     shape1->execute();
 
-    ExecuteInterface *shape2=new ExecuteAdapter<LegecyCircle>(new LegecyCircle(), &LegecyCircle::draw);
+    std::unique_ptr<ExecuteInterface> shape2 = std::make_unique<ExecuteAdapter<LegacyCircle>>(
+        std::make_unique<LegacyCircle>(), &LegacyCircle::render);
     shape2->execute();
 }

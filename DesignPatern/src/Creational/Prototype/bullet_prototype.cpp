@@ -1,10 +1,9 @@
-#include <string>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+#include <string>
 
-
-enum BulletType
+enum class BulletType
 {
     SIMPLE,
     EXPLOSIVE
@@ -12,112 +11,96 @@ enum BulletType
 
 class Bullet
 {
+protected:
     std::string name;
     double speed;
     double firePower;
-    double damgePower;
-    double direction;
+    double damagePower;
     int id;
 
 public:
     static int counter;
-    void fire(double direction)
-    {
-        std::cout<<"id: "<<id<<"\n"
-                 <<"name: "<<name <<"\n"
-                 << "speed: "<< speed<<"\n"
-                 << "firePower: "<<firePower<<"\n"
-                 << "damgePower: "<<damgePower<<"\n"
-                 << "direction: "<<direction <<std::endl;
-    }
+    virtual ~Bullet() = default;
+    Bullet(std::string name, double speed, double firePower, double damagePower)
+        : name(std::move(name)), speed(speed), firePower(firePower), damagePower(damagePower), id(counter++) {}
 
-    virtual std::unique_ptr<Bullet> clone()=0;
-    virtual ~Bullet(){}
-    Bullet(std::string name, double speed, double firePower, double damgePower)
-        :name(name), speed(speed), firePower(firePower),damgePower(damgePower)
+    virtual std::unique_ptr<Bullet> clone() const = 0;
+
+    void fire(double direction) const
     {
-        id=counter;
-        counter++;
+        std::cout << "Bullet ID: " << id << "\n"
+                  << "Name: " << name << "\n"
+                  << "Speed: " << speed << "\n"
+                  << "Fire Power: " << firePower << "\n"
+                  << "Damage Power: " << damagePower << "\n"
+                  << "Direction: " << direction << "\n";
     }
 };
 
+int Bullet::counter = 0;
 
-class ExplosiveBullet: public Bullet
+class ExplosiveBullet : public Bullet
 {
 public:
+    ExplosiveBullet(std::string bulletName, double speed, double firePower, double damagePower)
+        : Bullet(std::move(bulletName), speed, firePower, damagePower) {}
 
-    std::unique_ptr<Bullet> clone() override
+    std::unique_ptr<Bullet> clone() const override
     {
         return std::make_unique<ExplosiveBullet>(*this);
     }
-
-    ExplosiveBullet(std::string bulletName, double  speed, double  firePower, double  damagePower)
-        : Bullet(bulletName, speed, firePower, damagePower)
-        {
-        }
 };
 
-class SimpleBullet: public Bullet
+class SimpleBullet : public Bullet
 {
 public:
-    std::unique_ptr<Bullet> clone() override
+    SimpleBullet(std::string bulletName, double speed, double firePower, double damagePower)
+        : Bullet(std::move(bulletName), speed, firePower, damagePower) {}
+
+    std::unique_ptr<Bullet> clone() const override
     {
         return std::make_unique<SimpleBullet>(*this);
     }
-    SimpleBullet(std::string bulletName, double speed, double  firePower, double  damagePower)
-        : Bullet(bulletName, speed, firePower, damagePower)
-        {
-        }
 };
 
 class BulletFactory
 {
 private:
-    //Unordered map is an associative container that contains key-value pairs with unique keys
-    std::unordered_map<BulletType, std::unique_ptr<Bullet>,std::hash<int> > bullets;
+    std::unordered_map<BulletType, std::unique_ptr<Bullet>> bullets;
+
 public:
     BulletFactory()
     {
-        std::string name;
-        double speed;
-        double firePower;
-        double damgePower;
-        double direction;
-
-        name="simple bullet";
-        speed=10;
-        firePower=15;
-        damgePower=1;
-        bullets[BulletType::SIMPLE]=std::make_unique<SimpleBullet>(name,speed,firePower,damgePower);
-
-        name="explosive bullet";
-        speed=10;
-        firePower=50;
-        damgePower=10;
-
-        bullets[BulletType::EXPLOSIVE]=std::make_unique<ExplosiveBullet>(name,speed,firePower,damgePower);
+        bullets[BulletType::SIMPLE] = std::make_unique<SimpleBullet>("Simple Bullet", 10.0, 15.0, 1.0);
+        bullets[BulletType::EXPLOSIVE] = std::make_unique<ExplosiveBullet>("Explosive Bullet", 10.0, 50.0, 10.0);
     }
-    std::unique_ptr<Bullet> createBullet(BulletType type)
+
+    std::unique_ptr<Bullet> createBullet(BulletType type) const
     {
-        return bullets[type]->clone();
+        auto it = bullets.find(type);
+        if (it != bullets.end())
+        {
+            return it->second->clone();
+        }
+        return nullptr;
     }
 };
-
-int Bullet::counter=0;
 
 int main()
 {
     BulletFactory bf;
-    std::unique_ptr<Bullet> simplebullet=  bf.createBullet(BulletType::SIMPLE);
-    simplebullet->fire(45);
+    auto simpleBullet = bf.createBullet(BulletType::SIMPLE);
+    if (simpleBullet)
+        simpleBullet->fire(45);
 
-    std::unique_ptr<Bullet> explosivebullet=  bf.createBullet(BulletType::EXPLOSIVE);
-    explosivebullet->fire(30);
-
-    explosivebullet->fire(15);
-    for(std::size_t i=0;i<10;i++)
+    auto explosiveBullet = bf.createBullet(BulletType::EXPLOSIVE);
+    if (explosiveBullet)
     {
-        explosivebullet->fire(i);
+        explosiveBullet->fire(30);
+        explosiveBullet->fire(15);
+        for (int i = 0; i < 10; ++i)
+        {
+            explosiveBullet->fire(i * 10);
+        }
     }
-
 }

@@ -1,59 +1,55 @@
-//https://www.geeksforgeeks.org/design-patterns-set-2-factory-method/
-// A design without factory pattern
 #include <iostream>
-using namespace std;
+#include <memory>
 
-// Library classes
+// Abstract Product: Vehicle
 class Vehicle {
 public:
-    virtual void printVehicle() = 0;
+    virtual void describe() const = 0;
+    virtual ~Vehicle() = default;
 };
-class TwoWheeler : public Vehicle {
+
+// Concrete Product: Motorcycle
+class Motorcycle : public Vehicle {
 public:
-    void printVehicle() {
-        cout << "I am two wheeler" << endl;
-    }
-};
-class FourWheeler : public Vehicle {
-    public:
-    void printVehicle() {
-        cout << "I am four wheeler" << endl;
+    void describe() const override {
+        std::cout << "🏍️ This is a motorcycle (Two-Wheeler)\n";
     }
 };
 
-// Client (or user) class
-class Client {
+// Concrete Product: Car
+class Car : public Vehicle {
 public:
-    Client(int type) {
-
-        // Client explicitly creates classes according to type
-        if (type == 1)
-            pVehicle = new TwoWheeler();
-        else if (type == 2)
-            pVehicle = new FourWheeler();
-        else
-            pVehicle = NULL;
+    void describe() const override {
+        std::cout << "🚗 This is a car (Four-Wheeler)\n";
     }
+};
 
-    ~Client() {
-        if (pVehicle)
-        {
-            delete[] pVehicle;
-            pVehicle = NULL;
+// Factory Class
+class VehicleFactory {
+public:
+    static std::unique_ptr<Vehicle> createVehicle(int type) {
+        if (type == 1) {
+            return std::make_unique<Motorcycle>();
+        } else if (type == 2) {
+            return std::make_unique<Car>();
+        } else {
+            throw std::invalid_argument("Unknown vehicle type!");
         }
     }
-
-    Vehicle* getVehicle() {
-        return pVehicle;
-    }
-private:
-    Vehicle *pVehicle;
 };
 
-// Driver program
+// Main Function
 int main() {
-    Client *pClient = new Client(1);
-    Vehicle * pVehicle = pClient->getVehicle();
-    pVehicle->printVehicle();
+    try {
+        std::unique_ptr<Vehicle> myBike = VehicleFactory::createVehicle(1);
+        myBike->describe();
+
+        std::unique_ptr<Vehicle> myCar = VehicleFactory::createVehicle(2);
+        myCar->describe();
+    } 
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << '\n';
+    }
+
     return 0;
 }

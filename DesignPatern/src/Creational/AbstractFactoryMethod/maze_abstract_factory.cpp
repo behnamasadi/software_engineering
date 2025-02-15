@@ -1,146 +1,163 @@
 #include <vector>
 #include <memory>
+#include <iostream>
 
+// Enum for directions
+enum class Direction { NORTH, SOUTH, WEST, EAST };
 
-//namespace Before
-//{
-
-enum class  Direction{NORTH, SOUTH, WEST, EAST};
-
+// Base class for maze components
 class MapSite
 {
 public:
-    virtual void enter()=0;
+    virtual void enter() = 0;
+    virtual ~MapSite() = default;
 };
 
-class Wall :public MapSite
+// Wall class
+class Wall : public MapSite
 {
 public:
-    void  enter() override {}
+    void enter() override { std::cout << "You hit a wall.\n"; }
 };
 
-class Room :public MapSite
+// Room class
+class Room : public MapSite
 {
-    std::vector<MapSite *> sides;
-public:
-    Room(int roomNumber):roomNumber(roomNumber){}
+private:
     int roomNumber;
-    void  enter() override {}
-    MapSite* getSide(Direction){}
-    void setSide(MapSite* mapSite,Direction direction){}
+    std::vector<std::unique_ptr<MapSite>> sides{4};
+
+public:
+    explicit Room(int num) : roomNumber(num) {}
+
+    void enter() override { std::cout << "Entering room " << roomNumber << ".\n"; }
+
+    void addSide(Direction dir, std::unique_ptr<MapSite> site)
+    {
+        sides[static_cast<int>(dir)] = std::move(site);
+    }
 };
 
-class Door :public MapSite
+// Door class
+class Door : public MapSite
 {
+private:
     Room* room1;
     Room* room2;
-    bool openStatus;
-public:
-    Door(Room* room1= 0, Room* room2 = 0){}
-    bool isOpen(){}
-    void  enter() override {}
+    bool isOpen;
 
+public:
+    Door(Room* r1, Room* r2) : room1(r1), room2(r2), isOpen(false) {}
+
+    void enter() override
+    {
+        if (isOpen)
+            std::cout << "Passing through the door.\n";
+        else
+            std::cout << "The door is locked.\n";
+    }
+
+    void openDoor() { isOpen = true; }
 };
 
+// Maze class
 class Maze
 {
-    std::vector<Room *> rooms;
+private:
+    std::vector<std::unique_ptr<Room>> rooms;
+
 public:
-    void addRoom(Room *){}
-    Room * RoomsNo(int){}
+    void addRoom(std::unique_ptr<Room> room)
+    {
+        rooms.push_back(std::move(room));
+    }
 };
 
-//class MazeGame
-//{
-//    public:
-//    Maze* CreateMaze ()
-//    {
-//        Maze* aMaze = new Maze;
-//        Room* r1 = new Room(1);
-//        Room* r2 = new Room(2);
-//        Door* theDoor = new Door(r1, r2);
-//        aMaze->addRoom(r1);
-//        aMaze->addRoom(r2);
-//        r1->setSide(North, new Wall);
-//        r1->setSide(East, theDoor);
-//        r1->setSide(South, new Wall);
-//        r1->setSide(West, new Wall);
-//        r2->setSide(North, new Wall);
-//        r2->setSide(East, new Wall);
-//        r2->setSide(South, new Wall);
-//        r2->setSide(West, theDoor);
-//    }
-//};
+// Abstract Factory for creating Maze components
+class MazeFactory
+{
+public:
+    virtual std::unique_ptr<Maze> createMaze() const
+    {
+        return std::make_unique<Maze>();
+    }
 
-//}
+    virtual std::unique_ptr<Room> createRoom(int n) const
+    {
+        return std::make_unique<Room>(n);
+    }
 
+    virtual std::unique_ptr<Wall> createWall() const
+    {
+        return std::make_unique<Wall>();
+    }
 
-//namespace AbstractFactory
-//{
+    virtual std::unique_ptr<Door> createDoor(Room* r1, Room* r2) const
+    {
+        return std::make_unique<Door>(r1, r2);
+    }
 
-//class MazeFactory
-//{
-//public:
-//    MazeFactory();
-//    virtual Maze* MakeMaze() const
-//    { return new Maze; }
-//    virtual Wall* MakeWall() const
-//    { return new Wall; }
-//    virtual Room* MakeRoom(int n) const
-//    { return new Room(n); }
-//    virtual Door* MakeDoor(Room* r1, Room* r2) const
-//    { return new Door(r1, r2); }
-//};
+    virtual ~MazeFactory() = default;
+};
 
+// Specialized Factory for an Enchanted Maze
+class EnchantedMazeFactory : public MazeFactory
+{
+public:
+    std::unique_ptr<Room> createRoom(int n) const override
+    {
+        std::cout << "Creating an enchanted room " << n << ".\n";
+        return std::make_unique<Room>(n); // Replace with EnchantedRoom if needed
+    }
 
-//class EnchantedMazeFactory : public MazeFactory
-//{
-//public:
-//    EnchantedMazeFactory();
-//    virtual Room* MakeRoom(int n) const
-//    { return new EnchantedRoom(n, CastSpell()); }
-//    virtual Door* MakeDoor(Room* r1, Room* r2) const
-//    { return new DoorNeedingSpell(r1, r2); }
-//    protected:
-//    Spell* CastSpell() const;
-//};
-//}
+    std::unique_ptr<Door> createDoor(Room* r1, Room* r2) const override
+    {
+        std::cout << "Creating a magical door.\n";
+        return std::make_unique<Door>(r1, r2); // Replace with DoorNeedingSpell if needed
+    }
+};
 
+// MazeGame class to assemble the Maze
+class MazeGame
+{
+public:
+    std::unique_ptr<Maze> createMaze(const MazeFactory& factory)
+    {
+        auto maze = factory.createMaze();
+        auto r1 = factory.createRoom(1);
+        auto r2 = factory.createRoom(2);
+        auto door = factory.createDoor(r1.get(), r2.get());
 
+        // Setting sides for Room 1
+        r1->addSide(Direction::NORTH, factory.createWall());
+        r1->addSide(Direction::EAST, std::make_unique<Door>(*door));
+        r1->addSide(Direction::SOUTH, factory.createWall());
+        r1->addSide(Direction::WEST, factory.createWall());
 
+        // Setting sides for Room 2
+        r2->addSide(Direction::NORTH, factory.createWall());
+        r2->addSide(Direction::EAST, factory.createWall());
+        r2->addSide(Direction::SOUTH, factory.createWall());
+        r2->addSide(Direction::WEST, std::make_unique<Door>(*door));
 
+        maze->addRoom(std::move(r1));
+        maze->addRoom(std::move(r2));
+
+        return maze;
+    }
+};
+
+// Main function
 int main()
 {
+    std::cout << "\n🛠️ Creating a Normal Maze\n";
+    MazeFactory normalFactory;
+    MazeGame game;
+    auto normalMaze = game.createMaze(normalFactory);
 
-/*
+    std::cout << "\n🪄 Creating an Enchanted Maze\n";
+    EnchantedMazeFactory enchantedFactory;
+    auto enchantedMaze = game.createMaze(enchantedFactory);
 
-The real problem with this member function isn't its size but its
-inflexibility. It hard-codes the maze layout.
-
-Suppose you wanted to reuse an existing maze layout for a new game containing (of all
-things) enchanted mazes. The enchanted maze game has new kinds of components, like
-DoorNeedingSpell , a door that can be locked and opened subsequently only with a
-spell; and EnchantedRoom , a room that can have unconventional items in it, like magic
-keys or spells. How can you change CreateMaze easily so that it creates mazes with
-these new classes of objects?
-
-The creational patterns provide different ways to remove explicit
-references to concrete classes from code that needs to instantiate them
-
-*/
-
-    Maze* aMaze = new Maze;
-    Room* r1 = new Room(1);
-    Room* r2 = new Room(2);
-    Door* theDoor = new Door(r1, r2);
-    aMaze->addRoom(r1);
-    aMaze->addRoom(r2);
-    r1->setSide(new Wall,Direction::NORTH);
-    r1->setSide(theDoor,Direction::EAST);
-    r1->setSide(new Wall,Direction::SOUTH );
-    r1->setSide(new Wall,Direction::WEST );
-    r2->setSide(new Wall, Direction::NORTH );
-    r2->setSide(new Wall,Direction::EAST );
-    r2->setSide(new Wall,Direction::SOUTH );
-    r2->setSide(theDoor,Direction::WEST );
+    return 0;
 }

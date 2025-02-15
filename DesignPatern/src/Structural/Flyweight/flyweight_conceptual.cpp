@@ -1,23 +1,16 @@
-/**
- * Flyweight Design Pattern
- *
- * Intent: Lets you fit more objects into the available amount of RAM by sharing
- * common parts of state between multiple objects, instead of keeping all of the
- * data in each object.
- */
-
 #include <iostream>
 #include <unordered_map>
+#include <memory>
 
-//common state also called intrinsic
+// Common state (Intrinsic)
 struct SharedState
 {
     std::string brand_;
     std::string model_;
     std::string color_;
 
-    SharedState(const std::string& brand, const std::string& model, const std::string& color)
-        : brand_(brand), model_(model), color_(color)
+    SharedState(std::string brand, std::string model, std::string color)
+        : brand_(std::move(brand)), model_(std::move(model)), color_(std::move(color))
     {
     }
 
@@ -27,14 +20,14 @@ struct SharedState
     }
 };
 
-//Unique state also called extrinsic
+// Unique state (Extrinsic)
 struct UniqueState
 {
     std::string owner_;
     std::string plates_;
 
-    UniqueState(const std::string& owner, const std::string& plates)
-        : owner_(owner), plates_(plates)
+    UniqueState(std::string owner, std::string plates)
+        : owner_(std::move(owner)), plates_(std::move(plates))
     {
     }
 
@@ -44,130 +37,107 @@ struct UniqueState
     }
 };
 
-/**
-The Flyweight stores a common state (also called intrinsic state) that belongs to multiple real entities.
-The Flyweight accepts the rest of the state (extrinsic state, unique for each entity) via its  method parameters.
-
- */
+// The Flyweight class stores intrinsic state
 class Flyweight
 {
 private:
-    //intrinsic
-    SharedState* shared_state_;
+    std::shared_ptr<SharedState> shared_state_; // Use shared_ptr for shared objects
 
 public:
-    Flyweight(const SharedState* shared_state) : shared_state_(new SharedState(*shared_state))
+    explicit Flyweight(std::shared_ptr<SharedState> shared_state)
+        : shared_state_(std::move(shared_state))
     {
     }
-    Flyweight(const Flyweight& other) : shared_state_(new SharedState(*other.shared_state_))
+
+    void DisplayInfo(const UniqueState& unique_state) const
     {
+        std::cout << "🚗 Flyweight: Displaying shared (" << *shared_state_ 
+                  << ") and unique (" << unique_state << ") state.\n";
     }
-    ~Flyweight()
-    {
-        delete shared_state_;
-    }
-    SharedState* shared_state() const
+
+    std::shared_ptr<SharedState> getSharedState() const
     {
         return shared_state_;
     }
-    void Operation(const UniqueState& unique_state) const
-    {
-        std::cout << "Flyweight: Displaying shared (" << *shared_state_ << ") and unique (" << unique_state << ") state.\n";
-    }
 };
-/**
- The Flyweight Factory creates and manages the Flyweight objects. It ensures  that flyweights are shared correctly. 
- When the client requests a flyweight, the factory either returns an existing instance or creates a new one, if it  doesn't exist yet.
- */
+
+// The Flyweight Factory creates and manages flyweight objects
 class FlyweightFactory
 {
-    /**
-     * @var Flyweight[]
-     */
 private:
-    std::unordered_map<std::string, Flyweight> flyweights_;
-    /**
-     * Returns a Flyweight's string hash for a given state.
-     */
+    std::unordered_map<std::string, std::shared_ptr<Flyweight>> flyweights_;
+
     std::string GetKey(const SharedState& ss) const
     {
         return ss.brand_ + "_" + ss.model_ + "_" + ss.color_;
     }
 
 public:
-    FlyweightFactory(std::initializer_list<SharedState> share_states)
+    FlyweightFactory(std::initializer_list<SharedState> shared_states)
     {
-        for (const SharedState& ss : share_states)
+        for (const auto& ss : shared_states)
         {
-            this->flyweights_.insert(std::make_pair<std::string, Flyweight>(this->GetKey(ss), Flyweight(&ss)));
+            flyweights_.emplace(GetKey(ss), std::make_shared<Flyweight>(std::make_shared<SharedState>(ss)));
         }
     }
 
-    /**
-     * Returns an existing Flyweight with a given state or creates a new one.
-     */
-    Flyweight GetFlyweight(const SharedState& shared_state)
+    std::shared_ptr<Flyweight> FindOrCreateFlyweight(const SharedState& shared_state)
     {
-        std::string key = this->GetKey(shared_state);
-        if (this->flyweights_.find(key) == this->flyweights_.end())
+        std::string key = GetKey(shared_state);
+        auto it = flyweights_.find(key);
+
+        if (it == flyweights_.end())
         {
-            std::cout << "FlyweightFactory: Can't find a flyweight, creating new one.\n";
-            this->flyweights_.insert(std::make_pair(key, Flyweight(&shared_state)));
+            std::cout << "⚠️ FlyweightFactory: Creating new flyweight.\n";
+            auto flyweight = std::make_shared<Flyweight>(std::make_shared<SharedState>(shared_state));
+            flyweights_[key] = flyweight;
+            return flyweight;
         }
         else
         {
-            std::cout << "FlyweightFactory: Reusing existing flyweight.\n";
+            std::cout << "✅ FlyweightFactory: Reusing existing flyweight.\n";
+            return it->second;
         }
-        return this->flyweights_.at(key);
     }
+
     void ListFlyweights() const
     {
-        size_t count = this->flyweights_.size();
-        std::cout << "\nFlyweightFactory: I have " << count << " flyweights:\n";
-        for (std::pair<std::string, Flyweight> pair : this->flyweights_)
+        std::cout << "\n📌 FlyweightFactory: Total " << flyweights_.size() << " flyweights:\n";
+        for (const auto& pair : flyweights_)
         {
-            std::cout << pair.first << "\n";
+            std::cout << "   - " << pair.first << "\n";
         }
     }
 };
 
-// ...
-void AddCarToPoliceDatabase(
-    FlyweightFactory& ff, const std::string& plates, const std::string& owner,
+// Simulating a client adding a car to a database
+void AddCarToDatabase(
+    FlyweightFactory& factory, const std::string& plates, const std::string& owner,
     const std::string& brand, const std::string& model, const std::string& color)
 {
-    std::cout << "\nClient: Adding a car to database.\n";
-    const Flyweight& flyweight = ff.GetFlyweight({ brand, model, color });
-    // The client code either stores or calculates extrinsic state and passes it
-    // to the flyweight's methods.
-    flyweight.Operation({ plates, owner });
+    std::cout << "\n🔍 Client: Adding a new car entry to the database...\n";
+    auto flyweight = factory.FindOrCreateFlyweight({ brand, model, color });
+    flyweight->DisplayInfo({ owner, plates });
 }
 
-/**
- * The client code usually creates a bunch of pre-populated flyweights in the
- * initialization stage of the application.
- */
-
+// Main execution
 int main()
 {
-    FlyweightFactory* factory = new FlyweightFactory({ {"Chevrolet", "Camaro2018", "pink"}, {"Mercedes Benz", "C300", "black"}, {"Mercedes Benz", "C500", "red"}, {"BMW", "M5", "red"}, {"BMW", "X6", "white"} });
+    auto factory = std::make_shared<FlyweightFactory>(
+        std::initializer_list<SharedState>{
+            {"Chevrolet", "Camaro2018", "pink"},
+            {"Mercedes Benz", "C300", "black"},
+            {"Mercedes Benz", "C500", "red"},
+            {"BMW", "M5", "red"},
+            {"BMW", "X6", "white"} });
+
     factory->ListFlyweights();
 
-    AddCarToPoliceDatabase(*factory,
-        "CL234IR",
-        "James Doe",
-        "BMW",
-        "M5",
-        "red");
+    // Adding cars to the database
+    AddCarToDatabase(*factory, "CL234IR", "James Doe", "BMW", "M5", "red");
+    AddCarToDatabase(*factory, "XY567AB", "Alice Johnson", "BMW", "X1", "red");
 
-    AddCarToPoliceDatabase(*factory,
-        "CL234IR",
-        "James Doe",
-        "BMW",
-        "X1",
-        "red");
-    factory->ListFlyweights();
-    delete factory;
+    factory->ListFlyweights(); // Check if new flyweights were added
 
     return 0;
 }

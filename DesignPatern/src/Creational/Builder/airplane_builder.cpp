@@ -2,112 +2,116 @@
 #include <memory>
 #include <iostream>
 
+// Airplane class
 class Airplane
 {
     std::string body;
     std::string engine;
     std::string type;
+
 public:
-    Airplane(std::string type):type(type){}
+    explicit Airplane(std::string type) : type(std::move(type)) {}
 
-    void setBody(std::string body)
-    {
-        this->body=body;
-    }
+    void setBody(const std::string& body) { this->body = body; }
+    void setEngine(const std::string& engine) { this->engine = engine; }
 
-    void setEngine(std::string engine)
-    {
-        this->engine=engine;
-    }
+    std::string getBody() const { return body; }
+    std::string getEngine() const { return engine; }
 
-    std::string getBody()
+    void displayInfo() const
     {
-        return body;
-    }
-
-    std::string getEngine()
-    {
-        return engine;
-    }
-
-    void AirplaneInfo()
-    {
-        std::cout<<"Airplane type is: "<< type <<" body is: "<< body<<" engine is: " <<engine<<std::endl;
+        std::cout << "✈️ Airplane Type: " << type
+                  << " | Body: " << body
+                  << " | Engine: " << engine << std::endl;
     }
 };
 
-class AirplaneBuilder
+// Abstract Builder
+class AircraftBuilder
 {
 protected:
-    Airplane * airplane;
+    std::unique_ptr<Airplane> airplane;
+
 public:
-    Airplane * getPlane()
+    virtual ~AircraftBuilder() = default;
+
+    std::unique_ptr<Airplane> getPlane()
     {
-        return airplane;
+        return std::move(airplane);
     }
-    virtual void initializePlaneBuild()=0;
-    virtual void buildBody()=0;
-    virtual void buildEngine()=0;
+
+    virtual void startConstruction() = 0;
+    virtual void buildBody() = 0;
+    virtual void buildEngine() = 0;
 };
 
-class JetPlaneBuilder:public AirplaneBuilder
+// Concrete Builder: Jet Plane
+class JetBuilder : public AircraftBuilder
 {
 public:
-    void initializePlaneBuild() override
+    void startConstruction() override
     {
-        airplane=new Airplane("Jet Plane");
+        airplane = std::make_unique<Airplane>("Jet Plane");
     }
-    void buildBody()override
+
+    void buildBody() override
     {
-       airplane->setBody("Jet plane body");
+        airplane->setBody("Sleek aerodynamic jet body");
     }
-    void buildEngine()override
+
+    void buildEngine() override
     {
-        airplane->setEngine("Jet plane engine");
+        airplane->setEngine("High-thrust turbojet engine");
     }
 };
 
-class PropellerPlaneBuilder:public AirplaneBuilder
+// Concrete Builder: Propeller Plane
+class PropellerBuilder : public AircraftBuilder
 {
 public:
-    void initializePlaneBuild() override
+    void startConstruction() override
     {
-        airplane=new Airplane("Propeller Plane");
+        airplane = std::make_unique<Airplane>("Propeller Plane");
     }
-    void buildBody()override
+
+    void buildBody() override
     {
-       airplane->setBody("Propeller plane body");
+        airplane->setBody("Durable lightweight propeller body");
     }
-    void buildEngine()override
+
+    void buildEngine() override
     {
-        airplane->setEngine("Propeller plane engine");
+        airplane->setEngine("Efficient turboprop engine");
     }
 };
 
+// Director class
 class Director
 {
 public:
-
-    Airplane * createAirplane(AirplaneBuilder *builder)
+    std::unique_ptr<Airplane> constructAirplane(AircraftBuilder& builder)
     {
-        builder->initializePlaneBuild();
-        builder->buildBody();
-        builder->buildEngine();
-        return builder->getPlane();
+        builder.startConstruction();
+        builder.buildBody();
+        builder.buildEngine();
+        return builder.getPlane();
     }
-
 };
 
+// Main function
 int main()
 {
-    JetPlaneBuilder *jetPlaneBuilderPtr=new JetPlaneBuilder;
-    Director dir;
-    Airplane * jetPlane= dir.createAirplane(jetPlaneBuilderPtr);
-    jetPlane->AirplaneInfo();
+    Director director;
 
-    PropellerPlaneBuilder *propellerPlaneBuilderPtr=new PropellerPlaneBuilder;
+    // Build a Jet Plane
+    JetBuilder jetBuilder;
+    std::unique_ptr<Airplane> jetPlane = director.constructAirplane(jetBuilder);
+    jetPlane->displayInfo();
 
+    // Build a Propeller Plane
+    PropellerBuilder propellerBuilder;
+    std::unique_ptr<Airplane> propellerPlane = director.constructAirplane(propellerBuilder);
+    propellerPlane->displayInfo();
 
-    Airplane * propellerPlane= dir.createAirplane(propellerPlaneBuilderPtr);
-    propellerPlane->AirplaneInfo();
+    return 0;
 }

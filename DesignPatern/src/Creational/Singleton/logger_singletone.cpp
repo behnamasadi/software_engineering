@@ -2,69 +2,67 @@
 #include <memory>
 #include <ctime>
 #include <thread>
-#include <unistd.h>// for usleep function
+#include <mutex>
 
-class Logger
-{
+class Logger {
 private:
-    static Logger * instance;
-    Logger(const Logger&){}
-    Logger(){}
-    std::string ss;
+    static std::unique_ptr<Logger> instance;
+    static std::mutex mtx;
+    std::string logData;
+
+    // Private constructor
+    Logger() = default;
+    
+    // Deleted copy constructor and assignment operator
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
 
 public:
-    static Logger * getInstance()
-    {
-        if(instance==nullptr)
-            instance=new Logger();
-        return instance;
+    static Logger* getInstance() {
+        std::lock_guard<std::mutex> lock(mtx);
+        if (!instance) {
+            instance.reset(new Logger());  // Using reset() instead of make_unique()
+        }
+        return instance.get();
     }
-    void logEvent(std::string s)
-    {
-        std::time_t now = std::time(NULL);
-        std::tm * ptm = std::localtime(&now);
+
+    void logEvent(const std::string& event) {
+        std::time_t now = std::time(nullptr);
+        std::tm* ptm = std::localtime(&now);
         char buffer[32];
-        // Format: Mo, 15.06.2009 20:20:00
         std::strftime(buffer, 32, "%a, %d.%m.%Y %H:%M:%S", ptm);
-        ss.append(buffer);
-        ss.append(" "+s+"\n");
+        logData.append(buffer);
+        logData.append(" - " + event + "\n");
     }
 
-    std::string getLogs()
-    {
-        return ss;
+    std::string getLogs() const {
+        return logData;
     }
-
 };
 
+// Initialize static members
+std::unique_ptr<Logger> Logger::instance = nullptr;
+std::mutex Logger::mtx;
 
-Logger *Logger::instance=nullptr;
-
-void func1()
-{
-    unsigned int numberOfMicroseconds=1000000;
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(std::chrono::microseconds(numberOfMicroseconds));
-    Logger * logger=Logger::getInstance();
-    logger->logEvent("func1 called");
-
+void func1() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    Logger::getInstance()->logEvent("func1 called");
 }
 
-void func2()
-{
-    unsigned int numberOfMicroseconds=1000000;
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(std::chrono::microseconds(numberOfMicroseconds));
-    Logger * logger=Logger::getInstance();
-    logger->logEvent("func2 called");
-
+void func2() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    Logger::getInstance()->logEvent("func2 called");
 }
 
-int main()
-{
-    Logger * logger=Logger::getInstance();
-    logger->logEvent("main called");
-    func1();
-    func2();
-    std::cout<<logger->getLogs() <<std::endl;
+int main() {
+    Logger::getInstance()->logEvent("main called");
+
+    std::thread t1(func1);
+    std::thread t2(func2);
+
+    t1.join();
+    t2.join();
+
+    std::cout << Logger::getInstance()->getLogs() << std::endl;
+    return 0;
 }

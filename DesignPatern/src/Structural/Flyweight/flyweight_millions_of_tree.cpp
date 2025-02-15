@@ -1,82 +1,140 @@
-// The flyweight class contains a portion of the state of a
-// tree. These fields store values that are unique for each
-// particular tree. For instance, you won't find here the tree
-// coordinates. But the texture and colors shared between many
-// trees are here. Since this data is usually BIG, you'd waste a
-// lot of memory by keeping it in each tree object. Instead, we
-// can extract texture, color and other repeating data into a
-// separate object which lots of individual tree objects can
-// reference.
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <memory>
 #include <string>
 
+// Color and Texture (used in Flyweight objects)
 class Color {};
-
 class Texture {};
 
-class Canvas {};
+// Canvas for rendering trees
+class Canvas {
+public:
+    void render(int x, int y, const std::string& treeType)
+    {
+        std::cout << "🌳 Drawing " << treeType << " at (" << x << ", " << y << ")\n";
+    }
+};
 
-class TreeType {
-  std::string m_name;
-  Color *m_color;
-  Texture *m_texture;
+// Flyweight class: TreeType (Intrinsic State)
+class TreeType
+{
+private:
+    std::string name;
+    std::shared_ptr<Color> color;
+    std::shared_ptr<Texture> texture;
 
 public:
-  TreeType(std::string name, Color *color, Texture *texture) {}
+    TreeType(std::string treeName, std::shared_ptr<Color> treeColor, std::shared_ptr<Texture> treeTexture)
+        : name(std::move(treeName)), color(std::move(treeColor)), texture(std::move(treeTexture))
+    {}
 
-  void draw(Canvas *canvas, int x, int y) {
-    // 1. Create a bitmap of a given type, color & texture.
-    // 2. Draw the bitmap on the canvas at X and Y coords.
-  }
+    void renderTree(Canvas& canvas, int x, int y) const
+    {
+        canvas.render(x, y, name);
+    }
 };
 
-/*
-// Flyweight factory decides whether to re-use existing
-// flyweight or to create a new object.
-class TreeFactory
+// Flyweight Factory
+class TreeTypeFactory
 {
-    static field treeTypes: collection of tree types
-    static method getTreeType(name, color, texture) is
-        type = treeTypes.find(name, color, texture)
-        if (type == null)
-            type = new TreeType(name, color, texture)
-            treeTypes.add(type)
-        return type
+private:
+    std::unordered_map<std::string, std::shared_ptr<TreeType>> treeTypes;
+
+    std::string getKey(const std::string& name) const
+    {
+        return name;
+    }
+
+public:
+    std::shared_ptr<TreeType> getTreeType(const std::string& name, std::shared_ptr<Color> color, std::shared_ptr<Texture> texture)
+    {
+        std::string key = getKey(name);
+        auto it = treeTypes.find(key);
+
+        if (it == treeTypes.end())
+        {
+            std::cout << "✅ Creating new TreeType: " << name << "\n";
+            auto treeType = std::make_shared<TreeType>(name, std::move(color), std::move(texture));
+            treeTypes[key] = treeType;
+            return treeType;
+        }
+        else
+        {
+            std::cout << "♻️ Reusing existing TreeType: " << name << "\n";
+            return it->second;
+        }
+    }
+
+    void listTreeTypes() const
+    {
+        std::cout << "\n🌲 Available TreeTypes in Factory: \n";
+        for (const auto& pair : treeTypes)
+        {
+            std::cout << "   - " << pair.first << "\n";
+        }
+    }
 };
 
-
-// The contextual object contains the extrinsic part of the tree
-// state. An application can create billions of these since they
-// are pretty small: just two integer coordinates and one
-// reference field.
+// Tree (Context Object) - Stores Extrinsic State
 class Tree
 {
-    field x,y
-    field type: TreeType
-    constructor Tree(x, y, type) { ... }
-    method draw(canvas) is
-        type.draw(canvas, this.x, this.y)
+private:
+    int x, y;
+    std::shared_ptr<TreeType> type;
 
+public:
+    Tree(int xPos, int yPos, std::shared_ptr<TreeType> treeType)
+        : x(xPos), y(yPos), type(std::move(treeType))
+    {}
+
+    void draw(Canvas& canvas) const
+    {
+        type->renderTree(canvas, x, y);
+    }
 };
 
-
-// The Tree and the Forest classes are the flyweight's clients.
-// You can merge them if you don't plan to develop the Tree
-// class any further.
+// Forest (Manages multiple trees)
 class Forest
 {
-        field trees: collection of Trees
+private:
+    std::vector<std::shared_ptr<Tree>> trees;
+    TreeTypeFactory treeFactory;
 
-        method plantTree(x, y, name, color, texture) is
-            type = TreeFactory.getTreeType(name, color, texture)
-            tree = new Tree(x, y, type)
-            trees.add(tree)
+public:
+    void addTree(int x, int y, const std::string& name)
+    {
+        auto color = std::make_shared<Color>();
+        auto texture = std::make_shared<Texture>();
+        auto treeType = treeFactory.getTreeType(name, color, texture);
 
-        method draw(canvas) is
-            foreach (tree in trees) do
-                tree.draw(canvas)
+        trees.push_back(std::make_shared<Tree>(x, y, treeType));
+    }
 
+    void renderForest(Canvas& canvas) const
+    {
+        std::cout << "\n🎨 Rendering the Forest...\n";
+        for (const auto& tree : trees)
+        {
+            tree->draw(canvas);
+        }
+    }
 };
 
-*/
+int main()
+{
+    Canvas canvas;
+    Forest forest;
 
-int main() {}
+    // Adding trees to the forest
+    forest.addTree(10, 20, "Oak Tree");
+    forest.addTree(30, 40, "Pine Tree");
+    forest.addTree(15, 25, "Oak Tree"); // This should reuse the existing TreeType
+    forest.addTree(50, 60, "Maple Tree");
+
+    // Render all trees in the forest
+    forest.renderForest(canvas);
+
+    return 0;
+}

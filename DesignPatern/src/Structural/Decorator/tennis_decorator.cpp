@@ -2,91 +2,94 @@
 #include <iostream>
 #include <string>
 
-
-
-class courtBooking
+// Base class for court booking
+class CourtBooking
 {
-    std::string info;
 public:
-    courtBooking(){}
-    virtual int cost()
+    virtual int cost() const
     {
-        return 1000;
+        return 1000;  // Base price
     }
+
+    virtual ~CourtBooking() = default; // Ensures proper polymorphic destruction
 };
 
-class tennisDecorator: public courtBooking
+// Abstract Decorator Class
+class TennisAddon : public CourtBooking
 {
+protected:
+    std::unique_ptr<CourtBooking> court;
 
 public:
-    int virtual cost(){}
+    explicit TennisAddon(std::unique_ptr<CourtBooking> cb) : court(std::move(cb)) {}
 
+    virtual int cost() const override = 0; // Ensure derived classes implement this
 };
 
-class grassCourtBooking: public courtBooking
+// Concrete Grass Court Booking
+class GrassCourt : public CourtBooking
 {
-    public:
-    grassCourtBooking(){}
-    ~grassCourtBooking(){}
-    int cost()
+public:
+    int cost() const override
     {
-        std::cout<<"Grass Court Booking: 8000" <<std::endl;
+        std::cout << "Grass Court Booking: 8000" << std::endl;
         return 8000;
     }
 };
 
-class coaching: public tennisDecorator
+// Concrete Decorator - Coaching
+class CoachingAddon : public TennisAddon
 {
-    courtBooking *cb;
 public:
-    coaching(courtBooking *cb):cb(cb){}
+    explicit CoachingAddon(std::unique_ptr<CourtBooking> cb) : TennisAddon(std::move(cb)) {}
 
-    int  cost() override
+    int cost() const override
     {
-        std::cout<<"coaching cost: 300" <<std::endl;
-
-        return this->cb->cost()+300;
+        std::cout << "Coaching cost: 300" << std::endl;
+        return court->cost() + 300;
     }
 };
 
-class ballPack: public tennisDecorator
+// Concrete Decorator - Ball Pack
+class BallPackAddon : public TennisAddon
 {
-    courtBooking *cb;
 public:
-    ballPack(courtBooking *cb):cb(cb){}
+    explicit BallPackAddon(std::unique_ptr<CourtBooking> cb) : TennisAddon(std::move(cb)) {}
 
-    int  cost() override
+    int cost() const override
     {
-        std::cout<<"ballPack costs: 100" <<std::endl;
-        return this->cb->cost()+100;
+        std::cout << "Ball Pack cost: 100" << std::endl;
+        return court->cost() + 100;
     }
 };
 
-class rackets: public tennisDecorator
+// Concrete Decorator - Rackets
+class RacketAddon : public TennisAddon
 {
-    courtBooking *cb;
 public:
-    rackets(courtBooking *cb):cb(cb){}
+    explicit RacketAddon(std::unique_ptr<CourtBooking> cb) : TennisAddon(std::move(cb)) {}
 
-    int  cost() override
+    int cost() const override
     {
-        std::cout<<"rackets cost: 200" <<std::endl;
-        return this->cb->cost()+200;
+        std::cout << "Rackets cost: 200" << std::endl;
+        return court->cost() + 200;
     }
 };
 
 int main()
 {
-    courtBooking *grass_court= new grassCourtBooking();
-    courtBooking * grass_court_rackets=new rackets(grass_court);
-    courtBooking * grass_court_rackets_ballPack=new ballPack(grass_court_rackets);
-    courtBooking * grass_court_rackets_ballPack_coaching=new coaching(grass_court_rackets_ballPack);
+    std::cout << "Booking Details and Costs:\n";
 
-    std::cout<< "Costs:"<<std::endl;
-    std::cout<< grass_court_rackets_ballPack_coaching->cost()<<std::endl;
+    // Base grass court booking
+    std::unique_ptr<CourtBooking> booking = std::make_unique<GrassCourt>();
 
-    delete grass_court;
-    delete grass_court_rackets;
-    delete grass_court_rackets_ballPack;
-    delete grass_court_rackets_ballPack_coaching;
+    // Add-ons
+    booking = std::make_unique<RacketAddon>(std::move(booking));
+    booking = std::make_unique<BallPackAddon>(std::move(booking));
+    booking = std::make_unique<CoachingAddon>(std::move(booking));
+
+    // Final cost calculation
+    std::cout << "Total Cost: " << booking->cost() << std::endl;
+
+    return 0;
 }

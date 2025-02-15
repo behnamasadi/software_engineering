@@ -1,67 +1,72 @@
 #include <iostream>
+#include <memory>
 
 class DrawingAPI
 {
 public:
-    virtual void drawCircle(double x, double y, double radius)=0;
+    virtual ~DrawingAPI() = default;
+    virtual void renderCircle(double x, double y, double radius) = 0;
 };
 
 class DrawingAPIV1 : public DrawingAPI
 {
 public:
-    void drawCircle(double x, double y, double radius) override
+    void renderCircle(double x, double y, double radius) override
     {
-        std::cout<<"drawing circle at"<<"x: "<<x <<" y: "<<y <<" with radius "<<radius<<" API version 1.0" <<std::endl;
+        std::cout << "Rendering circle at x: " << x << ", y: " << y
+                  << " with radius " << radius << " using API v1.0" << std::endl;
     }
 };
 
 class DrawingAPIV2 : public DrawingAPI
 {
 public:
-    void drawCircle(double x, double y, double radius) override
+    void renderCircle(double x, double y, double radius) override
     {
-        std::cout<<"drawing circle at"<<"x: "<<x <<" y: "<<y <<" with radius "<<radius<<" API version 2.0" <<std::endl;
+        std::cout << "Rendering circle at x: " << x << ", y: " << y
+                  << " with radius " << radius << " using API v2.0" << std::endl;
     }
 };
-
-
 
 class Shape
 {
 public:
-    virtual ~Shape() {}
-    virtual void draw() = 0;
-    virtual void resizeByPercentage(double pct) = 0;
+    virtual ~Shape() = default;
+    virtual void display() = 0;
+    virtual void scaleSize(double factor) = 0;
 };
 
 class CircleShape : public Shape
 {
 private:
     double m_x, m_y, m_radius;
-    DrawingAPI *m_drawingAPI;
+    std::unique_ptr<DrawingAPI> m_drawingAPI;
 
 public:
-    CircleShape(double x, double y,double radius, DrawingAPI *drawingAPI) :
-    m_x(x), m_y(y), m_radius(radius), m_drawingAPI(drawingAPI) {}
+    CircleShape(double x, double y, double radius, std::unique_ptr<DrawingAPI> drawingAPI)
+        : m_x(x), m_y(y), m_radius(radius), m_drawingAPI(std::move(drawingAPI)) {}
 
-    void draw()
+    void display() override
     {
-        m_drawingAPI->drawCircle(m_x, m_y, m_radius);
+        m_drawingAPI->renderCircle(m_x, m_y, m_radius);
     }
-    void resizeByPercentage(double pct)
+
+    void scaleSize(double factor) override
     {
-        m_radius *= pct;
+        m_radius *= factor;
     }
 };
 
-
-
 int main()
 {
-    CircleShape circle1(1,2,3,new DrawingAPIV1());
-    CircleShape circle2(5,7,11,new DrawingAPIV2());
-    circle1.resizeByPercentage(2.5);
-    circle2.resizeByPercentage(2.5);
-    circle1.draw();
-    circle2.draw();
+    std::unique_ptr<Shape> circle1 = std::make_unique<CircleShape>(1, 2, 3, std::make_unique<DrawingAPIV1>());
+    std::unique_ptr<Shape> circle2 = std::make_unique<CircleShape>(5, 7, 11, std::make_unique<DrawingAPIV2>());
+
+    circle1->scaleSize(2.5);
+    circle2->scaleSize(2.5);
+    
+    circle1->display();
+    circle2->display();
+
+    return 0;
 }

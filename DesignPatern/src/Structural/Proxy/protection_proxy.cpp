@@ -1,74 +1,113 @@
 #include <iostream>
-
+#include <vector>
+#include <memory>
+#include <algorithm>  // ✅ Added for std::find
 
 using namespace std;
+
 class Person
 {
     string nameString;
-    static string list[];
+    static vector<string> nameList;
     static int next;
-  public:
+
+public:
     Person()
     {
-        nameString = list[next++];
+        if (next < nameList.size())
+            nameString = nameList[next++];
+        else
+            nameString = "Unknown";
     }
-    string name()
+
+    string getName() const
     {
         return nameString;
     }
 };
-string Person::list[] = 
-{
-  "Tom", "Dick", "Harry", "Bubba"
-};
+
+// Initialize static name list
+vector<string> Person::nameList = {"Tom", "Dick", "Harry", "Bubba"};
 int Person::next = 0;
 
-class PettyCashProtected
+// Secure class handling actual cash transactions
+class SecurePettyCash
 {
+private:
     int balance;
-  public:
-    PettyCashProtected()
-    {
-        balance = 500;
-    }
+
+public:
+    SecurePettyCash() : balance(500) {}
+
     bool withdraw(int amount)
     {
         if (amount > balance)
-          return false;
+        {
+            cout << "❌ Not enough funds in petty cash.\n";
+            return false;
+        }
         balance -= amount;
         return true;
     }
-    int getBalance()
+
+    int getBalance() const
     {
         return balance;
     }
 };
 
-class PettyCash
+// Proxy class controlling access to SecurePettyCash
+class PettyCashProxy
 {
-    PettyCashProtected realThing;
-  public:
-    bool withdraw(Person &p, int amount)
+private:
+    unique_ptr<SecurePettyCash> realPettyCash;
+
+public:
+    PettyCashProxy() : realPettyCash(make_unique<SecurePettyCash>()) {}
+
+    bool withdraw(const Person& person, int amount)
     {
-        if (p.name() == "Tom" || p.name() == "Harry" || p.name() == "Bubba")
-          return realThing.withdraw(amount);
+        static vector<string> authorizedUsers = {"Tom", "Harry", "Bubba"};
+
+        // ✅ Fixed std::find issue
+        if (std::find(authorizedUsers.begin(), authorizedUsers.end(), person.getName()) != authorizedUsers.end())
+        {
+            return realPettyCash->withdraw(amount);
+        }
         else
-          return false;
+        {
+            cout << "⛔ Access denied for " << person.getName() << ".\n";
+            return false;
+        }
     }
-    int getBalance()
+
+    int getBalance() const
     {
-        return realThing.getBalance();
+        return realPettyCash->getBalance();
     }
 };
 
 int main()
 {
-  PettyCash pc;
-  Person workers[4];
-  for (int i = 0, amount = 100; i < 4; i++, amount += 100)
-    if (!pc.withdraw(workers[i], amount))
-      cout << "No money for " << workers[i].name() << '\n';
-    else
-      cout << amount << " dollars for " << workers[i].name() << '\n';
-  cout << "Remaining balance is " << pc.getBalance() << '\n';
+    PettyCashProxy pc;
+    vector<unique_ptr<Person>> workers;
+    
+    // Creating 4 workers
+    for (int i = 0; i < 4; i++)
+        workers.push_back(make_unique<Person>());
+
+    int amount = 100;
+    for (const auto& worker : workers)
+    {
+        if (!pc.withdraw(*worker, amount))
+            cout << "❌ No money for " << worker->getName() << ".\n";
+        else
+            cout << "✅ " << amount << " dollars withdrawn by " << worker->getName() << ".\n";
+
+        amount += 100;
+    }
+
+    cout << "\n💰 Remaining balance in petty cash: $" << pc.getBalance() << '\n';
+
+    return 0;
 }

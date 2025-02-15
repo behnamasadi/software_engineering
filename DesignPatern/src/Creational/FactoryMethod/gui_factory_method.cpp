@@ -1,53 +1,60 @@
-//https://www.bogotobogo.com/DesignPatterns/factorymethod.php
 #include <iostream>
-#include <cstring>
+#include <memory>
+#include <string>
+
+// Abstract Product: Button
 class Button {
 public:
-	virtual void paint() = 0;
+    virtual void render() = 0;
+    virtual ~Button() = default;
 };
- 
-class OSXButton: public Button {
+
+// Concrete Product: Mac Button
+class MacButton : public Button {
 public:
-	void paint() {
-		std::cout << "OSX button \n";
-	}
+    void render() override {
+        std::cout << "🍏 Rendering Mac-style button\n";
+    }
 };
- 
-class WindowsButton: public Button  {
+
+// Concrete Product: Windows Button
+class WinButton : public Button {
 public:
-	void paint() {
-		std::cout << "Windows button \n";
-	}
+    void render() override {
+        std::cout << "🪟 Rendering Windows-style button\n";
+    }
 };
- 
-class GUIFactory {
+
+// Abstract Factory: ButtonFactory
+class ButtonFactory {
 public:
-	virtual Button *createButton(char *) = 0;
+    virtual std::unique_ptr<Button> buildButton(const std::string& type) = 0;
+    virtual ~ButtonFactory() = default;
 };
 
-class Factory: public GUIFactory {
+// Concrete Factory: PlatformFactory
+class PlatformFactory : public ButtonFactory {
 public:
-	Button *createButton(char *type) {
-		if(strcmp(type,"Windows") == 0) {
-			return new WindowsButton;
-		}
-		else if(strcmp(type,"OSX") == 0) {
-			return new OSXButton;
-		}
-	}
+    std::unique_ptr<Button> buildButton(const std::string& type) override {
+        if (type == "Windows") {
+            return std::make_unique<WinButton>();
+        } else if (type == "Mac") {
+            return std::make_unique<MacButton>();
+        } else {
+            throw std::invalid_argument("Unknown button type: " + type);
+        }
+    }
 };
 
-int main()
-{
-	GUIFactory* guiFactory;
-	Button *btn;
+// Main Function
+int main() {
+    std::unique_ptr<ButtonFactory> buttonFactory = std::make_unique<PlatformFactory>();
 
-	guiFactory = new Factory;
+    std::unique_ptr<Button> macButton = buttonFactory->buildButton("Mac");
+    macButton->render();
 
-	btn = guiFactory->createButton("OSX");
-	btn -> paint();
-	btn = guiFactory->createButton("Windows");
-	btn -> paint();
+    std::unique_ptr<Button> winButton = buttonFactory->buildButton("Windows");
+    winButton->render();
 
-	return 0;
+    return 0;
 }

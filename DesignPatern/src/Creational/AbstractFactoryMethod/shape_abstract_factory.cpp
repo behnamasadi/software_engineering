@@ -1,18 +1,19 @@
 #include <iostream>
+#include <memory>
+#include <vector>
 
 using namespace std;
+
 class Shape
 {
-public:
-    Shape()
-    {
-        id_ = total_++;
-    }
-
-    virtual void draw() = 0;
 protected:
     int id_;
     static int total_;
+
+public:
+    Shape() : id_(total_++) {}
+    virtual void draw() = 0;
+    virtual ~Shape() = default;
 };
 
 int Shape::total_ = 0;
@@ -20,83 +21,91 @@ int Shape::total_ = 0;
 class Circle : public Shape
 {
 public:
-    void draw() {cout << "circle " << id_ << ": draw" << endl;}
+    void draw() override { cout << "⭕ Circle " << id_ << ": draw" << endl; }
 };
 
 class Square : public Shape
 {
 public:
-    void draw()
-    {
-        cout << "square " << id_ << ": draw" << endl;
-    }
+    void draw() override { cout << "⬜ Square " << id_ << ": draw" << endl; }
 };
 
 class Ellipse : public Shape
 {
 public:
-    void draw() {cout << "ellipse " << id_ << ": draw" << endl;}
+    void draw() override { cout << "🟢 Ellipse " << id_ << ": draw" << endl; }
 };
 
 class Rectangle : public Shape
 {
 public:
-    void draw() {cout << "rectangle " << id_ << ": draw" << endl;}
+    void draw() override { cout << "🟦 Rectangle " << id_ << ": draw" << endl; }
 };
 
-class Factory
+// Abstract Factory
+class ShapeFactory
 {
 public:
-    virtual Shape* createCurvedInstance() = 0;
-    virtual Shape* createStraightInstance() = 0;
+    virtual unique_ptr<Shape> createCurvedShape() = 0;
+    virtual unique_ptr<Shape> createStraightShape() = 0;
+    virtual ~ShapeFactory() = default;
 };
 
-class SimpleShapeFactory : public Factory
+// Simple Shape Factory
+class SimpleShapeFactory : public ShapeFactory
 {
 public:
-    Shape* createCurvedInstance()
+    unique_ptr<Shape> createCurvedShape() override
     {
-        return new Circle;
+        return make_unique<Circle>();
     }
 
-    Shape* createStraightInstance()
+    unique_ptr<Shape> createStraightShape() override
     {
-        return new Square;
+        return make_unique<Square>();
     }
 };
 
-class RobustShapeFactory : public Factory
+// Robust Shape Factory
+class RobustShapeFactory : public ShapeFactory
 {
-    public:
-    Shape* createCurvedInstance()
+public:
+    unique_ptr<Shape> createCurvedShape() override
     {
-        return new Ellipse;
+        return make_unique<Ellipse>();
     }
-    Shape* createStraightInstance()
+
+    unique_ptr<Shape> createStraightShape() override
     {
-        return new Rectangle;
+        return make_unique<Rectangle>();
     }
 };
 
-#define SIMPLE=true
-//#define ROBUST=true
-
+// Define which factory to use
+#define SIMPLE_FACTORY  // Change to ROBUST_FACTORY to switch
 
 int main()
 {
-    #ifdef SIMPLE
-        Factory* factory = new SimpleShapeFactory;
-    #elif ROBUST
-        Factory* factory = new RobustShapeFactory;
-    #endif
-    Shape* shapes[3];
+    unique_ptr<ShapeFactory> factory;
 
-    shapes[0] = factory->createCurvedInstance();   // shapes[0] = new Ellipse;
-    shapes[1] = factory->createStraightInstance(); // shapes[1] = new Rectangle;
-    shapes[2] = factory->createCurvedInstance();   // shapes[2] = new Ellipse;
+#ifdef SIMPLE_FACTORY
+    factory = make_unique<SimpleShapeFactory>();
+#elif defined(ROBUST_FACTORY)
+    factory = make_unique<RobustShapeFactory>();
+#endif
 
-    for (int i=0; i < 3; i++)
+    vector<unique_ptr<Shape>> shapes;
+
+    // Create different types of shapes using factory
+    shapes.push_back(factory->createCurvedShape());   // Circle or Ellipse
+    shapes.push_back(factory->createStraightShape()); // Square or Rectangle
+    shapes.push_back(factory->createCurvedShape());   // Circle or Ellipse
+
+    // Draw all shapes
+    for (const auto& shape : shapes)
     {
-        shapes[i]->draw();
+        shape->draw();
     }
+
+    return 0;
 }

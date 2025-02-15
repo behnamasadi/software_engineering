@@ -1,220 +1,213 @@
 #include <iostream>
+#include <memory>
+
 #define LINUX
 
 using namespace std;
 
 namespace before
 {
-
 class Widget
 {
 public:
-    virtual void draw() = 0;
+    virtual void render() = 0;
+    virtual ~Widget() = default;
 };
 
 class LinuxButton : public Widget
 {
 public:
-    void draw() { cout << "LinuxButton\n"; }
+    void render() override { cout << "🟢 Linux Button Rendered\n"; }
 };
 
 class LinuxMenu : public Widget
 {
 public:
-    void draw() { cout << "LinuxMenu\n"; }
+    void render() override { cout << "🟢 Linux Menu Rendered\n"; }
 };
 
 class WindowsButton : public Widget
 {
 public:
-    void draw() { cout << "WindowsButton\n"; }
+    void render() override { cout << "🟦 Windows Button Rendered\n"; }
 };
 
 class WindowsMenu : public Widget
 {
 public:
-    void draw() { cout << "WindowsMenu\n"; }
+    void render() override { cout << "🟦 Windows Menu Rendered\n"; }
 };
 
 class Client
 {
 public:
-    void draw()
+    void render()
     {
-        #ifdef LINUX
-        Widget *w = new LinuxButton;
-        #else // WINDOWS
-        Widget *w = new WindowsButton;
-        #endif
-        w->draw();
-        display_window_one();
-        display_window_two();
+#ifdef LINUX
+        unique_ptr<Widget> w = make_unique<LinuxButton>();
+#else
+        unique_ptr<Widget> w = make_unique<WindowsButton>();
+#endif
+        w->render();
+        displayWindowOne();
+        displayWindowTwo();
     }
 
-    void display_window_one()
+    void displayWindowOne()
     {
-        #ifdef LINUX
-        Widget *w[] =
-        {
-            new LinuxButton,
-            new LinuxMenu
-        };
-        #else // WINDOWS
-        Widget *w[] =
-        {
-            new WindowsButton,
-            new WindowsMenu
-        };
-        #endif
-        w[0]->draw();
-        w[1]->draw();
+#ifdef LINUX
+        unique_ptr<Widget> w1 = make_unique<LinuxButton>();
+        unique_ptr<Widget> w2 = make_unique<LinuxMenu>();
+#else
+        unique_ptr<Widget> w1 = make_unique<WindowsButton>();
+        unique_ptr<Widget> w2 = make_unique<WindowsMenu>();
+#endif
+        w1->render();
+        w2->render();
     }
 
-    void display_window_two()
+    void displayWindowTwo()
     {
-        #ifdef LINUX
-        Widget *w[] =
-        {
-            new LinuxMenu,
-            new LinuxButton
-        };
-        #else // WINDOWS
-        Widget *w[] =
-        {
-            new WindowsMenu,
-            new WindowsButton
-        };
-        #endif
-        w[0]->draw();
-        w[1]->draw();
+#ifdef LINUX
+        unique_ptr<Widget> w1 = make_unique<LinuxMenu>();
+        unique_ptr<Widget> w2 = make_unique<LinuxButton>();
+#else
+        unique_ptr<Widget> w1 = make_unique<WindowsMenu>();
+        unique_ptr<Widget> w2 = make_unique<WindowsButton>();
+#endif
+        w1->render();
+        w2->render();
     }
 };
 }
 
-
 namespace after
 {
-
 class Widget
 {
 public:
-    virtual void draw() = 0;
+    virtual void render() = 0;
+    virtual ~Widget() = default;
 };
 
 class LinuxButton : public Widget
 {
 public:
-    void draw() { cout << "LinuxButton\n"; }
+    void render() override { cout << "🟢 Linux Button Rendered\n"; }
 };
 
 class LinuxMenu : public Widget
 {
 public:
-    void draw() { cout << "LinuxMenu\n"; }
+    void render() override { cout << "🟢 Linux Menu Rendered\n"; }
 };
 
 class WindowsButton : public Widget
 {
 public:
-    void draw() { cout << "WindowsButton\n"; }
+    void render() override { cout << "🟦 Windows Button Rendered\n"; }
 };
 
 class WindowsMenu : public Widget
 {
 public:
-    void draw() { cout << "WindowsMenu\n"; }
+    void render() override { cout << "🟦 Windows Menu Rendered\n"; }
 };
 
-
-class Factory
+// Abstract Factory Interface
+class WidgetFactory
 {
 public:
-    virtual Widget *create_button() = 0;
-    virtual Widget *create_menu() = 0;
+    virtual unique_ptr<Widget> createButton() = 0;
+    virtual unique_ptr<Widget> createMenu() = 0;
+    virtual ~WidgetFactory() = default;
 };
 
-class LinuxFactory : public Factory
+// Concrete Factory for Linux UI
+class LinuxFactory : public WidgetFactory
 {
 public:
-    Widget *create_button()
+    unique_ptr<Widget> createButton() override
     {
-        return new LinuxButton;
+        return make_unique<LinuxButton>();
     }
 
-    Widget *create_menu()
+    unique_ptr<Widget> createMenu() override
     {
-        return new LinuxMenu;
+        return make_unique<LinuxMenu>();
     }
 };
 
-class WindowsFactory : public Factory
+// Concrete Factory for Windows UI
+class WindowsFactory : public WidgetFactory
 {
-    public:
-    Widget *create_button()
+public:
+    unique_ptr<Widget> createButton() override
     {
-        return new WindowsButton;
+        return make_unique<WindowsButton>();
     }
 
-    Widget *create_menu()
+    unique_ptr<Widget> createMenu() override
     {
-        return new WindowsMenu;
+        return make_unique<WindowsMenu>();
     }
 };
 
 class Client
 {
 private:
-    Factory *factory;
+    unique_ptr<WidgetFactory> factory;
 
 public:
-    Client(Factory *f)
+    explicit Client(unique_ptr<WidgetFactory> f) : factory(move(f)) {}
+
+    void render()
     {
-        factory = f;
+        unique_ptr<Widget> w = factory->createButton();
+        w->render();
+        displayWindowOne();
+        displayWindowTwo();
     }
 
-    void draw()
+    void displayWindowOne()
     {
-        Widget *w = factory->create_button();
-        w->draw();
-        display_window_one();
-        display_window_two();
+        unique_ptr<Widget> w1 = factory->createButton();
+        unique_ptr<Widget> w2 = factory->createMenu();
+        w1->render();
+        w2->render();
     }
 
-    void display_window_one()
+    void displayWindowTwo()
     {
-        Widget *w[] = {factory->create_button(),factory->create_menu()};
-        w[0]->draw();
-        w[1]->draw();
-    }
-
-void display_window_two()
-    {
-        Widget *w[] = {factory->create_menu(), factory->create_button() };
-        w[0]->draw();
-        w[1]->draw();
+        unique_ptr<Widget> w1 = factory->createMenu();
+        unique_ptr<Widget> w2 = factory->createButton();
+        w1->render();
+        w2->render();
     }
 };
-
-
 }
 
 int main()
 {
+    cout << "\n🌍 BEFORE: Hardcoded UI Elements\n";
     {
-        before::Client *c = new before::Client();
-        c->draw();
+        before::Client c;
+        c.render();
     }
 
-
+    cout << "\n🌍 AFTER: Using Abstract Factory\n";
     {
-        after::Factory *factory;
-        #ifdef LINUX
-            factory = new after::LinuxFactory;
-        #else // WINDOWS
-            factory = new after::WindowsFactory;
-        #endif
+        unique_ptr<after::WidgetFactory> factory;
 
-        after::Client *c = new after::Client(factory);
-        c->draw();
+#ifdef LINUX
+        factory = make_unique<after::LinuxFactory>();
+#else
+        factory = make_unique<after::WindowsFactory>();
+#endif
+
+        unique_ptr<after::Client> c = make_unique<after::Client>(move(factory));
+        c->render();
     }
+
+    return 0;
 }

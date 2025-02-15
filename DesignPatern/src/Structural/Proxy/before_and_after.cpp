@@ -11,117 +11,128 @@ Counting the number of references to the real object so that it can be freed aut
 Loading a persistent object into memory when it's first referenced,
 Checking that the real object is locked before it is accessed to ensure that no other object can change it.
 */
+#include <iostream>
+#include <memory>
+
 namespace before
 {
 class Image
 {
     int m_id;
     static int s_next;
-  public:
-    Image()
+
+public:
+    Image() : m_id(s_next++)
     {
-        m_id = s_next++;
-        std::cout << "constructor: " << m_id << '\n';
+        std::cout << "📷 Constructing Image: " << m_id << '\n';
     }
+
     ~Image()
     {
-        std::cout << "deconstructor: " << m_id << '\n';
+        std::cout << "❌ Destroying Image: " << m_id << '\n';
     }
-    void draw()
+
+    void render()
     {
-        std::cout << "drawing image " << m_id << '\n';
+        std::cout << "🖼️ Rendering Image " << m_id << '\n';
     }
 };
 
+int Image::s_next = 1;
 }
 
 namespace after
 {
-class RealImage
+class HighResImage
 {
     int m_id;
-  public:
-    RealImage(int i)
+
+public:
+    explicit HighResImage(int id) : m_id(id)
     {
-        m_id = i;
-        std::cout << "constructor: " << m_id << '\n';
+        std::cout << "📷 Loading High-Res Image: " << m_id << '\n';
     }
-    ~RealImage()
+
+    ~HighResImage()
     {
-        std::cout << "deconstructor: " << m_id << '\n';
+        std::cout << "❌ Unloading High-Res Image: " << m_id << '\n';
     }
-    void draw()
+
+    void render()
     {
-        std::cout << "drawing image " << m_id << '\n';
+        std::cout << "🖼️ Displaying High-Res Image " << m_id << '\n';
     }
 };
 
-class Image
+class LazyImage
 {
-    RealImage *m_the_real_thing;
+    std::unique_ptr<HighResImage> real_image;  // Using smart pointer for safe memory management
     int m_id;
     static int s_next;
-  public:
-    Image()
+
+public:
+    LazyImage() : m_id(s_next++) {}
+
+    void render()
     {
-        m_id = s_next++;
-        // 3. Initialized to null
-        m_the_real_thing = 0;
-    }
-    ~Image()
-    {
-        delete m_the_real_thing;
-    }
-    void draw()
-    {
-        // 4. When a request comes in, the real object is
-        //    created "on first use"
-        if (!m_the_real_thing)
-          m_the_real_thing = new RealImage(m_id);
-        // 5. The request is always delegated
-        m_the_real_thing->draw();
+        // Lazy loading: create the real image only when needed
+        if (!real_image)
+        {
+            std::cout << "⚡ Lazy Loading Image " << m_id << '\n';
+            real_image = std::make_unique<HighResImage>(m_id);
+        }
+        real_image->render();
     }
 };
 
-
+int LazyImage::s_next = 1;
 }
-
-
-int before::Image::s_next = 1;
-int after::Image::s_next = 1;
 
 int main()
 {
-
-/////////////////////////////////Before////////////////////////////////
+    std::cout << "\n====== Before Proxy ======\n";
     {
         before::Image images[5];
 
-        for (int i; true;)
+        while (true)
         {
+            int i;
             std::cout << "Exit[0], Image[1-5]: ";
             std::cin >> i;
+
             if (i == 0)
-              break;
-            images[i - 1].draw();
+                break;
+            if (i < 1 || i > 5)
+            {
+                std::cout << "❌ Invalid choice! Please enter a number between 1-5.\n";
+                continue;
+            }
+
+            images[i - 1].render();
         }
     }
 
-
-/////////////////////////////////After////////////////////////////////
-
+    std::cout << "\n====== After Proxy (Lazy Loading) ======\n";
     {
-        after::Image images[5];
+        after::LazyImage images[5];
 
-        for (int i; true;)
+        while (true)
         {
-          std::cout << "Exit[0], Image[1-5]: ";
-          std::cin >> i;
-          if (i == 0)
-            break;
-          images[i - 1].draw();
+            int i;
+            std::cout << "Exit[0], Image[1-5]: ";
+            std::cin >> i;
+
+            if (i == 0)
+                break;
+            if (i < 1 || i > 5)
+            {
+                std::cout << "❌ Invalid choice! Please enter a number between 1-5.\n";
+                continue;
+            }
+
+            images[i - 1].render();
         }
     }
 
+    return 0;
 }
-

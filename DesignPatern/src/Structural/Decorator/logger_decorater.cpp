@@ -1,107 +1,128 @@
 #include <iostream>
 #include <string>
+#include <memory>
 
+// Base Logger class
 class Logger
 {
 protected:
     std::string m_description;
+
 public:
-    Logger()
+    Logger() : m_description("Unknown Logger") {}
+
+    virtual void log(const std::string& event) const
     {
-        m_description="Unkown Logger";
-    }
-    virtual void log(std::string event)
-    {
-        std::cout<<event+ "logged" <<std::endl;
+        std::cout << event << " logged" << std::endl;
     }
 
-    virtual std::string getDescription()
+    virtual std::string getDescription() const
     {
         return m_description;
     }
+
+    virtual ~Logger() = default; // Ensure proper polymorphic destruction
 };
 
-class FileLogger:public Logger
+// Concrete File Logger
+class FileLogger : public Logger
 {
 public:
     FileLogger()
     {
-        m_description="File logger";
+        m_description = "File Logger";
     }
 
-    void log(std::string event) override
+    void log(const std::string& event) const override
     {
-        std::cout<<event+ "logged into file" <<std::endl;
+        std::cout << event << " logged into file" << std::endl;
     }
 };
 
-class LoggerDecorator:public Logger
+// Abstract Decorator Class
+class EnhancedLogger : public Logger
 {
 protected:
-    Logger *m_logger;
+    std::unique_ptr<Logger> m_logger;
+
 public:
-    LoggerDecorator(Logger *logger):m_logger(logger){}
-    virtual std::string getDescription() = 0;
-    virtual void log(std::string event) = 0;
+    explicit EnhancedLogger(std::unique_ptr<Logger> logger)
+        : m_logger(std::move(logger)) {}
+
+    virtual std::string getDescription() const override = 0;
+    virtual void log(const std::string& event) const override = 0;
 };
 
-class SQL: public LoggerDecorator
+// Concrete Decorator - SQL Logger
+class SQLLogger : public EnhancedLogger
 {
-
 public:
-    SQL(Logger *logger):LoggerDecorator(logger)
+    explicit SQLLogger(std::unique_ptr<Logger> logger)
+        : EnhancedLogger(std::move(logger))
     {
-        m_description="SQL Logger";
+        m_description = "SQL Logger";
     }
 
-    void log(std::string event) override
+    void log(const std::string& event) const override
     {
         m_logger->log(event);
         SQLLog(event);
     }
 
-    std::string getDescription() override
+    std::string getDescription() const override
     {
-        return  m_logger->getDescription()+ " + SQL logger";
+        return m_logger->getDescription() + " + SQL Logger";
     }
-    void SQLLog(std::string event)
+
+private:
+    void SQLLog(const std::string& event) const
     {
-        std::cout<<event+ " logged into sql" <<std::endl;
+        std::cout << event << " logged into SQL database" << std::endl;
     }
 };
 
-class HTML: public LoggerDecorator
+// Concrete Decorator - HTML Logger
+class HTMLLogger : public EnhancedLogger
 {
-
 public:
-    HTML(Logger *logger):LoggerDecorator(logger)
+    explicit HTMLLogger(std::unique_ptr<Logger> logger)
+        : EnhancedLogger(std::move(logger))
     {
-        m_description="HTML Logger";
+        m_description = "HTML Logger";
     }
 
-    std::string getDescription() override
-    {
-        return  m_logger->getDescription()+ " + HTML logger";
-    }
-
-    void HTMLLog(std::string event)
-    {
-        std::cout<<event+" logged into html file" <<std::endl;
-    }
-
-    void log(std::string event) override
+    void log(const std::string& event) const override
     {
         m_logger->log(event);
         HTMLLog(event);
     }
+
+    std::string getDescription() const override
+    {
+        return m_logger->getDescription() + " + HTML Logger";
+    }
+
+private:
+    void HTMLLog(const std::string& event) const
+    {
+        std::cout << event << " logged into HTML file" << std::endl;
+    }
 };
+
 int main()
 {
-    Logger *file_logger=new FileLogger() ;
-    Logger *file_logger_sql=new SQL(file_logger);
-    Logger *file_logger_sql_html=new HTML(file_logger_sql);
+    // Create a base file logger
+    std::unique_ptr<Logger> logger = std::make_unique<FileLogger>();
 
-    std::cout<<file_logger_sql_html->getDescription()<<std::endl;
-    file_logger_sql_html->log("some event");
+    // Decorate with SQL logging
+    logger = std::make_unique<SQLLogger>(std::move(logger));
+
+    // Decorate with HTML logging
+    logger = std::make_unique<HTMLLogger>(std::move(logger));
+
+    // Display description and log an event
+    std::cout << logger->getDescription() << std::endl;
+    logger->log("User login event");
+
+    return 0;
 }
-

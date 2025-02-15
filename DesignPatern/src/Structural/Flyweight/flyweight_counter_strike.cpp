@@ -22,148 +22,135 @@ data is the text to be displayed and the extrinsic data is the xx and yy coordin
 */
 
 
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <memory>
+#include <cstdlib>
+#include <ctime>
 
-// A common interface for all players
+// Common interface for all players
 class Player
 {
 public:
-    void virtual assignWeapon(std::string weapon){}
-    void virtual mission(){}
+    virtual void equipWeapon(const std::string& weapon) = 0;
+    virtual void performMission() const = 0;
+    virtual ~Player() = default;  // Ensures proper polymorphic destruction
 };
 
-enum class playerType
-{TERRORIST,COUNTERTRRRORIST};
+// Enum for player types
+enum class PlayerType { TERRORIST, COUNTER_TERRORIST };
 
-// Terrorist must have weapon and mission
-class Terrorist :public Player
+// Terrorist class (Flyweight)
+class Terrorist : public Player
 {
-    // Intrinsic Attribute (shared between all instances)
 private:
-    std::string TASK;
-
-    // Extrinsic Attribute (can not be shared)
-    std::string weapon;
-
-public: Terrorist()
-    {
-        TASK = "PLANT A BOMB";
-    }
-    void assignWeapon(std::string weapon)
-    {
-        // Assign a weapon
-        this->weapon = weapon;
-    }
-    void mission()
-    {
-        //Work on the Mission
-        std::cout<<"Terrorist with weapon " << weapon << "|" << " Task is " << TASK<<std::endl;
-    }
-};
-
-// CounterTerrorist must have weapon and mission
-class CounterTerrorist: public Player
-{
-    // Intrinsic Attribute, shared
-private:
-    std::string TASK;
-
-    // Extrinsic Attribute
-    std::string weapon;
+    const std::string MISSION_GOAL = "Plant a bomb"; // Intrinsic state (shared)
+    std::string weapon; // Extrinsic state (unique per instance)
 
 public:
-
-
-
-    CounterTerrorist()
-    {
-        TASK = "DIFFUSE BOMB";
-    }
-    void assignWeapon(std::string weapon)
+    void equipWeapon(const std::string& weapon) override
     {
         this->weapon = weapon;
     }
-    void mission()
+
+    void performMission() const override
     {
-        std::cout<<"Counter Terrorist with weapon "<< weapon << "|" << " Task is " << TASK<<std::endl;
+        std::cout << "Terrorist with weapon " << weapon 
+                  << " | Mission: " << MISSION_GOAL << std::endl;
     }
 };
 
-//Claass used to get a playeer using HashMap (Returns
-//an existing player if a player of given type exists.
-//Else creates a new player and returns it.
+// Counter-Terrorist class (Flyweight)
+class CounterTerrorist : public Player
+{
+private:
+    const std::string MISSION_GOAL = "Diffuse the bomb"; // Intrinsic state (shared)
+    std::string weapon; // Extrinsic state (unique per instance)
+
+public:
+    void equipWeapon(const std::string& weapon) override
+    {
+        this->weapon = weapon;
+    }
+
+    void performMission() const override
+    {
+        std::cout << "Counter-Terrorist with weapon " << weapon 
+                  << " | Mission: " << MISSION_GOAL << std::endl;
+    }
+};
+
+// Factory class to manage Flyweight instances
 class PlayerFactory
 {
-    /* unordered map stores the reference to the object of Terrorist(TS) or CounterTerrorist(CT).  */
 private:
-    // Method to get a player
+    static std::unordered_map<PlayerType, std::shared_ptr<Player>> playerCache;
+
 public:
-    static std::unordered_map<playerType, std::shared_ptr<Player> > hm;
-    static std::shared_ptr<Player>  getPlayer(playerType type)
+    static std::shared_ptr<Player> getPlayer(PlayerType type)
     {
-        std::shared_ptr<Player> p = nullptr;
+        auto it = playerCache.find(type);
 
-        /* If an object for TS or CT has already been created simply return its reference */
-        if (hm.find(type) != hm.end())
-                p = hm[type];
-        else
+        if (it != playerCache.end())
         {
-            /* create an object of TS/CT  */
-            switch(type)
-            {
-            case playerType::TERRORIST:
-                std::cout<<"Terrorist Created"<<std::endl;
-                p.reset( new Terrorist());
-                break;
-            case playerType::COUNTERTRRRORIST:
-                std::cout<<"Counter Terrorist Created"<<std::endl;
-                p.reset( new CounterTerrorist());
-                break;
-            default :
-                std::cout<<"Unreachable code!"<<std::endl;
-            }
-
-            // Once created insert it into the HashMap
-            hm[type]= p;
+            std::cout << "✅ Reusing existing player.\n";
+            return it->second;
         }
-        return p;
+
+        std::shared_ptr<Player> newPlayer = nullptr;
+
+        switch (type)
+        {
+        case PlayerType::TERRORIST:
+            std::cout << "🔥 Creating a new Terrorist.\n";
+            newPlayer = std::make_shared<Terrorist>();
+            break;
+        case PlayerType::COUNTER_TERRORIST:
+            std::cout << "🛡️ Creating a new Counter-Terrorist.\n";
+            newPlayer = std::make_shared<CounterTerrorist>();
+            break;
+        default:
+            throw std::runtime_error("Invalid Player Type");
+        }
+
+        playerCache[type] = newPlayer;
+        return newPlayer;
     }
 };
 
+// Define static unordered_map
+std::unordered_map<PlayerType, std::shared_ptr<Player>> PlayerFactory::playerCache;
 
-
-std::string weapons[]= {"AK-47", "Maverick", "Gut Knife", "Desert Eagle"};
-
-// Utility methods to get a random player type and weapon using rand which generate a number between 0 and RAND_MAX
-playerType getRandPlayerType()
+// Utility function to get a random player type
+PlayerType getRandomPlayerType()
 {
-    //Will return an integer between [0,2)
-    return playerType(rand() % 2);
+    return static_cast<PlayerType>(rand() % 2);
 }
-std::string getRandWeapon()
+
+// List of available weapons
+std::string weapons[] = { "AK-47", "Maverick", "Gut Knife", "Desert Eagle" };
+
+// Utility function to get a random weapon
+std::string getRandomWeapon()
 {
-    // Return the weapon stored at index 'randInt'
     return weapons[rand() % 4];
 }
 
-std::unordered_map<playerType,std::shared_ptr<Player> > PlayerFactory::hm;
-
+// Main execution
 int main()
 {
-    /*It is important to only invoke the srand call ONCE at the beginning of the program. There is no need
-    for repeat calls to seed the random number generator (in fact, it will make your number less evenly
-    distributed). */
-    srand (time(NULL));
-    // All player types and weopons (used by getRandPlayerType() and getRandWeapon()
+    srand(time(NULL));  // Seed random number generator
 
-    std::vector<std::shared_ptr<Player> >players;
-    int numberOfPlayer=20;
-    for (int i = 0; i <numberOfPlayer; i++)
+    std::vector<std::shared_ptr<Player>> gamePlayers;
+    const int numPlayers = 20;
+
+    for (int i = 0; i < numPlayers; ++i)
     {
-        std::shared_ptr<Player>p  = PlayerFactory::getPlayer(getRandPlayerType());
-        players.push_back(p);
-        /* Assign a weapon chosen randomly uniformly from the weapon array  */
-        p->assignWeapon(getRandWeapon());
-        // Send this player on a mission
-        p->mission();
+        auto player = PlayerFactory::getPlayer(getRandomPlayerType());
+        player->equipWeapon(getRandomWeapon());
+        player->performMission();
     }
+
+    return 0;
 }

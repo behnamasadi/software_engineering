@@ -9,7 +9,7 @@ In this example, we're designing a **flexible and decoupled system** using the *
 
 ---
 
-In the following **PlantUML diagram**, the **Command Pattern** is illustrated with a simple example of controlling a light:
+In the following **UML diagram**, the **Command Pattern** is illustrated with a simple example of controlling a light:
 
 - The `Command` interface defines a standard `execute()` method.
 - `LightOnCommand` and `LightOffCommand` are concrete command classes that encapsulate turning the light on and off.
@@ -31,18 +31,18 @@ This design promotes **loose coupling** between senders and receivers, enabling 
    - The **light** is the actual device that turns **on and off**.
    - It has two methods: `actionOn()` and `actionOff()`, which print messages.
 
-2. **The Commands **  
+2. **The Commands**  
    - Instead of the remote directly calling `light.actionOn()`, we create **command objects**:
      - `LightOnCommand`: Calls `actionOn()` on the light.
      - `LightOffCommand`: Calls `actionOff()` on the light.
    - Each command **encapsulates** what should happen, making the system modular.
 
-3. **The Remote Control (Invoker) **  
+3. **The Remote Control (Invoker)**  
    - This acts as an interface between **the user and the commands**.
    - It stores a `Command` object and **executes it when a button is pressed**.
    - The **remote control doesn’t need to know anything about the light**—it just knows how to execute commands!
 
-4. **The Client (The One Pressing the Button) **  
+4. **The Client (The One Pressing the Button)**  
    - The **client** (our `main()` function) creates:
      - A `Light` object (the receiver).
      - A `LightOnCommand` and `LightOffCommand` linked to the light.
@@ -111,7 +111,7 @@ Now, **press the button** and watch the magic happen! ✨
 - **Chain of Responsibility Pattern**  
   - If multiple objects can handle a request, use a chain instead of an explicit invoker.
 
-Would you like a more in-depth example of any of these concepts? 🚀
+
 
 Source code examples:
 [Light on command](../../../DesignPatern/src/Behavioral/Command/LightOnCommand.cpp), [giant command](../../../DesignPatern/src/Behavioral/Command/giant_command.cpp)

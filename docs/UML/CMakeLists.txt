@@ -1,2 +1,0 @@
-add_executable(class_diagram StructureDiagrams/ClassDiagram/src/class_diagram.cpp)
-target_link_libraries(class_diagram)

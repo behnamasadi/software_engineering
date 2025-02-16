@@ -10,6 +10,18 @@ Then call:
 plantuml -tsvg <file-name.puml>
 ```
 
+or online [here](https://www.planttext.com/)
+
+```
+@startuml
+skin rose
+
+# you-diagram-here
+
+@enduml
+````
+
+
 
 ## Concepts
 

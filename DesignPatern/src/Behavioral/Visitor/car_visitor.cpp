@@ -3,144 +3,127 @@
 #include <string>
 #include <vector>
 
-// Forward declarations
-class VehicleComponentVisitor;
-class Chassis;
-class Vehicle;
-class Motor;
-class Wheel;
-class Seats;
+/*
+ * The following example demonstrates the Visitor pattern.
+ * A tree structure (a car with components like wheels, body, and engine)
+ * is traversed by different visitors, performing distinct operations.
+ */
 
-// Base class for all vehicle components
-class VehicleComponent {
+// Forward declarations
+class CarElementVisitor;
+class Body;
+class Car;
+class Engine;
+class Wheel;
+
+// Base class for all car elements
+class CarElement {
 public:
-  virtual void accept(VehicleComponentVisitor *visitor) = 0;
-  virtual ~VehicleComponent() = default;
+  virtual void accept(CarElementVisitor *visitor) = 0; // Pure virtual function
+  virtual ~CarElement() = default; // Virtual destructor for proper cleanup
 };
 
 // Visitor interface
-class VehicleComponentVisitor {
+class CarElementVisitor {
 public:
-  virtual void visit(Chassis *chassis) = 0;
-  virtual void visit(Vehicle *vehicle) = 0;
-  virtual void visit(Motor *motor) = 0;
+  virtual void visit(Body *body) = 0;
+  virtual void visit(Car *car) = 0;
+  virtual void visit(Engine *engine) = 0;
   virtual void visit(Wheel *wheel) = 0;
-  virtual void visit(Seats *seats) = 0;
-  virtual ~VehicleComponentVisitor() = default;
+  virtual ~CarElementVisitor() = default;
 };
 
 // Concrete element: Wheel
-class Wheel : public VehicleComponent {
+class Wheel : public CarElement {
 private:
-  std::string position;
+  std::string name;
 
 public:
-  explicit Wheel(const std::string &pos) : position(pos) {}
+  explicit Wheel(const std::string &name) : name(name) {}
 
-  std::string getPosition() const { return position; }
+  std::string getName() const { return name; }
 
-  void accept(VehicleComponentVisitor *visitor) override { visitor->visit(this); }
+  void accept(CarElementVisitor *visitor) override { visitor->visit(this); }
 };
 
-// Concrete element: Chassis
-class Chassis : public VehicleComponent {
+// Concrete element: Body
+class Body : public CarElement {
 public:
-  void accept(VehicleComponentVisitor *visitor) override { visitor->visit(this); }
+  void accept(CarElementVisitor *visitor) override { visitor->visit(this); }
 };
 
-// Concrete element: Motor
-class Motor : public VehicleComponent {
+// Concrete element: Engine
+class Engine : public CarElement {
 public:
-  void accept(VehicleComponentVisitor *visitor) override { visitor->visit(this); }
+  void accept(CarElementVisitor *visitor) override { visitor->visit(this); }
 };
 
-// Concrete element: Seats
-class Seats : public VehicleComponent {
-public:
-  void accept(VehicleComponentVisitor *visitor) override { visitor->visit(this); }
-};
-
-// Concrete element: Vehicle (composite structure)
-class Vehicle : public VehicleComponent {
+// Concrete element: Car (composite structure)
+class Car : public CarElement {
 private:
-  std::vector<std::shared_ptr<VehicleComponent>> components;
+  std::vector<std::unique_ptr<CarElement>> elements;
 
 public:
-  Vehicle() {
-    components.emplace_back(std::make_shared<Wheel>("front left"));
-    components.emplace_back(std::make_shared<Wheel>("front right"));
-    components.emplace_back(std::make_shared<Wheel>("back left"));
-    components.emplace_back(std::make_shared<Wheel>("back right"));
-    components.emplace_back(std::make_shared<Chassis>());
-    components.emplace_back(std::make_shared<Motor>());
-    components.emplace_back(std::make_shared<Seats>());
+  Car() {
+    elements.emplace_back(std::make_unique<Wheel>("front left"));
+    elements.emplace_back(std::make_unique<Wheel>("front right"));
+    elements.emplace_back(std::make_unique<Wheel>("back left"));
+    elements.emplace_back(std::make_unique<Wheel>("back right"));
+    elements.emplace_back(std::make_unique<Body>());
+    elements.emplace_back(std::make_unique<Engine>());
   }
 
-  void accept(VehicleComponentVisitor *visitor) override {
-    for (const auto &component : components) {
-      component->accept(visitor);
+  void accept(CarElementVisitor *visitor) override {
+    for (const auto &element : elements) {
+      element->accept(visitor);
     }
     visitor->visit(this);
   }
 };
 
 // Concrete visitor: Performs actions
-class VehicleActionVisitor : public VehicleComponentVisitor {
+class CarElementDoVisitor : public CarElementVisitor {
 public:
-  void visit(Chassis *chassis) override {
-    std::cout << "Inspecting the chassis structure" << std::endl;
+  void visit(Body *body) override {
+    std::cout << "Moving my body" << std::endl;
   }
 
-  void visit(Vehicle *vehicle) override {
-    std::cout << "Powering up the vehicle" << std::endl;
-  }
+  void visit(Car *car) override { std::cout << "Starting my car" << std::endl; }
 
   void visit(Wheel *wheel) override {
-    std::cout << "Inflating the " << wheel->getPosition() << " wheel" << std::endl;
+    std::cout << "Kicking my " << wheel->getName() << " wheel" << std::endl;
   }
 
-  void visit(Motor *motor) override {
-    std::cout << "Calibrating the motor" << std::endl;
-  }
-
-  void visit(Seats *seats) override {
-    std::cout << "Adjusting the seats" << std::endl;
+  void visit(Engine *engine) override {
+    std::cout << "Starting my engine" << std::endl;
   }
 };
 
-// Concrete visitor: Prints components
-class VehiclePrintVisitor : public VehicleComponentVisitor {
+// Concrete visitor: Prints elements
+class CarElementPrintVisitor : public CarElementVisitor {
 public:
-  void visit(Chassis *chassis) override {
-    std::cout << "Examining the chassis" << std::endl;
-  }
+  void visit(Body *body) override { std::cout << "Visiting body" << std::endl; }
 
-  void visit(Vehicle *vehicle) override {
-    std::cout << "Checking the entire vehicle" << std::endl;
+  void visit(Car *car) override { std::cout << "Visiting car" << std::endl; }
+
+  void visit(Engine *engine) override {
+    std::cout << "Visiting engine" << std::endl;
   }
 
   void visit(Wheel *wheel) override {
-    std::cout << "Checking " << wheel->getPosition() << " wheel" << std::endl;
-  }
-
-  void visit(Motor *motor) override {
-    std::cout << "Inspecting the motor" << std::endl;
-  }
-
-  void visit(Seats *seats) override {
-    std::cout << "Examining the seats" << std::endl;
+    std::cout << "Visiting " << wheel->getName() << " wheel" << std::endl;
   }
 };
 
 // Main function
 int main() {
-  auto vehicle = std::make_shared<Vehicle>();
+  auto car = std::make_unique<Car>(); // Use smart pointer for safety
 
-  VehiclePrintVisitor printVisitor;
-  VehicleActionVisitor actionVisitor;
+  CarElementPrintVisitor printVisitor;
+  CarElementDoVisitor doVisitor;
 
-  vehicle->accept(&printVisitor);
-  vehicle->accept(&actionVisitor);
+  car->accept(&printVisitor);
+  car->accept(&doVisitor);
 
-  return 0;
+  return 0; // No memory leaks
 }

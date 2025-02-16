@@ -1,0 +1,39 @@
+@startuml
+
+interface IExpressionVisitor {
+    + {abstract} void Visit(const Literal &literal)
+    + {abstract} void Visit(const Addition &addition)
+}
+
+interface IExpression {
+    + {abstract} void Accept(IExpressionVisitor &visitor) const
+}
+
+class Literal {
+    + double value
+    + explicit Literal(double val)
+    + void Accept(IExpressionVisitor &visitor) const
+}
+
+class Addition {
+    + std::unique_ptr<IExpression> left
+    + std::unique_ptr<IExpression> right
+    + Addition(std::unique_ptr<IExpression> l, std::unique_ptr<IExpression> r)
+    + void Accept(IExpressionVisitor &visitor) const
+}
+
+class ExpressionPrinter {
+    - std::string result
+    + void Visit(const Literal &literal)
+    + void Visit(const Addition &addition)
+    + std::string GetResult() const
+}
+
+IExpressionVisitor <|.. ExpressionPrinter
+IExpression <|.. Literal
+IExpression <|.. Addition
+
+Literal --> IExpressionVisitor : Accept calls Visit
+Addition --> IExpressionVisitor : Accept calls Visit
+
+@enduml

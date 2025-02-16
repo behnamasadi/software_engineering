@@ -153,7 +153,7 @@ target_link_libraries(ATM_chain_of_responsibility)
 
 
 # ##################### (2) Command ###########################
-add_executable(light_on_command src/Behavioral/Command/LightOnCommand.cpp)
+add_executable(light_on_command src/Behavioral/Command/light_on_command.cpp)
 target_link_libraries(light_on_command)
 
 add_executable(light_on_command_template_based src/Behavioral/Command/light_on_command_template_based.cpp)
@@ -249,6 +249,9 @@ target_link_libraries(shopping_item_visitor)
 
 add_executable(file_visitor src/Behavioral/Visitor/file_visitor.cpp)
 target_link_libraries(file_visitor)
+
+add_executable(car_visitor_template_based src/Behavioral/Visitor/car_visitor_template_based.cpp)
+target_link_libraries(car_visitor_template_based)
 
 add_executable(car_visitor src/Behavioral/Visitor/car_visitor.cpp)
 target_link_libraries(car_visitor)

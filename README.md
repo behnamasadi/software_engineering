@@ -149,7 +149,6 @@ References:
 - [Client-server Architectur](SoftwareArchitecturalPatterns/#)
 
 
-
 References:
 	[1](https://en.wikibooks.org/wiki/C%2B%2B_Programming/Code/Design_Patterns), 
 	[2](https://sourcemaking.com/design_patterns/),
@@ -196,6 +195,29 @@ References: [1](https://refactoring.guru/refactoring), [2](https://sourcemaking.
 - [V-Model](SDLC/README.md#--2-v-model--)  
 - [Agile Model](SDLC/README.md#--4-agile-model--)  
 - [DevOps Model](SDLC/README.md#--9-devops-model--)  
+
+
+## [System Design](#) 
+- [Load Balancing](SystemDesign/index.md#1-load-balancing)
+- [Caching](SystemDesign/index.md#2-caching)
+- [Database Sharding](SystemDesign/index.md#3-database-sharding)
+- [Replication](SystemDesign/index.md#4-replication)
+- [CAP Theorem](SystemDesign/index.md#5-cap-theorem)
+- [Consistent Hashing](SystemDesign/index.md#6-consistent-hashing)
+- [Message Queues](SystemDesign/index.md#7-message-queues)
+- [Rate Limiting](SystemDesign/index.md#8-rate-limiting)
+- [API Gateway](SystemDesign/index.md#9-api-gateway)
+- [Microservices](SystemDesign/index.md#10-microservices)
+- [Service Discovery](SystemDesign/index.md#11-service-discovery)
+- [CDNs (Content Delivery Networks)](SystemDesign/index.md#12-cdns--content-delivery-networks-)
+- [DB Indexing](SystemDesign/index.md#13-db-indexing)
+- [Partitioning](#14-partitioning)
+- [Eventual Consistency](SystemDesign/index.md#15-eventual-consistency)
+- [WebSockets](SystemDesign/index.md#16-websockets)
+- [Scalability](SystemDesign/index.md#17-scalability)
+- [Fault Tolerance](SystemDesign/index.md#18-fault-tolerance)
+- [Monitoring](SystemDesign/index.md#19-monitoring)
+- [AuthN & AuthZ](SystemDesign/index.md#20-authn---authz)
 
 
 

@@ -151,6 +151,3 @@ System Design is crucial for building scalable, reliable, and maintainable appli
 - [Prometheus Monitoring](https://prometheus.io/)
 
 ---
-
-
-

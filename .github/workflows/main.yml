@@ -19,49 +19,35 @@ jobs:
 
       # Step 2: Build the Docker image
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag mycpp_image:latest
+        run: docker build . --file Dockerfile --tag my_software_engineering:latest
 
       # Step 2.5: Verify Docker image and cmake availability
       - name: Verify Docker image
         run: |
-          docker run --rm mycpp_image:latest which cmake
-          docker run --rm mycpp_image:latest which ninja
-          docker run --rm mycpp_image:latest cmake --version
-          docker run --rm mycpp_image:latest ninja --version
+          docker run --rm my_software_engineering:latest which cmake
+          docker run --rm my_software_engineering:latest which ninja
+          docker run --rm my_software_engineering:latest cmake --version
+          docker run --rm my_software_engineering:latest ninja --version
 
       # Step 3: Configure CMake
       - name: Configure CMake
-        run: docker run --rm -v ${{ github.workspace }}:/cpp_tutorials mycpp_image:latest cmake --preset ninja-multi
+        run: docker run --rm -v ${{ github.workspace }}:/software_engineering my_software_engineering:latest cmake --preset ninja-multi
 
       # Step 4: Build with CMake
       - name: Build with CMake
-        run: docker run --rm -v ${{ github.workspace }}:/cpp_tutorials mycpp_image:latest cmake --build --preset ninja-multi-release
+        run: docker run --rm -v ${{ github.workspace }}:/software_engineering my_software_engineering:latest cmake --build --preset ninja-multi-release
 
       # Step 5: Verify if build files are generated
       - name: List build directory contents
-        run: docker run --rm -v ${{ github.workspace }}:/cpp_tutorials mycpp_image:latest ls -la /cpp_tutorials/build
+        run: docker run --rm -v ${{ github.workspace }}:/software_engineering my_software_engineering:latest ls -la /software_engineering/build
 
-      # Step 6: Generate Doxygen documentation
-      - name: Generate Doxygen documentation
-        run: docker run --rm -v ${{ github.workspace }}:/cpp_tutorials mycpp_image:latest doxygen /cpp_tutorials/Doxyfile
-
-      # Step 7: Verify if documentation files are generated
-      - name: List documentation directory contents
-        run: docker run --rm -v ${{ github.workspace }}:/cpp_tutorials mycpp_image:latest ls -la /cpp_tutorials/docs
-
-      # Step 8: Upload documentation as an artifact (if files exist)
-      - name: Upload documentation
-        uses: actions/upload-artifact@v4
-        with:
-          name: cpp_documentation
-          path: /cpp_tutorials/docs
-
-      # Step 9: Upload build artifacts as an artifact (if files exist)
+     
+      # Step 6: Upload build artifacts as an artifact (if files exist)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: cpp_build_output
-          path: /cpp_tutorials/build
+          name: software_engineering_build_output
+          path: /software_engineering/build
 
   release:
     needs: build
@@ -92,15 +78,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /cpp_tutorials/build/Release/main # Adjust to your actual file
-          asset_name: main # Adjust this to name the artifact file
+          asset_path: /software_engineering/build/Release/main # Adjust to your actual file
+          asset_name: master # Adjust this to name the artifact file
           asset_content_type: application/octet-stream
 
-      # Step 4: Upload documentation to release
-      - name: Upload documentation to release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /cpp_tutorials/docs
-          asset_name: cpp_documentation
-          asset_content_type: application/zip

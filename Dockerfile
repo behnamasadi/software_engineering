@@ -28,8 +28,6 @@ RUN apt-get update && \
         ninja-build \
         build-essential \
         git \
-        doxygen \
-        graphviz \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -37,6 +35,6 @@ RUN apt-get update && \
 RUN cmake --version && ninja --version
 
 # Set working directory
-WORKDIR /cpp_tutorials
+WORKDIR /software_engineering
 
 

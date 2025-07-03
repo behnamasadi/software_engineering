@@ -1,5 +1,13 @@
 # [UML, Design Pattern and Refactoring](#)
 
+![Ubuntu](https://github.com/behnamasadi/software_engineering/actions/workflows/docker-build.yml/badge.svg)
+![Windows](https://github.com/behnamasadi/software_engineering/actions/workflows/windows-build.yml/badge.svg)
+![alt text](https://img.shields.io/badge/license-BSD-blue.svg)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/behnamasadi/software_engineering)
+![GitHub Release](https://img.shields.io/github/v/release/behnamasadi/software_engineering)
+![GitHub Repo stars](https://img.shields.io/github/stars/behnamasadi/software_engineering)
+![GitHub forks](https://img.shields.io/github/forks/behnamasadi/software_engineering)
+
 This repository serves as a comprehensive resource for learning software design and development with C++. It includes:
 
 - **UML Diagrams**: Explore concepts and detailed examples of various UML diagrams, including structure diagrams (e.g., Class, Component, Deployment) and behavioral diagrams (e.g., Use Case, Sequence, State Machine).  
@@ -220,11 +228,5 @@ References: [1](https://refactoring.guru/refactoring), [2](https://sourcemaking.
 - [AuthN & AuthZ](SystemDesign/index.md#20-authn---authz)
 
 
-
 ## The Flaws of Inheritance
 - [The Flaws of Inheritance](docs/the_flaws_of_inheritance.md)
-
-[![Build Status](https://travis-ci.com/behnamasadi/software_engineering.svg?branch=master)](https://travis-ci.com/behnamasadi/software_engineering)
-![alt text](https://img.shields.io/badge/license-BSD-blue.svg)
-
-

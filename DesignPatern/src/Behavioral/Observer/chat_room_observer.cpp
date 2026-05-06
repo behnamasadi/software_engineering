@@ -1,80 +1,59 @@
+// Observer — push model with an event payload.
+// Subject pushes an event value into update(); subscribers don't read state
+// back from the subject. Cheaper for simple event streams.
+
+#include <algorithm>
+#include <iostream>
 #include <vector>
-#include <algorithm>    // For std::remove
-#include <iostream>     // For printing (optional)
 
-enum class EVENT
-{
-    USER_LOGGED_IN,
-    USER_LOGGED_OFF,
-    MESSAGE
-};
+enum class Event { UserLoggedIn, UserLoggedOff, Message };
 
-class Subscriber
-{
+const char* describe(Event e) {
+    switch (e) {
+        case Event::UserLoggedIn:  return "user-logged-in";
+        case Event::UserLoggedOff: return "user-logged-off";
+        case Event::Message:       return "message";
+    }
+    return "?";
+}
+
+class Subscriber {
 public:
-    // It's more conventional to write 'virtual void update(...) = 0;'
-    virtual void update(EVENT e) = 0;
+    virtual ~Subscriber() = default;
+    virtual void update(Event e) = 0;
 };
 
-class Client : public Subscriber
-{
+class Server {
 public:
-    void update(EVENT e) override
-    {
-        // Implementation for handling the event.
-        // For example:
-        std::cout << "Client received event code: " 
-                  << static_cast<int>(e) << std::endl;
+    void subscribe(Subscriber& s)   { subs_.push_back(&s); }
+    void unsubscribe(Subscriber& s) {
+        subs_.erase(std::remove(subs_.begin(), subs_.end(), &s), subs_.end());
     }
+
+    void publish(Event e) { for (auto* s : subs_) s->update(e); }
+
+private:
+    std::vector<Subscriber*> subs_;
 };
 
-class Server
-{
-    std::vector<Subscriber*> listOfClients;
-
+class Client : public Subscriber {
 public:
-    void addSubscriber(Subscriber* s)
-    {
-        listOfClients.push_back(s);
+    explicit Client(const char* name) : name_(name) {}
+    void update(Event e) override {
+        std::cout << name_ << " got " << describe(e) << '\n';
     }
-
-    void removeSubscriber(Subscriber* s)
-    {
-        // Simple approach:
-        // 1. Use remove to "shift" the pointer out
-        // 2. Erase it from the vector
-        auto it = std::remove(listOfClients.begin(), listOfClients.end(), s);
-        if (it != listOfClients.end())
-        {
-            listOfClients.erase(it, listOfClients.end());
-        }
-    }
-
-    void notify(EVENT e)
-    {
-        for (auto* subscriber : listOfClients)
-        {
-            subscriber->update(e);
-        }
-    }
+private:
+    const char* name_;
 };
 
-int main()
-{
+int main() {
     Server server;
-    Client client1, client2;
+    Client alice("alice"), bob("bob");
 
-    server.addSubscriber(&client1);
-    server.addSubscriber(&client2);
+    server.subscribe(alice);
+    server.subscribe(bob);
 
-    // Notify all subscribed clients that a user has logged in
-    server.notify(EVENT::USER_LOGGED_IN);
-
-    // Optionally remove client2 from notifications
-    server.removeSubscriber(&client2);
-    
-    // Further notify only client1
-    server.notify(EVENT::MESSAGE);
-
-    return 0;
+    server.publish(Event::UserLoggedIn);
+    server.unsubscribe(bob);
+    server.publish(Event::Message);
 }

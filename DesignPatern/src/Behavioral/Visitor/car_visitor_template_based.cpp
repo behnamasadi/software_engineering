@@ -1,117 +1,103 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <memory>
+// Visitor — template-based variant.
+// Instead of a Visitor *interface* with one overload per element type, we
+// hold a callable (lambda, function-object) that has a templated operator().
+// Adding a new element type doesn't require touching the visitor base class;
+// the callable just has to handle it.
 
-// Visitor Interface using Templates
+#include <iostream>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
+// Type-erased visitor: stores any object whose operator() accepts each
+// element type we'll dispatch to.
+class CarElement;
+class Body;
+class Engine;
+class Wheel;
+class Car;
+
 class CarElementVisitor {
 public:
     virtual ~CarElementVisitor() = default;
-
-    // Now the visit method takes a reference rather than a pointer.
-    // It then calls acceptImpl, which must be public in the element classes.
-    template <typename T>
-    void visit(T &element) {
-        element.acceptImpl(*this);
-    }
+    virtual void operator()(const Body& body) = 0;
+    virtual void operator()(const Engine& engine) = 0;
+    virtual void operator()(const Wheel& wheel) = 0;
+    virtual void operator()(const Car& car) = 0;
 };
 
-// CarElement Interface
 class CarElement {
 public:
     virtual ~CarElement() = default;
-
-    // Accept by reference
-    virtual void accept(CarElementVisitor &visitor) = 0;
-
-    // We'll override acceptImpl as public in the concrete classes
-    // so that CarElementVisitor can call it.
-    virtual void acceptImpl(CarElementVisitor &visitor) = 0;
+    virtual void accept(CarElementVisitor& visitor) const = 0;
 };
 
-// Concrete Elements
 class Wheel : public CarElement {
-private:
-    std::string name;
-
 public:
-    Wheel(const std::string &name) : name(name) {}
-
-    std::string getName() const { return name; }
-
-    // Accept by reference
-    void accept(CarElementVisitor &visitor) override {
-        // Pass the *this reference to the visitor
-        visitor.visit(*this);
-    }
-
-    // Make acceptImpl public
-    void acceptImpl(CarElementVisitor &visitor) override {
-        std::cout << "Visiting wheel: " << name << std::endl;
-    }
+    explicit Wheel(std::string name) : name_(std::move(name)) {}
+    const std::string& name() const { return name_; }
+    void accept(CarElementVisitor& visitor) const override { visitor(*this); }
+private:
+    std::string name_;
 };
 
 class Body : public CarElement {
 public:
-    void accept(CarElementVisitor &visitor) override {
-        visitor.visit(*this);
-    }
-
-    // Make acceptImpl public
-    void acceptImpl(CarElementVisitor &visitor) override {
-        std::cout << "Visiting body" << std::endl;
-    }
+    void accept(CarElementVisitor& visitor) const override { visitor(*this); }
 };
 
 class Engine : public CarElement {
 public:
-    void accept(CarElementVisitor &visitor) override {
-        visitor.visit(*this);
-    }
-
-    // Make acceptImpl public
-    void acceptImpl(CarElementVisitor &visitor) override {
-        std::cout << "Visiting engine" << std::endl;
-    }
+    void accept(CarElementVisitor& visitor) const override { visitor(*this); }
 };
 
 class Car : public CarElement {
-private:
-    std::vector<std::unique_ptr<CarElement>> elements;
-
 public:
-    // Use unique_ptr to own your CarElements
     Car() {
-        elements.emplace_back(std::make_unique<Wheel>("front left"));
-        elements.emplace_back(std::make_unique<Wheel>("front right"));
-        elements.emplace_back(std::make_unique<Wheel>("back left"));
-        elements.emplace_back(std::make_unique<Wheel>("back right"));
-        elements.emplace_back(std::make_unique<Body>());
-        elements.emplace_back(std::make_unique<Engine>());
+        parts_.push_back(std::make_unique<Wheel>("front-left"));
+        parts_.push_back(std::make_unique<Wheel>("front-right"));
+        parts_.push_back(std::make_unique<Wheel>("back-left"));
+        parts_.push_back(std::make_unique<Wheel>("back-right"));
+        parts_.push_back(std::make_unique<Body>());
+        parts_.push_back(std::make_unique<Engine>());
     }
-
-    void accept(CarElementVisitor &visitor) override {
-        // Accept the visitor for each contained element
-        for (auto &element : elements) {
-            element->accept(visitor);
-        }
-        // Finally, visit the "Car" itself
-        visitor.visit(*this);
+    void accept(CarElementVisitor& visitor) const override {
+        for (const auto& part : parts_) part->accept(visitor);
+        visitor(*this);
     }
-
-    // Make acceptImpl public
-    void acceptImpl(CarElementVisitor &visitor) override {
-        std::cout << "Visiting car" << std::endl;
-    }
+private:
+    std::vector<std::unique_ptr<CarElement>> parts_;
 };
 
-// Main function
+// Adapter: turn any callable F (with overloaded operator() for each type)
+// into a CarElementVisitor. The overloads in F are picked up via templates.
+template <typename F>
+class LambdaVisitor : public CarElementVisitor {
+public:
+    explicit LambdaVisitor(F fn) : fn_(std::move(fn)) {}
+    void operator()(const Body& body)     override { fn_(body); }
+    void operator()(const Engine& engine) override { fn_(engine); }
+    void operator()(const Wheel& wheel)   override { fn_(wheel); }
+    void operator()(const Car& car)       override { fn_(car); }
+private:
+    F fn_;
+};
+
+// Helper so callers don't have to spell the type out.
+template <typename F>
+LambdaVisitor<F> makeVisitor(F fn) { return LambdaVisitor<F>(std::move(fn)); }
+
+// A callable with overloaded operator() per element type.
+struct PrintAction {
+    void operator()(const Body&)        const { std::cout << "visit body\n"; }
+    void operator()(const Engine&)      const { std::cout << "visit engine\n"; }
+    void operator()(const Wheel& wheel) const { std::cout << "visit " << wheel.name() << " wheel\n"; }
+    void operator()(const Car&)         const { std::cout << "visit car\n"; }
+};
+
 int main() {
     Car car;
-    CarElementVisitor visitor;
-
-    std::cout << "\n--- Visiting elements ---" << std::endl;
-    car.accept(visitor);
-
-    return 0;
+    auto printer = makeVisitor(PrintAction{});
+    car.accept(printer);
 }

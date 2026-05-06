@@ -1,41 +1,53 @@
+// Interpreter — represent a grammar as classes, then evaluate.
+//
+// Expression           abstract; defines interpret()
+//   Number             terminal: a literal value
+//   BinaryOp           non-terminal: combines two sub-expressions
+//     Add, Subtract    concrete operations
+//
+// Build the AST manually in main, then call interpret() on the root.
+
 #include <iostream>
 #include <memory>
+#include <utility>
 
-// Expression Interface
 class Expression {
 public:
-  virtual int interpret() const = 0;
-  virtual ~Expression() = default;
+    virtual ~Expression() = default;
+    virtual int interpret() const = 0;
 };
 
-// Number Expression (Terminal Expression)
+using ExprPtr = std::unique_ptr<Expression>;
+
 class Number : public Expression {
-  int value;
-
 public:
-  explicit Number(int val) : value(val) {}
-  int interpret() const override { return value; }
+    explicit Number(int v) : value_(v) {}
+    int interpret() const override { return value_; }
+private:
+    int value_;
 };
 
-// Addition Expression (Non-Terminal Expression)
-class Addition : public Expression {
-  std::shared_ptr<Expression> left;
-  std::shared_ptr<Expression> right;
-
+class Add : public Expression {
 public:
-  Addition(std::shared_ptr<Expression> l, std::shared_ptr<Expression> r)
-      : left(std::move(l)), right(std::move(r)) {}
+    Add(ExprPtr lhs, ExprPtr rhs) : lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
+    int interpret() const override { return lhs_->interpret() + rhs_->interpret(); }
+private:
+    ExprPtr lhs_, rhs_;
+};
 
-  int interpret() const override {
-    return left->interpret() + right->interpret();
-  }
+class Subtract : public Expression {
+public:
+    Subtract(ExprPtr lhs, ExprPtr rhs) : lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
+    int interpret() const override { return lhs_->interpret() - rhs_->interpret(); }
+private:
+    ExprPtr lhs_, rhs_;
 };
 
 int main() {
-  // Represents expression: (5 + 10)
-  std::shared_ptr<Expression> expr = std::make_shared<Addition>(
-      std::make_shared<Number>(5), std::make_shared<Number>(10));
+    // (5 + 10) - 3
+    ExprPtr expr = std::make_unique<Subtract>(
+        std::make_unique<Add>(std::make_unique<Number>(5), std::make_unique<Number>(10)),
+        std::make_unique<Number>(3));
 
-  std::cout << "Result: " << expr->interpret() << std::endl; // Output: 15
-  return 0;
+    std::cout << "(5 + 10) - 3 = " << expr->interpret() << '\n';
 }

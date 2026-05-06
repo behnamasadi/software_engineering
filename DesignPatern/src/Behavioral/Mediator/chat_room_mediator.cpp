@@ -1,101 +1,55 @@
+// Mediator — chat room.
+// Users don't keep references to each other; they post to the room and the
+// room fans the message out. Adding/removing users doesn't ripple through
+// every other user's code.
+
 #include <iostream>
-#include <list>
-#include <memory>
 #include <string>
+#include <vector>
 
-// Forward declaration removed - MediatorInterface should be fully defined first
+class User;
 
-class ColleagueInterface;
+class ChatRoom {
+public:
+    void join(User& user) { users_.push_back(&user); }
+    void broadcast(const User& sender, const std::string& message);
 
-// Mediator Interface
-class MediatorInterface {
 private:
-  std::list<ColleagueInterface *> colleagueList;
-
-public:
-  virtual ~MediatorInterface() = default;
-
-  void registerColleague(ColleagueInterface *colleague) {
-    colleagueList.emplace_back(colleague);
-  }
-
-  const std::list<ColleagueInterface *> &getColleagueList() const {
-    return colleagueList;
-  }
-
-  virtual void distributeMessage(
-      const ColleagueInterface *,
-      const std::string &) = 0; // Removed const to allow modification
+    std::vector<User*> users_;
 };
 
-// Colleague Interface
-class ColleagueInterface {
-protected:
-  std::string name;
-
+class User {
 public:
-  ColleagueInterface(const std::string &newName) : name(newName) {}
-
-  std::string getName() const { return name; }
-
-  virtual void sendMessage(MediatorInterface &, const std::string &) const = 0;
-  virtual void receiveMessage(const ColleagueInterface *,
-                              const std::string &) const = 0;
-
-  virtual ~ColleagueInterface() = default;
-};
-
-// Concrete Colleague
-class Colleague : public ColleagueInterface {
-public:
-  using ColleagueInterface::ColleagueInterface;
-
-  void sendMessage(MediatorInterface &mediator,
-                   const std::string &message) const override {
-    mediator.distributeMessage(this, message);
-  }
-
-  void receiveMessage(const ColleagueInterface *sender,
-                      const std::string &message) const override {
-    std::cout << getName() << " received the message from " << sender->getName()
-              << ": " << message << std::endl;
-  }
-};
-
-// Concrete Mediator
-class Mediator : public MediatorInterface {
-public:
-  void distributeMessage(const ColleagueInterface *sender,
-                         const std::string &message) override {
-    for (ColleagueInterface *x : getColleagueList()) {
-      if (x != sender) // Don't send the message back to the sender
-        x->receiveMessage(sender, message);
+    User(std::string name, ChatRoom& room) : name_(std::move(name)), room_(room) {
+        room_.join(*this);
     }
-  }
+
+    const std::string& name() const { return name_; }
+
+    void send(const std::string& message) const {
+        std::cout << "[" << name_ << "] -> " << message << '\n';
+        room_.broadcast(*this, message);
+    }
+
+    void receive(const User& from, const std::string& message) const {
+        std::cout << "  " << name_ << " heard from " << from.name() << ": " << message << '\n';
+    }
+
+private:
+    std::string name_;
+    ChatRoom& room_;
 };
 
-// Main function
+void ChatRoom::broadcast(const User& sender, const std::string& message) {
+    for (User* u : users_) {
+        if (u != &sender) u->receive(sender, message);
+    }
+}
+
 int main() {
-  Colleague bob("Bob"), sam("Sam"), frank("Frank"), tom("Tom");
+    ChatRoom staff;
+    User bob("Bob", staff), sam("Sam", staff), frank("Frank", staff);
 
-  Mediator mediatorStaff, mediatorSamsBuddies;
-
-  // Register all colleagues in the main mediator
-  mediatorStaff.registerColleague(&bob);
-  mediatorStaff.registerColleague(&sam);
-  mediatorStaff.registerColleague(&frank);
-  mediatorStaff.registerColleague(&tom);
-
-  // Bob sends a message
-  bob.sendMessage(mediatorStaff, "I'm quitting this job!");
-
-  // Register Frank and Tom in a separate mediator for Sam's private group
-  mediatorSamsBuddies.registerColleague(&frank);
-  mediatorSamsBuddies.registerColleague(&tom);
-
-  // Sam sends a message to his private group
-  sam.sendMessage(mediatorSamsBuddies,
-                  "Hooray! He's gone! Let's go for a drink, guys!");
-
-  return 0;
+    bob.send("I'm quitting this job!");
+    sam.send("Anyone want coffee?");
 }

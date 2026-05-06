@@ -1,87 +1,67 @@
-#include <string>
-#include <vector>
+// Visitor — render different document types through a single visitor.
+// HTMLDocument and MarkdownDocument both expose accept(Visitor&); a Printer
+// handles each format.
+
 #include <iostream>
 #include <memory>
+#include <string>
+#include <vector>
 
-class DocumentVisitor;
-class Document
-{
-protected:
-    std::vector<std::string> content;
+class HTMLDocument;
+class MarkdownDocument;
 
+class DocumentVisitor {
 public:
-    virtual void appendItem(const std::string&) = 0;
-    virtual void accept(std::shared_ptr<DocumentVisitor> dv) = 0;
-    virtual ~Document() = default;
-    std::vector<std::string> getContent() const { return content; }
-};
-
-class HTMLDocument : public Document
-{
-public:
-    const std::string tagStart = "<li>";
-    const std::string tagEnd = "</li>";
-    
-    void appendItem(const std::string& item) override
-    {
-        content.push_back(item);
-    }
-    void accept(std::shared_ptr<DocumentVisitor> dv) override;
-};
-
-class MarkdownDocument : public Document
-{
-public:
-    const std::string prefix = "- ";
-    
-    void appendItem(const std::string& item) override
-    {
-        content.push_back(item);
-    }
-    void accept(std::shared_ptr<DocumentVisitor> dv) override;
-};
-
-class DocumentVisitor
-{
-public:
-    virtual void visit(std::shared_ptr<HTMLDocument>) = 0;
-    virtual void visit(std::shared_ptr<MarkdownDocument>) = 0;
     virtual ~DocumentVisitor() = default;
+    virtual void visit(const HTMLDocument& doc) = 0;
+    virtual void visit(const MarkdownDocument& doc) = 0;
 };
 
-class DocumentPrinter : public DocumentVisitor
-{
+class Document {
 public:
-    void visit(std::shared_ptr<MarkdownDocument> md) override {
-        for (const auto& item : md->getContent())
-            std::cout << md->prefix << item << std::endl;
+    virtual ~Document() = default;
+
+    void appendItem(std::string item) { content_.push_back(std::move(item)); }
+    const std::vector<std::string>& content() const { return content_; }
+
+    virtual void accept(DocumentVisitor& visitor) const = 0;
+
+private:
+    std::vector<std::string> content_;
+};
+
+class HTMLDocument : public Document {
+public:
+    void accept(DocumentVisitor& visitor) const override { visitor.visit(*this); }
+};
+
+class MarkdownDocument : public Document {
+public:
+    void accept(DocumentVisitor& visitor) const override { visitor.visit(*this); }
+};
+
+class DocumentPrinter : public DocumentVisitor {
+public:
+    void visit(const HTMLDocument& doc) override {
+        std::cout << "<ul>\n";
+        for (const auto& item : doc.content()) std::cout << "\t<li>" << item << "</li>\n";
+        std::cout << "</ul>\n";
     }
-    void visit(std::shared_ptr<HTMLDocument> hd) override {
-        std::cout << "<ul>" << std::endl;
-        for (const auto& item : hd->getContent())
-            std::cout << "\t" << hd->tagStart << item << hd->tagEnd << std::endl;
-        std::cout << "</ul>" << std::endl;
+    void visit(const MarkdownDocument& doc) override {
+        for (const auto& item : doc.content()) std::cout << "- " << item << '\n';
     }
 };
 
-class DocumentRenderer : public DocumentVisitor {};
+int main() {
+    HTMLDocument html;
+    html.appendItem("Item A");
+    html.appendItem("Item B");
 
-void HTMLDocument::accept(std::shared_ptr<DocumentVisitor> dv) { dv->visit(std::make_shared<HTMLDocument>(*this)); }
-void MarkdownDocument::accept(std::shared_ptr<DocumentVisitor> dv) { dv->visit(std::make_shared<MarkdownDocument>(*this)); }
+    MarkdownDocument md;
+    md.appendItem("Item A");
+    md.appendItem("Item B");
 
-int main()
-{
-    {
-        auto d = std::make_shared<HTMLDocument>();
-        d->appendItem("Item A");
-        d->appendItem("Item B");
-        d->accept(std::make_shared<DocumentPrinter>());
-    }
-
-    {
-        auto d = std::make_shared<MarkdownDocument>();
-        d->appendItem("Item A");
-        d->appendItem("Item B");
-        d->accept(std::make_shared<DocumentPrinter>());
-    }
+    DocumentPrinter printer;
+    html.accept(printer);
+    md.accept(printer);
 }

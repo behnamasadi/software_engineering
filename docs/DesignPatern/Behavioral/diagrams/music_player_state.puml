@@ -1,60 +1,51 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-interface "Interface \n MusicPlayerState" as MusicPlayerState{
-   -string statuseName;
-   +{abstract}play(MusicPlayer *player):void
-   +{abstract}pause(MusicPlayer *player):void
-   +{abstract}stop(MusicPlayer *player):void
-   +MusicPlayerState(string statuseName):void
-   +getName():string
+abstract class PlayerState {
+    # stateName : string
+    + {abstract} play(player : AudioPlayer&) : void
+    + {abstract} pause(player : AudioPlayer&) : void
+    + {abstract} stop(player : AudioPlayer&) : void
+    + getName() : const string&
+    # PlayerState(name : string)
 }
 
-class MusicPlayer{
-    +MusicPlayerState *status;
-    +play():void
-    +pause():void
-    +stop():void
-    +MusicPlayer():void
-    +setState(MusicPlayerState *state):void
+note right of PlayerState
+  Default play / pause / stop print
+  "Invalid transition from <state> to <op>".
+  Concrete subclasses override
+  only the *valid* transitions.
+end note
+
+class AudioPlayer {
+    - state : unique_ptr<PlayerState>
+    + AudioPlayer()
+    + setState(newState : unique_ptr<PlayerState>) : void
+    + play() : void
+    + pause() : void
+    + stop() : void
+    + currentState() : const string&
 }
 
-
-class StoppedState{
-public:
-    +play(MusicPlayer *player):void 
-    StoppedState();
+class StopMode {
+    + StopMode()
+    + play(player : AudioPlayer&) : void
 }
 
- 
-class PlayingState{
-    pause(MusicPlayer *player):void
-    stop(MusicPlayer *player):void
-    PlayingState()
+class PlayMode {
+    + PlayMode()
+    + pause(player : AudioPlayer&) : void
+    + stop(player : AudioPlayer&) : void
 }
 
-
-class PausedState{
-    + play(MusicPlayer *player):void
-    PausedState();
+class PauseMode {
+    + PauseMode()
+    + play(player : AudioPlayer&) : void
 }
 
-StoppedState --|>  MusicPlayerState
-PlayingState --|> MusicPlayerState
-PausedState --|>  MusicPlayerState
+StopMode  --|> PlayerState
+PlayMode  --|> PlayerState
+PauseMode --|> PlayerState
 
-note "cout<<'Illegal state transition from '<<statuseName<<' to play' <<endl" as MusicPlayerStatePlay
-
-
-note "cout<<'Illegal state transition from '<<statuseName<<' to pause' <endl" as MusicPlayerStatePause
-
-note "cout<<'Illegal state transition from '<<statuseName<<' to stop' <<endl" as MusicPlayerStateStop
-
-
-
-MusicPlayerStatePause -left.. MusicPlayerState::pause
-MusicPlayerState::play -left.. MusicPlayerStatePlay
-MusicPlayerStateStop -up.. MusicPlayerState::stop
-
-MusicPlayer o..MusicPlayerState
+AudioPlayer *--> PlayerState : owns (unique_ptr)
 @enduml

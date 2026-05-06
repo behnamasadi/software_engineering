@@ -1,51 +1,57 @@
+// Null Object — binary tree variant.
+// Instead of nullptr children, missing branches are represented by a shared
+// "null leaf" that knows how to answer queries trivially. Tree algorithms
+// then need no nullptr checks.
+
 #include <iostream>
 #include <memory>
 
-// Represents a node in the tree
-class TreeNode {
+class Node {
 public:
-    std::unique_ptr<TreeNode> left, right;
-    int value;
-
-    explicit TreeNode(int val) : value(val) {}
-
-    virtual bool isNull() const { return false; }
+    virtual ~Node() = default;
+    virtual int size() const = 0;
+    virtual int sum() const = 0;
 };
 
-// Null object to replace nullptr
-class NullTreeNode : public TreeNode {
+class NullNode : public Node {
 public:
-    NullTreeNode() : TreeNode(0) {}  // Default value for null nodes
+    int size() const override { return 0; }
+    int sum()  const override { return 0; }
 
-    bool isNull() const override { return true; }
-};
-
-// Utility function to create a null node
-std::unique_ptr<TreeNode> createNullNode() {
-    return std::make_unique<NullTreeNode>();
-}
-
-// Computes tree size
-int treeSizeAfter(const TreeNode* node) {
-    if (!node || node->isNull()) {
-        std::cout << "Encountered a null node\n";
-        return 0;
+    // One shared instance is enough — null nodes are stateless.
+    static const std::shared_ptr<Node>& instance() {
+        static const std::shared_ptr<Node> inst = std::make_shared<NullNode>();
+        return inst;
     }
-    return 1 + treeSizeAfter(node->left.get()) + treeSizeAfter(node->right.get());
-}
+};
+
+class TreeNode : public Node {
+public:
+    explicit TreeNode(int value) : value_(value),
+                                   left_(NullNode::instance()),
+                                   right_(NullNode::instance()) {}
+
+    void setLeft(std::shared_ptr<Node> n)  { left_  = std::move(n); }
+    void setRight(std::shared_ptr<Node> n) { right_ = std::move(n); }
+
+    int size() const override { return 1 + left_->size() + right_->size(); }
+    int sum()  const override { return value_ + left_->sum()  + right_->sum();  }
+
+private:
+    int value_;
+    std::shared_ptr<Node> left_, right_;
+};
 
 int main() {
-    // Creating tree nodes
-    auto root = std::make_unique<TreeNode>(9);
-    root->left = std::make_unique<TreeNode>(8);
-    root->right = std::make_unique<TreeNode>(6);
+    auto root = std::make_shared<TreeNode>(9);
+    auto l    = std::make_shared<TreeNode>(8);
+    auto r    = std::make_shared<TreeNode>(6);
+    root->setLeft(l);
+    root->setRight(r);
+    l->setLeft(std::make_shared<TreeNode>(7));
+    l->setRight(std::make_shared<TreeNode>(4));
+    r->setRight(std::make_shared<TreeNode>(2));
 
-    root->left->left = std::make_unique<TreeNode>(7);
-    root->left->right = std::make_unique<TreeNode>(4);
-
-    root->right->right = std::make_unique<TreeNode>(2);
-
-    std::cout << "Tree size: " << treeSizeAfter(root.get()) << std::endl;
-
-    return 0;
+    std::cout << "size = " << root->size() << '\n';   // 6
+    std::cout << "sum  = " << root->sum()  << '\n';   // 36
 }

@@ -1,73 +1,64 @@
+// Interpreter — robot command DSL.
+// A tiny grammar: "MOVE <dir> <n>" | "TURN <dir> <deg>"
+// Parser turns a string into a Command object; interpret() executes it.
+
 #include <iostream>
-#include <vector>
 #include <memory>
 #include <sstream>
+#include <string>
+#include <vector>
 
-// Abstract Expression (Command)
 class Command {
 public:
-    virtual void interpret() const = 0;
     virtual ~Command() = default;
+    virtual void interpret() const = 0;
 };
 
-// Terminal Expression: Move Command
 class MoveCommand : public Command {
-    std::string direction;
-    int distance;
 public:
-    MoveCommand(std::string dir, int dist) : direction(std::move(dir)), distance(dist) {}
-
+    MoveCommand(std::string direction, int distance)
+        : direction_(std::move(direction)), distance_(distance) {}
     void interpret() const override {
-        std::cout << "Moving " << direction << " by " << distance << " units.\n";
+        std::cout << "Move " << direction_ << " " << distance_ << " units\n";
     }
+private:
+    std::string direction_;
+    int distance_;
 };
 
-// Terminal Expression: Turn Command
 class TurnCommand : public Command {
-    std::string direction;
-    int angle;
 public:
-    TurnCommand(std::string dir, int ang) : direction(std::move(dir)), angle(ang) {}
-
+    TurnCommand(std::string direction, int degrees)
+        : direction_(std::move(direction)), degrees_(degrees) {}
     void interpret() const override {
-        std::cout << "Turning " << direction << " by " << angle << " degrees.\n";
+        std::cout << "Turn " << direction_ << " " << degrees_ << " degrees\n";
     }
+private:
+    std::string direction_;
+    int degrees_;
 };
 
-// Parser (Converts strings into command objects)
-class CommandParser {
-public:
-    static std::shared_ptr<Command> parse(const std::string& input) {
-        std::istringstream iss(input);
-        std::string action, direction;
-        int value;
-        iss >> action >> direction >> value;
+std::unique_ptr<Command> parse(const std::string& line) {
+    std::istringstream iss(line);
+    std::string action, direction;
+    int value;
+    iss >> action >> direction >> value;
 
-        if (action == "MOVE") {
-            return std::make_shared<MoveCommand>(direction, value);
-        } else if (action == "TURN") {
-            return std::make_shared<TurnCommand>(direction, value);
-        }
-        return nullptr;
-    }
-};
-
-// Main execution
-int main() {
-    std::vector<std::string> commands = {
-        "MOVE FORWARD 10",
-        "TURN LEFT 90",
-        "MOVE BACKWARD 5"
-    };
-
-    for (const auto& cmd : commands) {
-        auto commandObj = CommandParser::parse(cmd);
-        if (commandObj) {
-            commandObj->interpret();
-        } else {
-            std::cout << "Invalid command: " << cmd << std::endl;
-        }
-    }
-    return 0;
+    if (action == "MOVE") return std::make_unique<MoveCommand>(direction, value);
+    if (action == "TURN") return std::make_unique<TurnCommand>(direction, value);
+    return nullptr;
 }
 
+int main() {
+    std::vector<std::string> program = {
+        "MOVE FORWARD 10",
+        "TURN LEFT 90",
+        "MOVE BACKWARD 5",
+        "DANCE WILDLY 1",  // unknown
+    };
+
+    for (const auto& line : program) {
+        if (auto cmd = parse(line)) cmd->interpret();
+        else std::cout << "Invalid: " << line << '\n';
+    }
+}

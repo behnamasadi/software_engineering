@@ -1,49 +1,42 @@
+// Null Object — provide a "do-nothing" subclass so callers don't need to
+// check for nullptr. The point: turn `if (a) a->bark();` into `a.bark();`.
+
 #include <iostream>
 #include <memory>
+#include <string>
 
-class Creature {
+class Animal {
 public:
-    virtual ~Creature() = default;
-    virtual void makeSound() const = 0;
-    virtual std::string getType() const = 0;
+    virtual ~Animal() = default;
+    virtual void bark() const = 0;
+    virtual const char* name() const = 0;
 };
 
-class Hound : public Creature {
+class Dog : public Animal {
 public:
-    void makeSound() const override { std::cout << "Bark! (Hound)\n"; }
-    std::string getType() const override { return "Hound"; }
+    void bark() const override { std::cout << "Woof!\n"; }
+    const char* name() const override { return "Dog"; }
 };
 
-class SilentCreature : public Creature {
+class NullAnimal : public Animal {
 public:
-    void makeSound() const override {} // No sound
-    std::string getType() const override { return "Silent"; }
+    void bark() const override { /* silent */ }
+    const char* name() const override { return "<none>"; }
 };
 
-void interactWithCreature(const Creature& creature) {
-    std::cout << "Creature type: " << creature.getType() << " - ";
-    creature.makeSound();
+void greet(const Animal& a) {
+    std::cout << a.name() << ": ";
+    a.bark();
 }
 
-// Function that handles both real creatures and silent ones safely.
-void interactWithCreature(const Creature* creature) {
-    if (creature) {
-        std::cout << "Pointer-based Creature type: " << creature->getType() << " - ";
-        creature->makeSound();
-    } else {
-        std::cout << "Received a null pointer. No action taken.\n";
-    }
+// Returns a NullAnimal instead of nullptr when the lookup fails — caller
+// uses the result uniformly.
+std::unique_ptr<Animal> findAnimal(const std::string& kind) {
+    if (kind == "dog") return std::make_unique<Dog>();
+    return std::make_unique<NullAnimal>();
 }
 
 int main() {
-    std::unique_ptr<Creature> silentPtr = std::make_unique<SilentCreature>();
-    interactWithCreature(silentPtr.get());
-
-    SilentCreature silentInstance;
-    interactWithCreature(silentInstance);
-
-    std::unique_ptr<Creature> hound = std::make_unique<Hound>();
-    interactWithCreature(hound.get());
-
-    return 0;
+    greet(*findAnimal("dog"));
+    greet(*findAnimal("unicorn"));  // no nullptr check needed
 }

@@ -1,186 +1,67 @@
+// Observer — clock variant.
+// A clock notifies all attached views whenever the time advances. Views read
+// the current time from the subject (pull model).
+
+#include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <vector>
-#include <memory>
-#include <algorithm>
-#include <chrono>
-#include <ctime>
 
-// Forward declaration
-class ITimeObserver;
+class Clock;
 
-// Base Observable
-class ITimeObservable
-{
+class TimeView {
 public:
-    virtual ~ITimeObservable() = default;
-
-    // Register an observer
-    virtual void addObserver(std::shared_ptr<ITimeObserver> obs) = 0;
-
-    // Remove an observer
-    virtual void removeObserver(std::shared_ptr<ITimeObserver> obs) = 0;
-
-    // Notify all observers
-    virtual void notifyObservers() = 0;
+    virtual ~TimeView() = default;
+    virtual void onTimeChanged(const Clock& clock) = 0;
 };
 
-// Base Observer
-class ITimeObserver
-{
+class Clock {
 public:
-    virtual ~ITimeObserver() = default;
-    virtual void onTimeChange() = 0;
-};
+    void attach(TimeView& v) { views_.push_back(&v); }
+    void detach(TimeView& v) {
+        views_.erase(std::remove(views_.begin(), views_.end(), &v), views_.end());
+    }
 
-// Concrete Observable: ClockTicker
-class ClockTicker : public ITimeObservable
-{
+    int hour()   const { return h_; }
+    int minute() const { return m_; }
+    int second() const { return s_; }
+
+    void tick() {
+        if (++s_ == 60) { s_ = 0; if (++m_ == 60) { m_ = 0; ++h_; } }
+        for (auto* v : views_) v->onTimeChanged(*this);
+    }
+
 private:
-    std::vector<std::shared_ptr<ITimeObserver>> observers_;
-    int hour_{0};
-    int minute_{0};
-    int second_{0};
-
-public:
-    ClockTicker()
-    {
-        // Initialize time to "now"
-        updateCurrentTime();
-    }
-
-    void addObserver(std::shared_ptr<ITimeObserver> obs) override
-    {
-        observers_.push_back(obs);
-    }
-
-    void removeObserver(std::shared_ptr<ITimeObserver> obs) override
-    {
-        observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
-                                        [&](const std::shared_ptr<ITimeObserver>& ptr)
-                                        {
-                                            return ptr == obs;
-                                        }),
-                         observers_.end());
-    }
-
-    void notifyObservers() override
-    {
-        for (auto& obs : observers_)
-        {
-            obs->onTimeChange();
-        }
-    }
-
-    // Update the internal time from the system clock (or any time source)
-    void updateCurrentTime()
-    {
-        // Get the current system time
-        auto now   = std::chrono::system_clock::now();
-        std::time_t tt = std::chrono::system_clock::to_time_t(now);
-        auto local = std::localtime(&tt);
-
-        hour_   = local->tm_hour;
-        minute_ = local->tm_min;
-        second_ = local->tm_sec;
-
-        // Whenever we update time, notify observers
-        notifyObservers();
-    }
-
-    // Provide getters for hour, minute, second
-    int getHour()   const { return hour_; }
-    int getMinute() const { return minute_; }
-    int getSecond() const { return second_; }
+    int h_ = 11, m_ = 59, s_ = 58;
+    std::vector<TimeView*> views_;
 };
 
-// Concrete Observer: DigitalView
-class DigitalView : public ITimeObserver
-{
-private:
-    // Keep a reference to the subject we observe
-    std::shared_ptr<ClockTicker> ticker_;
-
+class DigitalView : public TimeView {
 public:
-    explicit DigitalView(std::shared_ptr<ClockTicker> ticker)
-        : ticker_(ticker)
-    {
-        if (ticker_)
-        {
-            ticker_->addObserver(std::shared_ptr<ITimeObserver>(this, [](ITimeObserver*) {
-                // NOTE: We do nothing here in the custom deleter because
-                // the actual lifetime is managed outside, or you can hold a
-                // separate std::shared_ptr<DigitalView> if you prefer.
-            }));
-        }
-    }
-
-    // Called when the observable notifies
-    void onTimeChange() override
-    {
-        if (!ticker_)
-            return;
-
-        std::cout << "[DigitalView] The time is: "
-                  << ticker_->getHour() << ":"
-                  << ticker_->getMinute() << ":"
-                  << ticker_->getSecond()
-                  << std::endl;
+    void onTimeChanged(const Clock& c) override {
+        std::cout << "[digital] " << std::setfill('0')
+                  << std::setw(2) << c.hour()   << ':'
+                  << std::setw(2) << c.minute() << ':'
+                  << std::setw(2) << c.second() << '\n';
     }
 };
 
-// Concrete Observer: AnalogView
-class AnalogView : public ITimeObserver
-{
-private:
-    std::shared_ptr<ClockTicker> ticker_;
-
+class AnalogView : public TimeView {
 public:
-    explicit AnalogView(std::shared_ptr<ClockTicker> ticker)
-        : ticker_(ticker)
-    {
-        if (ticker_)
-        {
-            ticker_->addObserver(std::shared_ptr<ITimeObserver>(this, [](ITimeObserver*) {
-                // Same note regarding custom deleter as above.
-            }));
-        }
-    }
-
-    void onTimeChange() override
-    {
-        if (!ticker_)
-            return;
-
-        std::cout << "[AnalogView] The time is: "
-                  << ticker_->getHour() << ":"
-                  << ticker_->getMinute() << ":"
-                  << ticker_->getSecond()
-                  << std::endl;
+    void onTimeChanged(const Clock& c) override {
+        std::cout << "[analog]  hour-hand at " << c.hour() % 12 << '\n';
     }
 };
 
-int main()
-{
-    // Create a shared ClockTicker
-    auto myClock = std::make_shared<ClockTicker>();
+int main() {
+    Clock clock;
+    DigitalView digital;
+    AnalogView analog;
 
-    // Create observer views
-    auto digital = std::make_shared<DigitalView>(myClock);
-    auto analog  = std::make_shared<AnalogView>(myClock);
+    clock.attach(digital);
+    clock.attach(analog);
 
-    // Force an update to show the initial time
-    myClock->updateCurrentTime();
-
-    // Sleep or do some other operations, e.g. simulate next time change:
-    // For example, let's pretend to increment the time manually:
-    // (In real usage, you'd call updateCurrentTime() whenever time changes)
-    // myClock->updateCurrentTime();
-
-    // Remove the analog view if you want to stop updates
-    myClock->removeObserver(analog);
-
-    // Another time change to see only DigitalView's update
-    myClock->updateCurrentTime();
-
-    return 0;
+    for (int i = 0; i < 4; ++i) clock.tick();
+    clock.detach(analog);
+    clock.tick();
 }

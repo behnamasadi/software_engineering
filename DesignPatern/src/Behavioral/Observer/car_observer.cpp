@@ -1,120 +1,75 @@
-#include <cmath>
-#include <functional>
-#include <iostream>
-#include <list>
+// Observer — RAII variant.
+// Each Observer attaches to its subject in the constructor and detaches in
+// the destructor. Lifetimes are stack-bound; no smart pointers needed.
 
-class Car; // Forward declaration for usage in Observer
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+class Car;
 
 class Observer {
 public:
-  explicit Observer(Car &subj);
-  virtual ~Observer();
+    explicit Observer(Car& subject);
+    virtual ~Observer();
 
-  Observer(const Observer &) = delete; // Rule of Three
-  Observer &operator=(const Observer &) = delete;
+    Observer(const Observer&) = delete;
+    Observer& operator=(const Observer&) = delete;
 
-  virtual void update(Car &car) = 0; // Removed `const` to allow modification
+    virtual void onUpdate(const Car& car) = 0;
 
 protected:
-  Car &subject; // Made protected so derived classes can access it
+    Car& subject_;
 };
 
-// Car is the base class for event generation
 class Car {
-private:
-  double m_speed = NAN;
-  double m_temperature = NAN;
-
 public:
-  using RefObserver =
-      std::reference_wrapper<Observer>; // Allow mutable observers
-
-  ~Car() { observers.clear(); } // Ensure proper cleanup
-
-  // Notify all attached observers
-  void notify() {
-    for (auto &obs : observers) {
-      obs.get().update(*this);
+    void attach(Observer& o) { observers_.push_back(&o); }
+    void detach(Observer& o) {
+        observers_.erase(std::remove(observers_.begin(), observers_.end(), &o),
+                         observers_.end());
     }
-  }
 
-  double getSpeed() const { return m_speed; } // Marked as const
-  void setSpeed(double speed) {
-    if (m_speed != speed) { // Prevent unnecessary notifications
-      m_speed = speed;
-      notify();
-    }
-  }
+    double speed() const       { return speed_; }
+    double temperature() const { return temperature_; }
 
-  double getTemperature() const { return m_temperature; } // Marked as const
-  void setTemperature(double temperature) {
-    if (m_temperature != temperature) { // Prevent unnecessary notifications
-      m_temperature = temperature;
-      notify();
-    }
-  }
-
-  // Add an observer if it’s not already in the list
-  void attach(Observer &observer) {
-    for (const auto &obs : observers) {
-      if (&obs.get() == &observer)
-        return; // Already attached
-    }
-    observers.push_front(observer);
-  }
-
-  // Remove an observer safely
-  void detach(Observer &observer) {
-    observers.remove_if([&observer](const RefObserver &obj) {
-      return &obj.get() == &observer;
-    });
-  }
+    void setSpeed(double s)       { if (s != speed_)       { speed_ = s; notify(); } }
+    void setTemperature(double t) { if (t != temperature_) { temperature_ = t; notify(); } }
 
 private:
-  std::list<RefObserver> observers;
+    void notify() { for (auto* o : observers_) o->onUpdate(*this); }
+
+    std::vector<Observer*> observers_;
+    double speed_ = 0;
+    double temperature_ = 0;
 };
 
-Observer::Observer(Car &subj) : subject(subj) { subject.attach(*this); }
+Observer::Observer(Car& subject) : subject_(subject) { subject_.attach(*this); }
+Observer::~Observer() { subject_.detach(*this); }
 
-Observer::~Observer() { subject.detach(*this); }
-
-// Example of usage
-class ConcreteObserver : public Observer {
+class Speedometer : public Observer {
 public:
-  ConcreteObserver(Car &subj) : Observer(subj) {}
-
-  void update(Car &) override {
-    std::cout << "Got a notification" << std::endl;
-  }
+    using Observer::Observer;
+    void onUpdate(const Car& car) override {
+        std::cout << "[speed]  " << car.speed() << " km/h\n";
+    }
 };
 
-// Thermometer
-class TemperatureObserver : public Observer {
+class Thermometer : public Observer {
 public:
-  TemperatureObserver(Car &subj) : Observer(subj) {}
-
-  void update(Car &car) override {
-    std::cout << "Car Temperature is: " << car.getTemperature() << std::endl;
-  }
-};
-
-// Odometer
-class SpeedObserver : public Observer {
-public:
-  SpeedObserver(Car &subj) : Observer(subj) {}
-
-  void update(Car &car) override {
-    std::cout << "Car Speed is: " << car.getSpeed() << std::endl;
-  }
+    using Observer::Observer;
+    void onUpdate(const Car& car) override {
+        std::cout << "[temp]   " << car.temperature() << " C\n";
+    }
 };
 
 int main() {
-  Car car;
-  SpeedObserver speedObserver1(car);
-  TemperatureObserver temperatureObserver1(car);
+    Car car;
+    Speedometer speed(car);
+    Thermometer temp(car);
 
-  car.setSpeed(20);
-  car.setTemperature(-2);
-
-  return 0; // Ensures proper cleanup
+    car.setSpeed(60);
+    car.setTemperature(-2);
+    car.setSpeed(60);   // no change → no notification
+    car.setSpeed(80);
 }

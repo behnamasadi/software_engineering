@@ -1,162 +1,123 @@
+// Visitor — before/after.
+//
+// "Before": each new operation (count, call) requires a new method on every
+// concrete Color, so adding an operation touches every subclass.
+//
+// "After": operations live in Visitors. Adding CountVisitor or CallVisitor
+// doesn't modify Color/Red/Blu — just create another visitor.
+
 #include <iostream>
-using namespace std;
+#include <memory>
+#include <vector>
 
-namespace before
-{
-class Color
-{
-  public:
+namespace before_inheritance {
+
+class Color {
+public:
+    virtual ~Color() = default;
     virtual void count() = 0;
-    virtual void call() = 0;
-    static void report_statistics()
-    {
-        cout << "Red count: " << s_num_red << ", Blue count: " << s_num_blu << '\n';
-    }
-  protected:
-    static int s_num_red, s_num_blu;
-};
-int Color::s_num_red = 0;
-int Color::s_num_blu = 0;
+    virtual void call()  = 0;
 
-class Red: public Color
-{
-  public:
-    void count() override
-    {
-        ++s_num_red;
+    static void report() {
+        std::cout << "Red=" << redCount_ << " Blu=" << bluCount_ << '\n';
     }
-    void call() override
-    {
-        showEye();
-    }
-    void showEye()
-    {
-        cout << "Red::showEye\n";
-    }
+
+protected:
+    static int redCount_;
+    static int bluCount_;
+};
+int Color::redCount_ = 0;
+int Color::bluCount_ = 0;
+
+class Red : public Color {
+public:
+    void count() override { ++redCount_; }
+    void call()  override { std::cout << "  Red::showEye\n"; }
 };
 
-class Blu: public Color
-{
-  public:
-    void count() override
-    {
-        ++s_num_blu;
-    }
-    void call() override
-    {
-        showSky();
-    }
-    void showSky()
-    {
-        cout << "Blu::showSky\n";
-    }
-};
-}
-
-namespace after
-{
-class Visitor;
-
-class Color
-{
-  public:
-    virtual void accept(Visitor*) = 0;
+class Blu : public Color {
+public:
+    void count() override { ++bluCount_; }
+    void call()  override { std::cout << "  Blu::showSky\n"; }
 };
 
-class Red: public Color
-{
-  public:
-    void accept(Visitor*) override;
-    void showEye()
-    {
-        cout << "Red::showEye\n";
-    }
+}  // namespace before_inheritance
+
+namespace after_visitor {
+
+class Red;
+class Blu;
+
+class Visitor {
+public:
+    virtual ~Visitor() = default;
+    virtual void visit(Red& red) = 0;
+    virtual void visit(Blu& blu) = 0;
 };
 
-class Blu: public Color
-{
-  public:
-    void accept(Visitor*) override;
-    void showSky()
-    {
-        cout << "Blu::showSky\n";
-    }
+class Color {
+public:
+    virtual ~Color() = default;
+    virtual void accept(Visitor& visitor) = 0;
 };
 
-class Visitor
-{
-  public:
-    virtual void visit(Red*) = 0;
-    virtual void visit(Blu*) = 0;
+class Red : public Color {
+public:
+    void accept(Visitor& visitor) override { visitor.visit(*this); }
+    void showEye() { std::cout << "  Red::showEye\n"; }
 };
 
-class CountVisitor: public Visitor
-{
-  public:
-    CountVisitor() : m_num_red(0), m_num_blu(0) {}
-    void visit(Red*) override
-    {
-        ++m_num_red;
-    }
-    void visit(Blu*) override
-    {
-        ++m_num_blu;
-    }
-    void report_statistics()
-    {
-        cout << "Red count: " << m_num_red << ", Blue count: " << m_num_blu << '\n';
-    }
-  private:
-    int m_num_red, m_num_blu;
+class Blu : public Color {
+public:
+    void accept(Visitor& visitor) override { visitor.visit(*this); }
+    void showSky() { std::cout << "  Blu::showSky\n"; }
 };
 
-class CallVisitor: public Visitor
-{
-  public:
-    void visit(Red *r) override
-    {
-        r->showEye();
-    }
-    void visit(Blu *b) override
-    {
-        b->showSky();
-    }
+class CountVisitor : public Visitor {
+public:
+    void visit(Red&) override { ++red_; }
+    void visit(Blu&) override { ++blu_; }
+    void report() const { std::cout << "Red=" << red_ << " Blu=" << blu_ << '\n'; }
+private:
+    int red_ = 0;
+    int blu_ = 0;
 };
 
-void Red::accept(Visitor *v)
-{
-  v->visit(this);
-}
+class CallVisitor : public Visitor {
+public:
+    void visit(Red& red) override { red.showEye(); }
+    void visit(Blu& blu) override { blu.showSky(); }
+};
 
-void Blu::accept(Visitor *v)
-{
-  v->visit(this);
-}
-}
+}  // namespace after_visitor
 
-int main()
-{
+int main() {
     {
-        using namespace before;
-        Color *set[] ={new Red, new Blu, new Blu, new Red, new Red, nullptr };
-        for (int i = 0; set[i]; ++i)
-        {
-          set[i]->count();
-          set[i]->call();
-        }
-        Color::report_statistics();
+        std::cout << "--- before (operations baked into Color) ---\n";
+        using namespace before_inheritance;
+        std::vector<std::unique_ptr<Color>> set;
+        set.push_back(std::make_unique<Red>());
+        set.push_back(std::make_unique<Blu>());
+        set.push_back(std::make_unique<Blu>());
+        set.push_back(std::make_unique<Red>());
+        set.push_back(std::make_unique<Red>());
+        for (auto& c : set) { c->count(); c->call(); }
+        Color::report();
     }
 
     {
-        using namespace after;
-        Color *set[] = { new Red, new Blu, new Blu, new Red, new Red, nullptr };
-        CountVisitor count_operation;
-        CallVisitor call_operation;
-        for (int i = 0; set[i]; i++)
-        {
-            set[i]->accept(&count_operation);
-            set[i]->accept(&call_operation);
-        }
-        count_operation.report_statistics();
+        std::cout << "--- after (operations are visitors) ---\n";
+        using namespace after_visitor;
+        std::vector<std::unique_ptr<Color>> set;
+        set.push_back(std::make_unique<Red>());
+        set.push_back(std::make_unique<Blu>());
+        set.push_back(std::make_unique<Blu>());
+        set.push_back(std::make_unique<Red>());
+        set.push_back(std::make_unique<Red>());
+
+        CountVisitor counter;
+        CallVisitor caller;
+        for (auto& c : set) { c->accept(counter); c->accept(caller); }
+        counter.report();
     }
 }

@@ -1,50 +1,47 @@
+// Command — generic template variant.
+// A single GenericCommand<Receiver> binds any (receiver, action) pair without
+// needing a separate ConcreteCommand class per action.
+
+#include <functional>
 #include <iostream>
 #include <memory>
-#include <functional>
+#include <utility>
 
-using namespace std;
-
-class Operation {
+class Command {
 public:
-    // Declares an interface for triggering an action.
-    virtual void run() = 0;
-    virtual ~Operation() = default;
-
-protected:
-    Operation() = default;
+    virtual ~Command() = default;
+    virtual void execute() = 0;
 };
 
 template <typename Receiver>
-class ActionInvoker : public Operation { // Concrete Command
+class GenericCommand : public Command {
 public:
     using Action = std::function<void(Receiver&)>;
 
-    // Binds a Receiver object with an action function.
-    ActionInvoker(shared_ptr<Receiver> receiver_, Action action_)
-        : receiver(receiver_), action(action_) {}
+    GenericCommand(Receiver& receiver, Action action)
+        : receiver_(receiver), action_(std::move(action)) {}
 
-    ActionInvoker(const ActionInvoker&) = delete; // Rule of three
-    const ActionInvoker& operator=(const ActionInvoker&) = delete;
-
-    // Triggers the action on the receiver.
-    virtual void run() override { action(*receiver); }
+    void execute() override { action_(receiver_); }
 
 private:
-    shared_ptr<Receiver> receiver;
-    Action action;
+    Receiver& receiver_;
+    Action action_;
 };
 
-class MyClass { // Receiver
+class Light {
 public:
-    void performTask() { cout << "MyClass is executing a task...\n"; }
+    void turnOn()  { std::cout << "[Light] ON\n"; }
+    void turnOff() { std::cout << "[Light] OFF\n"; }
 };
 
 int main() {
-    shared_ptr<MyClass> receiver = make_shared<MyClass>();
+    Light light;
 
-    // Using std::function to bind a member function to an ActionInvoker.
-    unique_ptr<Operation> command =
-        make_unique<ActionInvoker<MyClass>>(receiver, &MyClass::performTask);
+    std::unique_ptr<Command> on  =
+        std::make_unique<GenericCommand<Light>>(light, &Light::turnOn);
+    std::unique_ptr<Command> off =
+        std::make_unique<GenericCommand<Light>>(light, &Light::turnOff);
 
-    command->run();
+    on->execute();
+    off->execute();
 }

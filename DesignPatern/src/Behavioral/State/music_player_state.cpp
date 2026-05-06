@@ -1,125 +1,97 @@
+// State — music player.
+// The player delegates play/pause/stop to its current state object. Each state
+// allows only the valid transitions; all others fall through to a default
+// implementation that rejects the request.
+
 #include <iostream>
 #include <memory>
 #include <string>
+#include <utility>
 
-// Forward Declarations
-class PlayerState;
 class AudioPlayer;
-class PauseMode;
-class PlayMode;
-class StopMode;
 
 class PlayerState {
-protected:
-    std::string stateName;
 public:
     virtual ~PlayerState() = default;
-    virtual void play(AudioPlayer *player);
-    virtual void pause(AudioPlayer *player);
-    virtual void stop(AudioPlayer *player);
-    std::string getName() { return stateName; }
+
+    // Default: reject the transition. Concrete states override what they allow.
+    virtual void play(AudioPlayer& player);
+    virtual void pause(AudioPlayer& player);
+    virtual void stop(AudioPlayer& player);
+
+    const std::string& name() const { return name_; }
+
 protected:
-    PlayerState(std::string name) : stateName(std::move(name)) {}
+    explicit PlayerState(std::string name) : name_(std::move(name)) {}
+
+private:
+    std::string name_;
 };
 
-// AudioPlayer
 class AudioPlayer {
-private:
-    std::shared_ptr<PlayerState> state;
 public:
     AudioPlayer();
-    void setState(std::shared_ptr<PlayerState> newState);
-    void play();
-    void pause();
-    void stop();
-    std::string currentState();
+
+    void setState(std::unique_ptr<PlayerState> next);
+    void play()  { state_->play(*this); }
+    void pause() { state_->pause(*this); }
+    void stop()  { state_->stop(*this); }
+
+    const std::string& currentState() const { return state_->name(); }
+
+private:
+    std::unique_ptr<PlayerState> state_;
 };
 
-// Concrete States
 class StopMode : public PlayerState {
 public:
     StopMode() : PlayerState("STOPPED") {}
-    void play(AudioPlayer *player) override;
+    void play(AudioPlayer& player) override;
 };
 
 class PlayMode : public PlayerState {
 public:
     PlayMode() : PlayerState("PLAYING") {}
-    void pause(AudioPlayer *player) override;
-    void stop(AudioPlayer *player) override;
+    void pause(AudioPlayer& player) override;
+    void stop(AudioPlayer& player) override;
 };
 
 class PauseMode : public PlayerState {
 public:
     PauseMode() : PlayerState("PAUSED") {}
-    void play(AudioPlayer *player) override;
+    void play(AudioPlayer& player) override;
 };
 
-// State Method Implementations
-void PlayerState::play(AudioPlayer *player) {
-    std::cout << "Invalid transition from " << stateName << " to PLAY\n";
+void PlayerState::play(AudioPlayer&) {
+    std::cout << "Invalid transition from " << name_ << " to PLAY\n";
+}
+void PlayerState::pause(AudioPlayer&) {
+    std::cout << "Invalid transition from " << name_ << " to PAUSE\n";
+}
+void PlayerState::stop(AudioPlayer&) {
+    std::cout << "Invalid transition from " << name_ << " to STOP\n";
 }
 
-void PlayerState::pause(AudioPlayer *player) {
-    std::cout << "Invalid transition from " << stateName << " to PAUSE\n";
+AudioPlayer::AudioPlayer() : state_(std::make_unique<StopMode>()) {
+    std::cout << "AudioPlayer starts in " << state_->name() << '\n';
 }
 
-void PlayerState::stop(AudioPlayer *player) {
-    std::cout << "Invalid transition from " << stateName << " to STOP\n";
+void AudioPlayer::setState(std::unique_ptr<PlayerState> next) {
+    std::cout << "  " << state_->name() << " -> " << next->name() << '\n';
+    state_ = std::move(next);
 }
 
-// AudioPlayer Implementation
-AudioPlayer::AudioPlayer() : state(std::make_shared<StopMode>()) {
-    std::cout << "AudioPlayer initialized in state: " << state->getName() << "\n";
-}
+void StopMode::play(AudioPlayer& player)   { player.setState(std::make_unique<PlayMode>()); }
+void PlayMode::pause(AudioPlayer& player)  { player.setState(std::make_unique<PauseMode>()); }
+void PlayMode::stop(AudioPlayer& player)   { player.setState(std::make_unique<StopMode>()); }
+void PauseMode::play(AudioPlayer& player)  { player.setState(std::make_unique<PlayMode>()); }
 
-void AudioPlayer::setState(std::shared_ptr<PlayerState> newState) {
-    std::cout << "Transition: " << state->getName() << " -> " << newState->getName() << "\n";
-    state = std::move(newState);
-}
-
-void AudioPlayer::play() {
-    state->play(this);
-}
-
-void AudioPlayer::pause() {
-    state->pause(this);
-}
-
-void AudioPlayer::stop() {
-    state->stop(this);
-}
-
-std::string AudioPlayer::currentState() {
-    return state->getName();
-}
-
-// StopMode Implementation
-void StopMode::play(AudioPlayer *player) {
-    player->setState(std::make_shared<PlayMode>());
-}
-
-// PlayMode Implementation
-void PlayMode::pause(AudioPlayer *player) {
-    player->setState(std::make_shared<PauseMode>());
-}
-
-void PlayMode::stop(AudioPlayer *player) {
-    player->setState(std::make_shared<StopMode>());
-}
-
-// PauseMode Implementation
-void PauseMode::play(AudioPlayer *player) {
-    player->setState(std::make_shared<PlayMode>());
-}
-
-// Main Function
 int main() {
     AudioPlayer player;
     player.play();
-    player.play();  // Invalid transition
+    player.play();    // invalid: PLAYING -> PLAY
     player.pause();
     player.play();
     player.stop();
-    player.pause(); // Invalid transition
+    player.pause();   // invalid: STOPPED -> PAUSE
 }

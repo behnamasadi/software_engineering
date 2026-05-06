@@ -1,83 +1,46 @@
+// Command — queueing variant.
+// A Task captures (receiver, action) so it can sit in a queue and be run later.
+
+#include <deque>
 #include <iostream>
-#include <vector>
 #include <memory>
 
-class Colossus
-{
+class Worker {
 public:
-    Colossus() { m_id = s_next++; }
+    Worker() : id_(nextId_++) {}
 
-    void alpha() { std::cout << m_id << "-alpha  "; }
-    void beta() { std::cout << m_id << "-beta  "; }
-    void gamma() { std::cout << m_id << "-gamma  "; }
+    void alpha() { std::cout << id_ << "-alpha "; }
+    void beta()  { std::cout << id_ << "-beta  "; }
+    void gamma() { std::cout << id_ << "-gamma "; }
 
 private:
-    int m_id;
-    static int s_next;
+    int id_;
+    static int nextId_;
 };
+int Worker::nextId_ = 0;
 
-int Colossus::s_next = 0;
-
-class Task
-{
+class Task {
 public:
-    using Action = void(Colossus::*)();
-
-    Task(Colossus *object, Action method) : m_object(object), m_method(method) {}
-
-    void execute() { (m_object->*m_method)(); }
-
+    using Action = void (Worker::*)();
+    Task(Worker& worker, Action action) : worker_(worker), action_(action) {}
+    void execute() { (worker_.*action_)(); }
 private:
-    Colossus *m_object;
-    Action m_method;
+    Worker& worker_;
+    Action action_;
 };
 
-template <typename T>
-class TaskQueue
-{
-public:
-    void enqueue(std::unique_ptr<T> task)
-    {
-        m_tasks.push_back(std::move(task));
+int main() {
+    Worker w1, w2;
+
+    std::deque<Task> queue;
+    queue.emplace_back(w1, &Worker::alpha);
+    queue.emplace_back(w2, &Worker::beta);
+    queue.emplace_back(w1, &Worker::gamma);
+    queue.emplace_back(w2, &Worker::alpha);
+
+    while (!queue.empty()) {
+        queue.front().execute();
+        queue.pop_front();
     }
-
-    std::unique_ptr<T> dequeue()
-    {
-        if (m_tasks.empty())
-            return nullptr;
-
-        std::unique_ptr<T> task = std::move(m_tasks.front());
-        m_tasks.erase(m_tasks.begin());
-        return task;
-    }
-
-private:
-    std::vector<std::unique_ptr<T>> m_tasks;
-};
-
-int main()
-{
-    TaskQueue<Task> queue;
-    
-    std::vector<std::unique_ptr<Task>> commands;
-    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::alpha));
-    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::beta));
-    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::gamma));
-    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::alpha));
-    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::beta));
-    commands.emplace_back(std::make_unique<Task>(new Colossus, &Colossus::gamma));
-
-    for (auto &cmd : commands)
-        queue.enqueue(std::move(cmd));
-
-    for (int i = 0; i < 6; i++)
-    {
-        auto task = queue.dequeue();
-        if (task)
-            task->execute();
-    }
-    
     std::cout << '\n';
-
-    return 0;
 }

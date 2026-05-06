@@ -1,76 +1,70 @@
+// Chain of Responsibility — image processing pipeline.
+// Unlike the typical "first handler wins" variant, every step in the chain
+// runs in order. This is the pipeline flavor of the same pattern.
+
 #include <iostream>
 #include <string>
 
-class Photo {};
+struct Photo {
+    std::string name;
+};
 
 class PhotoProcessor {
+public:
+    virtual ~PhotoProcessor() = default;
+
+    void setNext(PhotoProcessor* next) { next_ = next; }
+
+    void process(Photo& photo) {
+        apply(photo);
+        if (next_) next_->process(photo);
+    }
+
 protected:
-  PhotoProcessor *next;
+    virtual void apply(Photo& photo) = 0;
 
-public:
-  PhotoProcessor() : next(nullptr) {}
-
-  virtual ~PhotoProcessor() = default; // Virtual destructor
-
-  void setNext(PhotoProcessor *nextProcessor) { next = nextProcessor; }
-
-  void process(Photo *photo) {
-    processImplementation(photo);
-    if (next != nullptr)
-      next->process(photo);
-  }
-
-  virtual void processImplementation(
-      Photo *photo) = 0; // Correct syntax for pure virtual function
-};
-
-class RedEye : public PhotoProcessor {
-public:
-  RedEye() = default; // No need to explicitly initialize next
-
-  void processImplementation(Photo *photo) override {
-    std::cout << "Correcting red eye" << std::endl;
-  }
-};
-
-class Scaling : public PhotoProcessor {
 private:
-  int width, height;
+    PhotoProcessor* next_ = nullptr;
+};
 
+class RedEyeRemoval : public PhotoProcessor {
+protected:
+    void apply(Photo& photo) override {
+        std::cout << "[" << photo.name << "] removing red-eye\n";
+    }
+};
+
+class Scale : public PhotoProcessor {
 public:
-  Scaling(int width, int height) : width(width), height(height) {}
-
-  void processImplementation(Photo *photo) override {
-    std::cout << "Scaling to " << width << "x" << height << std::endl;
-  }
+    Scale(int width, int height) : width_(width), height_(height) {}
+protected:
+    void apply(Photo& photo) override {
+        std::cout << "[" << photo.name << "] scaling to "
+                  << width_ << "x" << height_ << '\n';
+    }
+private:
+    int width_, height_;
 };
 
 class MeanFilter : public PhotoProcessor {
-private:
-  double mean, var;
-
 public:
-  MeanFilter(double mean, double var) : mean(mean), var(var) {}
-
-  void processImplementation(Photo *photo) override {
-    std::cout << "Applying mean filter with mean " << mean << ", variance "
-              << var << std::endl;
-  }
+    explicit MeanFilter(int kernel) : kernel_(kernel) {}
+protected:
+    void apply(Photo& photo) override {
+        std::cout << "[" << photo.name << "] mean filter k=" << kernel_ << '\n';
+    }
+private:
+    int kernel_;
 };
 
 int main() {
-  Photo myPhoto;
+    RedEyeRemoval redEye;
+    Scale scale(800, 600);
+    MeanFilter blur(3);
 
-  RedEye redEyeProcessor;
-  Scaling scalingProcessor(600, 800);
-  MeanFilter meanFilterProcessor(0.0, 1.0);
+    redEye.setNext(&scale);
+    scale.setNext(&blur);
 
-  // Creating the processing chain
-  redEyeProcessor.setNext(&scalingProcessor);
-  scalingProcessor.setNext(&meanFilterProcessor);
-
-  // Start processing
-  redEyeProcessor.process(&myPhoto);
-
-  return 0;
+    Photo photo{"vacation.jpg"};
+    redEye.process(photo);
 }

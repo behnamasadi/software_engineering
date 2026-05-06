@@ -1,144 +1,77 @@
+// Observer — subject keeps a list of observers and notifies them on change.
+//
+// This variant uses weak_ptr so the subject doesn't extend observer lifetime,
+// and dead observers are pruned during notify().
+
+#include <algorithm>
 #include <iostream>
-#include <vector>
 #include <memory>
-#include <algorithm> // for std::remove_if
+#include <vector>
 
-// Forward declaration
-class IObserver;
-
-// Base "Observable" interface
-class IObservable
-{
+class Observer {
 public:
-    virtual ~IObservable() = default;
-    virtual void subscribe(std::shared_ptr<IObserver> obs) = 0;
-    virtual void unsubscribe(std::shared_ptr<IObserver> obs) = 0;
-    virtual void notifyAll() = 0;
-};
-
-// Base "Observer" interface
-class IObserver
-{
-public:
-    virtual ~IObserver() = default;
+    virtual ~Observer() = default;
     virtual void onUpdate() = 0;
 };
 
-// Concrete Observable: WeatherStation
-class WeatherStation : public IObservable
-{
-private:
-    std::vector<std::shared_ptr<IObserver>> observers_;
-    int temperature_;
-
+class WeatherStation {
 public:
-    WeatherStation(int temp = 25) 
-        : temperature_(temp)
-    {
+    void subscribe(std::shared_ptr<Observer> obs) {
+        observers_.push_back(std::move(obs));
     }
 
-    // IObservable interface implementations
-    void subscribe(std::shared_ptr<IObserver> obs) override
-    {
-        observers_.push_back(obs);
+    void setTemperature(int t) {
+        temperature_ = t;
+        notify();
     }
 
-    void unsubscribe(std::shared_ptr<IObserver> obs) override
-    {
-        // Remove any matching observers
-        observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
-            [&](const std::shared_ptr<IObserver>& o){
-                return o == obs;
-            }), observers_.end());
-    }
+    int temperature() const { return temperature_; }
 
-    void notifyAll() override
-    {
-        for (auto& obs : observers_)
-        {
-            obs->onUpdate();
+private:
+    void notify() {
+        // Skip + prune any observers that have been destroyed.
+        auto last = std::remove_if(observers_.begin(), observers_.end(),
+            [](const std::weak_ptr<Observer>& w) { return w.expired(); });
+        observers_.erase(last, observers_.end());
+
+        for (auto& w : observers_) {
+            if (auto o = w.lock()) o->onUpdate();
         }
     }
 
-    // WeatherStation-specific
-    int getTemperature() const
-    {
-        return temperature_;
-    }
-
-    void setTemperature(int newTemp)
-    {
-        temperature_ = newTemp;
-        notifyAll(); 
-    }
+    std::vector<std::weak_ptr<Observer>> observers_;
+    int temperature_ = 25;
 };
 
-// Concrete Observer: PhoneDisplay
-class PhoneDisplay : public IObserver
-{
-private:
-    // We keep a shared_ptr to the WeatherStation so we can query it
-    std::shared_ptr<WeatherStation> station_;
-
+class PhoneDisplay : public Observer {
 public:
-    explicit PhoneDisplay(std::shared_ptr<WeatherStation> station)
-        : station_(station)
-    {
+    explicit PhoneDisplay(WeatherStation& s) : station_(s) {}
+    void onUpdate() override {
+        std::cout << "[Phone]  " << station_.temperature() << "C\n";
     }
-
-    void onUpdate() override
-    {
-        if (station_)
-        {
-            std::cout << "[PhoneDisplay] Current temperature: "
-                      << station_->getTemperature() << "°C\n";
-        }
-    }
-};
-
-// Concrete Observer: WindowDisplay
-class WindowDisplay : public IObserver
-{
 private:
-    std::shared_ptr<WeatherStation> station_;
-
-public:
-    explicit WindowDisplay(std::shared_ptr<WeatherStation> station)
-        : station_(station)
-    {
-    }
-
-    void onUpdate() override
-    {
-        if (station_)
-        {
-            std::cout << "[WindowDisplay] Current temperature: "
-                      << station_->getTemperature() << "°C\n";
-        }
-    }
+    WeatherStation& station_;
 };
 
-int main()
-{
-    // Create a shared WeatherStation
-    auto station = std::make_shared<WeatherStation>(30);
+class WindowDisplay : public Observer {
+public:
+    explicit WindowDisplay(WeatherStation& s) : station_(s) {}
+    void onUpdate() override {
+        std::cout << "[Window] " << station_.temperature() << "C\n";
+    }
+private:
+    WeatherStation& station_;
+};
 
-    // Create two displays
-    auto phone = std::make_shared<PhoneDisplay>(station);
+int main() {
+    WeatherStation station;
+    auto phone  = std::make_shared<PhoneDisplay>(station);
     auto window = std::make_shared<WindowDisplay>(station);
 
-    // Subscribe displays to the station
-    station->subscribe(phone);
-    station->subscribe(window);
+    station.subscribe(phone);
+    station.subscribe(window);
+    station.setTemperature(30);
 
-    // Change temperature - triggers notifyAll()
-    station->setTemperature(35);
-
-    // Unsubscribe phone, only window display will react
-    station->unsubscribe(phone);
-
-    // Another temperature change
-    station->setTemperature(40);
-
-    return 0;
+    phone.reset();              // observer goes away — auto-pruned next notify
+    station.setTemperature(35);
 }

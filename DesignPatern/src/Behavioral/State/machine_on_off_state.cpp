@@ -1,73 +1,48 @@
+// State — minimal on/off device.
+// The Device delegates turnOn/turnOff to a state object that decides what
+// happens. Each state is responsible for driving the next transition.
+
 #include <iostream>
 #include <memory>
 
-class Device;  // Forward declaration
+class Device;
 
 class PowerState {
 public:
     virtual ~PowerState() = default;
-    virtual void turnOn(Device *device) {
-        std::cout << "   Already ON\n";
-    }
-    virtual void turnOff(Device *device) {
-        std::cout << "   Already OFF\n";
-    }
-    virtual std::string getName() const = 0;
+    virtual void turnOn(Device&)  { std::cout << "  already ON\n"; }
+    virtual void turnOff(Device&) { std::cout << "  already OFF\n"; }
+    virtual const char* name() const = 0;
 };
 
-class ActiveState : public PowerState {
-public:
-    void turnOff(Device *device) override;
-    std::string getName() const override { return "ON"; }
-};
-
-class InactiveState : public PowerState {
-public:
-    void turnOn(Device *device) override;
-    std::string getName() const override { return "OFF"; }
-};
+class On  : public PowerState { public: void turnOff(Device&) override; const char* name() const override { return "ON";  } };
+class Off : public PowerState { public: void turnOn (Device&) override; const char* name() const override { return "OFF"; } };
 
 class Device {
-private:
-    std::unique_ptr<PowerState> currentState;
-
 public:
-    Device() : currentState(std::make_unique<InactiveState>()) {
-        std::cout << "Device initialized in state: " << currentState->getName() << "\n";
+    Device() : state_(std::make_unique<Off>()) {
+        std::cout << "Device starts " << state_->name() << '\n';
     }
 
-    void setCurrent(std::unique_ptr<PowerState> newState) {
-        std::cout << "   Switching state from " << currentState->getName() 
-                  << " to " << newState->getName() << "\n";
-        currentState = std::move(newState);
+    void setState(std::unique_ptr<PowerState> next) {
+        std::cout << "  " << state_->name() << " -> " << next->name() << '\n';
+        state_ = std::move(next);
     }
 
-    void turnOn() {
-        currentState->turnOn(this);
-    }
+    void turnOn()  { state_->turnOn(*this); }
+    void turnOff() { state_->turnOff(*this); }
 
-    void turnOff() {
-        currentState->turnOff(this);
-    }
+private:
+    std::unique_ptr<PowerState> state_;
 };
 
-void ActiveState::turnOff(Device *device) {
-    std::cout << "   Turning OFF...\n";
-    device->setCurrent(std::make_unique<InactiveState>());
-}
-
-void InactiveState::turnOn(Device *device) {
-    std::cout << "   Turning ON...\n";
-    device->setCurrent(std::make_unique<ActiveState>());
-}
+void On ::turnOff(Device& d) { d.setState(std::make_unique<Off>()); }
+void Off::turnOn (Device& d) { d.setState(std::make_unique<On>());  }
 
 int main() {
-    Device device;
-    
-    device.turnOn();
-    device.turnOff();
-    device.turnOff();  // No state change should occur
-    device.turnOn();
-    
-    return 0;
+    Device d;
+    d.turnOn();
+    d.turnOff();
+    d.turnOff();   // no-op
+    d.turnOn();
 }

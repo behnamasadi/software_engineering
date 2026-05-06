@@ -1,56 +1,46 @@
+// Strategy — conceptual skeleton.
+// Context delegates the variable part of the algorithm to a Strategy object
+// that the client can swap in.
+
 #include <iostream>
 #include <memory>
+#include <utility>
 
 class Strategy {
 public:
-  virtual void solve() = 0;
-  virtual ~Strategy() = default; // Virtual destructor to ensure proper cleanup
+    virtual ~Strategy() = default;
+    virtual void solve() = 0;
 };
 
-class ConcreteStrategy1 : public Strategy {
+class StrategyA : public Strategy {
 public:
-  void solve() override {
-    std::cout << "ConcreteStrategy1 solution" << std::endl;
-  }
+    void solve() override { std::cout << "A solves\n"; }
 };
 
-class ConcreteStrategy2 : public Strategy {
+class StrategyB : public Strategy {
 public:
-  void solve() override {
-    std::cout << "ConcreteStrategy2 solution" << std::endl;
-  }
+    void solve() override { std::cout << "B solves\n"; }
 };
 
 class Context {
-  std::shared_ptr<Strategy>
-      m_strategy; // Use shared_ptr to avoid dangling pointer issues
-
 public:
-  explicit Context(std::shared_ptr<Strategy> strategy = nullptr)
-      : m_strategy(std::move(strategy)) {}
+    explicit Context(std::unique_ptr<Strategy> s = nullptr) : strategy_(std::move(s)) {}
 
-  void setStrategy(std::shared_ptr<Strategy> strategy) {
-    m_strategy = std::move(strategy);
-  }
+    void setStrategy(std::unique_ptr<Strategy> s) { strategy_ = std::move(s); }
 
-  void execute() {
-    if (m_strategy) {
-      m_strategy->solve();
-    } else {
-      std::cerr << "Error: No strategy set!" << std::endl;
+    void run() {
+        if (!strategy_) { std::cerr << "no strategy\n"; return; }
+        strategy_->solve();
     }
-  }
+
+private:
+    std::unique_ptr<Strategy> strategy_;
 };
 
 int main() {
-  auto strategy1 = std::make_shared<ConcreteStrategy1>();
-  auto strategy2 = std::make_shared<ConcreteStrategy2>();
+    Context context(std::make_unique<StrategyA>());
+    context.run();
 
-  Context context(strategy1);
-  context.execute();
-
-  context.setStrategy(strategy2);
-  context.execute();
-
-  return 0;
+    context.setStrategy(std::make_unique<StrategyB>());
+    context.run();
 }

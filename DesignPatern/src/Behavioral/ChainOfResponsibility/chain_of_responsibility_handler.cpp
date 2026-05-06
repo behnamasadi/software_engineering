@@ -1,103 +1,53 @@
+// Chain of Responsibility — conceptual example.
+// Each handler tries to process the request; if it can't, it forwards to the
+// next handler in the chain. The sender is decoupled from the eventual handler.
+
 #include <iostream>
-#include <vector>
-#include <ctime>
 
-using namespace std;
-
-class Base {
+class Handler {
 public:
-    Base* next; // 1. "next" pointer in the base class
+    virtual ~Handler() = default;
 
-    Base() : next(nullptr) {}
-
-    void setNext(Base* n) {
-        next = n;
+    // Returns *this so chains can be built fluently: a.setNext(&b).setNext(&c);
+    Handler& setNext(Handler* next) {
+        next_ = next;
+        return *next;
     }
 
-    void add(Base* n) {
-        if (next)
-            next->add(n);
-        else
-            next = n;
+    virtual void handle(int request) {
+        if (next_) next_->handle(request);
+        else std::cout << "No handler for " << request << '\n';
     }
 
-    // 2. The "chain" method in the base class always delegates to the next obj
-    virtual void handle(int i) {
-        if (next)
-            next->handle(i); // Check for null before calling
-        else
-            cout << "No handler could process " << i << '\n';
-    }
-
-    virtual ~Base() = default; // Virtual destructor for proper cleanup
+protected:
+    Handler* next_ = nullptr;
 };
 
-class Handler1 : public Base {
+// Each concrete handler claims requests of one residue class mod 4.
+class ModHandler : public Handler {
 public:
-    void handle(int i) override {
-        if (i % 4 == 1) {
-            cout << "H1 handled " << i << "  ";
-        } else {
-            cout << "H1 passed " << i << "  ";
-            if (next) next->handle(i);
-        }
-    }
-};
+    ModHandler(int id, int residue) : id_(id), residue_(residue) {}
 
-class Handler2 : public Base {
-public:
-    void handle(int i) override {
-        if (i % 4 == 2) {
-            cout << "H2 handled " << i << "  ";
+    void handle(int request) override {
+        if (request % 4 == residue_) {
+            std::cout << "H" << id_ << " handled " << request << '\n';
         } else {
-            cout << "H2 passed " << i << "  ";
-            if (next) next->handle(i);
+            std::cout << "H" << id_ << " passed " << request << '\n';
+            Handler::handle(request);  // forward
         }
     }
-};
 
-class Handler3 : public Base {
-public:
-    void handle(int i) override {
-        if (i % 4 == 3) {
-            cout << "H3 handled " << i << "  ";
-        } else {
-            cout << "H3 passed " << i << "  ";
-            if (next) next->handle(i);
-        }
-    }
-};
-
-class Handler4 : public Base {
-public:
-    void handle(int i) override {
-        if (i % 4 == 0) {
-            cout << "H4 handled " << i << "  ";
-        } else {
-            cout << "H4 passed " << i << "  ";
-            if (next) next->handle(i);
-        }
-    }
+private:
+    int id_;
+    int residue_;
 };
 
 int main() {
-    srand(time(0));
+    ModHandler h1(1, 1), h2(2, 2), h3(3, 3), h0(4, 0);
+    h1.setNext(&h2).setNext(&h3).setNext(&h0);
 
-    Handler1 root;
-    Handler2 two;
-    Handler3 thr;
-    Handler4 four;
-
-    root.add(&two);
-    root.add(&thr);
-    root.add(&four);
-
-    // Removed circular reference: `four.setNext(&root);`
-
-    for (int i = 0; i < 9; i++) {
-        root.handle(i);
-        cout << '\n';
+    for (int i = 1; i <= 6; ++i) {
+        h1.handle(i);
+        std::cout << "---\n";
     }
-
-    return 0;
 }

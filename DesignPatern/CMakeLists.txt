@@ -1,3 +1,20 @@
+cmake_minimum_required(VERSION 3.16)
+project(DesignPatterns CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(Threads REQUIRED)
+
 # ########################################### Creational ############################################
 
 # ##################### (1) Abstract Factory ###########################
@@ -55,10 +72,10 @@ add_executable(singleton_before_after src/Creational/Singleton/singleton_before_
 target_link_libraries(singleton_before_after)
 
 add_executable(logger_singletone src/Creational/Singleton/logger_singletone.cpp)
-target_link_libraries(logger_singletone)
+target_link_libraries(logger_singletone PRIVATE Threads::Threads)
 
 add_executable(naive_singleton src/Creational/Singleton/naive_singleton.cpp)
-target_link_libraries(naive_singleton -pthread)
+target_link_libraries(naive_singleton PRIVATE Threads::Threads)
 
 
 # ##################### (6) ObjectPool ###########################
@@ -66,7 +83,7 @@ add_executable(expensive_object src/Creational/ObjectPool/expensive_object.cpp)
 target_link_libraries(expensive_object )
 
 add_executable(thread_safe_object_pool src/Creational/ObjectPool/thread_safe_object_pool.cpp)
-target_link_libraries(thread_safe_object_pool )
+target_link_libraries(thread_safe_object_pool PRIVATE Threads::Threads)
 
 
 # ########################################### Structural ############################################

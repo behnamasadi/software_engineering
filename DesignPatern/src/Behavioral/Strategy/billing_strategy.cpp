@@ -1,81 +1,62 @@
+// Strategy — pluggable algorithms for the same task.
+// A checkout calculates a total using a discount strategy. Swapping the
+// strategy at runtime changes the result without touching Checkout.
+
 #include <iostream>
 #include <memory>
-#include <string>
-#include <vector>
+#include <utility>
 
-class Literal;
-class Addition;
-
-class IExpressionVisitor {
+class DiscountStrategy {
 public:
-    virtual ~IExpressionVisitor() = default;
-    virtual void Visit(const Literal &literal) = 0;
-    virtual void Visit(const Addition &addition) = 0;
+    virtual ~DiscountStrategy() = default;
+    virtual double apply(double subtotal) const = 0;
 };
 
-class IExpression {
+class NoDiscount : public DiscountStrategy {
 public:
-    virtual ~IExpression() = default;
-    virtual void Accept(IExpressionVisitor &visitor) const = 0;
+    double apply(double subtotal) const override { return subtotal; }
 };
 
-class Literal : public IExpression {
+class PercentageOff : public DiscountStrategy {
 public:
-    double value;
-
-    explicit Literal(double val) : value(val) {}
-
-    void Accept(IExpressionVisitor &visitor) const override {
-        visitor.Visit(*this);
+    explicit PercentageOff(double percent) : percent_(percent) {}
+    double apply(double subtotal) const override {
+        return subtotal * (1.0 - percent_ / 100.0);
     }
+private:
+    double percent_;
 };
 
-class Addition : public IExpression {
+class FlatOff : public DiscountStrategy {
 public:
-    std::unique_ptr<IExpression> left;
-    std::unique_ptr<IExpression> right;
-
-    Addition(std::unique_ptr<IExpression> l, std::unique_ptr<IExpression> r)
-        : left(std::move(l)), right(std::move(r)) {}
-
-    void Accept(IExpressionVisitor &visitor) const override {
-        visitor.Visit(*this);
+    explicit FlatOff(double amount) : amount_(amount) {}
+    double apply(double subtotal) const override {
+        return subtotal > amount_ ? subtotal - amount_ : 0.0;
     }
+private:
+    double amount_;
 };
 
-class ExpressionPrinter : public IExpressionVisitor {
-    std::string result;
-
+class Checkout {
 public:
-    void Visit(const Literal &literal) override {
-        result += std::to_string(literal.value);
-    }
+    explicit Checkout(std::unique_ptr<DiscountStrategy> d)
+        : discount_(std::move(d)) {}
 
-    void Visit(const Addition &addition) override {
-        result += "(";
-        addition.left->Accept(*this);
-        result += " + ";
-        addition.right->Accept(*this);
-        result += ")";
-    }
+    void setDiscount(std::unique_ptr<DiscountStrategy> d) { discount_ = std::move(d); }
 
-    std::string GetResult() const {
-        return result;
-    }
+    double total(double subtotal) const { return discount_->apply(subtotal); }
+
+private:
+    std::unique_ptr<DiscountStrategy> discount_;
 };
 
 int main() {
-    // Constructing the expression (1 + 2) + 3
-    auto expression = std::make_unique<Addition>(
-        std::make_unique<Addition>(
-            std::make_unique<Literal>(1),
-            std::make_unique<Literal>(2)),
-        std::make_unique<Literal>(3));
+    Checkout cart(std::make_unique<NoDiscount>());
+    std::cout << "no discount:  " << cart.total(100) << '\n';
 
-    ExpressionPrinter printer;
-    expression->Accept(printer);
+    cart.setDiscount(std::make_unique<PercentageOff>(15));
+    std::cout << "15% off:      " << cart.total(100) << '\n';
 
-    std::cout << printer.GetResult() << std::endl;
-
-    return 0;
+    cart.setDiscount(std::make_unique<FlatOff>(20));
+    std::cout << "$20 off:      " << cart.total(100) << '\n';
 }

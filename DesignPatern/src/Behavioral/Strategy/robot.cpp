@@ -1,222 +1,83 @@
-#include <functional>
+// Strategy — robot behavior with composable parts.
+//
+// The "before" path uses inheritance to combine search/attack/defend:
+// every new combination needs a new subclass (LinearPunchRun, SpiralPinchRun,
+// LinearPinchHide, ...). N×M×K classes for N×M×K combinations.
+//
+// The "after" path makes each axis its own Strategy and composes them at
+// runtime. New combinations are constructor arguments, not new classes.
+
 #include <iostream>
 #include <memory>
+#include <utility>
 
-namespace before {
+namespace before_inheritance_explosion {
 
-class robot {
+// One subclass per (search, attack, defend) combination.
+class Robot {
 public:
-  virtual void search() = 0;
-  virtual void attack() = 0;
-  virtual void defend() = 0;
-  virtual ~robot() = default;
+    virtual ~Robot() = default;
+    virtual void search() = 0;
+    virtual void attack() = 0;
+    virtual void defend() = 0;
 };
 
-class linear : public robot {
+class LinearPunchRun : public Robot {
 public:
-  void search() override { std::cout << "linear search" << std::endl; }
+    void search() override { std::cout << "  search: linear\n"; }
+    void attack() override { std::cout << "  attack: punch\n"; }
+    void defend() override { std::cout << "  defend: run\n"; }
 };
 
-class linearPinch : public linear {
+class SpiralPinchRun : public Robot {
 public:
-  void attack() override { std::cout << "pinch attack" << std::endl; }
+    void search() override { std::cout << "  search: spiral\n"; }
+    void attack() override { std::cout << "  attack: pinch\n"; }
+    void defend() override { std::cout << "  defend: run\n"; }
+};
+// ... and many more for every other combination.
+
+}  // namespace before_inheritance_explosion
+
+namespace after_strategy {
+
+class SearchStrategy { public: virtual ~SearchStrategy() = default; virtual void run() = 0; };
+class AttackStrategy { public: virtual ~AttackStrategy() = default; virtual void run() = 0; };
+class DefendStrategy { public: virtual ~DefendStrategy() = default; virtual void run() = 0; };
+
+class LinearSearch : public SearchStrategy { public: void run() override { std::cout << "  search: linear\n"; } };
+class SpiralSearch : public SearchStrategy { public: void run() override { std::cout << "  search: spiral\n"; } };
+class Punch        : public AttackStrategy { public: void run() override { std::cout << "  attack: punch\n";  } };
+class Pinch        : public AttackStrategy { public: void run() override { std::cout << "  attack: pinch\n";  } };
+class Run          : public DefendStrategy { public: void run() override { std::cout << "  defend: run\n";    } };
+class Hide         : public DefendStrategy { public: void run() override { std::cout << "  defend: hide\n";   } };
+
+class Robot {
+public:
+    Robot(std::unique_ptr<SearchStrategy> s,
+          std::unique_ptr<AttackStrategy> a,
+          std::unique_ptr<DefendStrategy> d)
+        : search_(std::move(s)), attack_(std::move(a)), defend_(std::move(d)) {}
+
+    void run() { search_->run(); attack_->run(); defend_->run(); }
+
+private:
+    std::unique_ptr<SearchStrategy> search_;
+    std::unique_ptr<AttackStrategy> attack_;
+    std::unique_ptr<DefendStrategy> defend_;
 };
 
-class linearPinchRun : public linearPinch {
-public:
-  void defend() override { std::cout << "run defense" << std::endl; }
-};
-
-class linearPunch : public linear {
-public:
-  void attack() override { std::cout << "punch attack" << std::endl; }
-};
-
-class linearPunchRun : public linearPunch {
-public:
-  void defend() override { std::cout << "run defense" << std::endl; }
-};
-
-class spiral : public robot {
-public:
-  void search() override { std::cout << "spiral search" << std::endl; }
-};
-
-class spiralPinch : public spiral {
-public:
-  void attack() override { std::cout << "pinch attack" << std::endl; }
-};
-
-class spiralPinchRun : public spiralPinch {
-public:
-  void defend() override { std::cout << "run defense" << std::endl; }
-};
-
-} // namespace before
-
-// Runtime polymorphism
-namespace after {
-
-class robot;
-
-class Search {
-public:
-  virtual void apply(robot *r) const = 0;
-  virtual ~Search() = default;
-};
-
-class Attack {
-public:
-  virtual void apply(robot *r) const = 0;
-  virtual ~Attack() = default;
-};
-
-class Defend {
-public:
-  virtual void apply(robot *r) const = 0;
-  virtual ~Defend() = default;
-};
-
-class robot {
-  std::unique_ptr<Search> m_search;
-  std::unique_ptr<Attack> m_attack;
-  std::unique_ptr<Defend> m_defend;
-
-public:
-  robot(std::unique_ptr<Search> search, std::unique_ptr<Attack> attack,
-        std::unique_ptr<Defend> defend)
-      : m_search(std::move(search)), m_attack(std::move(attack)),
-        m_defend(std::move(defend)) {}
-
-  void attack() { m_attack->apply(this); }
-
-  void defend() { m_defend->apply(this); }
-
-  void search() { m_search->apply(this); }
-};
-
-class linear : public Search {
-public:
-  void apply(robot *r) const override {
-    std::cout << "search(linear)" << std::endl;
-  }
-};
-
-class spiral : public Search {
-public:
-  void apply(robot *r) const override {
-    std::cout << "search(spiral)" << std::endl;
-  }
-};
-
-class punch : public Attack {
-public:
-  void apply(robot *r) const override {
-    std::cout << "punch(attack)" << std::endl;
-  }
-};
-
-class pinch : public Attack {
-public:
-  void apply(robot *r) const override {
-    std::cout << "pinch(attack)" << std::endl;
-  }
-};
-
-class run : public Defend {
-public:
-  void apply(robot *r) const override {
-    std::cout << "run(defend)" << std::endl;
-  }
-};
-
-} // namespace after
-
-// Compile-time polymorphism
-namespace functionPtr {
-
-class robot {
-public:
-  using Search = std::function<void(robot *)>;
-  using Attack = std::function<void(robot *)>;
-  using Defend = std::function<void(robot *)>;
-
-  Search m_search;
-  Attack m_attack;
-  Defend m_defend;
-
-  robot(Search search, Attack attack, Defend defend)
-      : m_search(search), m_attack(attack), m_defend(defend) {}
-
-  void attack() { m_attack(this); }
-
-  void defend() { m_defend(this); }
-
-  void search() { m_search(this); }
-};
-
-class Search {
-public:
-  void operator()(robot *r) { std::cout << "Search (strategy)" << std::endl; }
-};
-
-class Attack {
-public:
-  void operator()(robot *r) { std::cout << "punch(attack)" << std::endl; }
-};
-
-class Defend {
-public:
-  void operator()(robot *r) { std::cout << "run(defend)" << std::endl; }
-};
-
-} // namespace functionPtr
-
-template <typename T> void go(T *r) {
-  r->search();
-  r->attack();
-  r->defend();
-}
+}  // namespace after_strategy
 
 int main() {
-  {
-    std::unique_ptr<before::robot> r1 =
-        std::make_unique<before::linearPinchRun>();
-    go(r1.get());
-    std::unique_ptr<before::robot> r2 =
-        std::make_unique<before::linearPunchRun>();
-    go(r2.get());
-    std::unique_ptr<before::robot> r3 =
-        std::make_unique<before::spiralPinchRun>();
-    go(r3.get());
-  }
+    std::cout << "before (inheritance):\n";
+    before_inheritance_explosion::LinearPunchRun r1;
+    r1.search(); r1.attack(); r1.defend();
 
-  {
-    std::unique_ptr<after::robot> r1 = std::make_unique<after::robot>(
-        std::make_unique<after::linear>(), std::make_unique<after::punch>(),
-        std::make_unique<after::run>());
-    std::unique_ptr<after::robot> r2 = std::make_unique<after::robot>(
-        std::make_unique<after::linear>(), std::make_unique<after::pinch>(),
-        std::make_unique<after::run>());
-    std::unique_ptr<after::robot> r3 = std::make_unique<after::robot>(
-        std::make_unique<after::spiral>(), std::make_unique<after::pinch>(),
-        std::make_unique<after::run>());
-
-    go(r1.get());
-    go(r2.get());
-    go(r3.get());
-  }
-
-  {
-    functionPtr::Attack punch;
-    functionPtr::Search linearsearch;
-    functionPtr::Defend defend;
-    functionPtr::robot r1(linearsearch, punch, defend);
-    go(&r1);
-
-    functionPtr::robot r2(linearsearch, punch, [](functionPtr::robot *r) {
-      std::cout << "hide(defend)" << std::endl;
-    });
-    go(&r2);
-  }
+    std::cout << "after (composition):\n";
+    after_strategy::Robot composed(
+        std::make_unique<after_strategy::SpiralSearch>(),
+        std::make_unique<after_strategy::Pinch>(),
+        std::make_unique<after_strategy::Hide>());
+    composed.run();
 }

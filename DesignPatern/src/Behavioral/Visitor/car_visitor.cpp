@@ -1,129 +1,95 @@
+// Visitor — operation that walks a heterogeneous structure (a Car made of
+// wheels, body, engine) without modifying the element classes. Each visitor
+// (PrintVisitor, DoVisitor) is a new operation; the elements stay untouched.
+
 #include <iostream>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
-/*
- * The following example demonstrates the Visitor pattern.
- * A tree structure (a car with components like wheels, body, and engine)
- * is traversed by different visitors, performing distinct operations.
- */
-
-// Forward declarations
-class CarElementVisitor;
 class Body;
-class Car;
 class Engine;
 class Wheel;
+class Car;
 
-// Base class for all car elements
-class CarElement {
-public:
-  virtual void accept(CarElementVisitor *visitor) = 0; // Pure virtual function
-  virtual ~CarElement() = default; // Virtual destructor for proper cleanup
-};
-
-// Visitor interface
 class CarElementVisitor {
 public:
-  virtual void visit(Body *body) = 0;
-  virtual void visit(Car *car) = 0;
-  virtual void visit(Engine *engine) = 0;
-  virtual void visit(Wheel *wheel) = 0;
-  virtual ~CarElementVisitor() = default;
+    virtual ~CarElementVisitor() = default;
+    virtual void visit(const Body& body) = 0;
+    virtual void visit(const Engine& engine) = 0;
+    virtual void visit(const Wheel& wheel) = 0;
+    virtual void visit(const Car& car) = 0;
 };
 
-// Concrete element: Wheel
-class Wheel : public CarElement {
-private:
-  std::string name;
-
+class CarElement {
 public:
-  explicit Wheel(const std::string &name) : name(name) {}
-
-  std::string getName() const { return name; }
-
-  void accept(CarElementVisitor *visitor) override { visitor->visit(this); }
+    virtual ~CarElement() = default;
+    virtual void accept(CarElementVisitor& visitor) const = 0;
 };
 
-// Concrete element: Body
+class Wheel : public CarElement {
+public:
+    explicit Wheel(std::string name) : name_(std::move(name)) {}
+    const std::string& name() const { return name_; }
+    void accept(CarElementVisitor& visitor) const override { visitor.visit(*this); }
+private:
+    std::string name_;
+};
+
 class Body : public CarElement {
 public:
-  void accept(CarElementVisitor *visitor) override { visitor->visit(this); }
+    void accept(CarElementVisitor& visitor) const override { visitor.visit(*this); }
 };
 
-// Concrete element: Engine
 class Engine : public CarElement {
 public:
-  void accept(CarElementVisitor *visitor) override { visitor->visit(this); }
+    void accept(CarElementVisitor& visitor) const override { visitor.visit(*this); }
 };
 
-// Concrete element: Car (composite structure)
 class Car : public CarElement {
-private:
-  std::vector<std::unique_ptr<CarElement>> elements;
-
 public:
-  Car() {
-    elements.emplace_back(std::make_unique<Wheel>("front left"));
-    elements.emplace_back(std::make_unique<Wheel>("front right"));
-    elements.emplace_back(std::make_unique<Wheel>("back left"));
-    elements.emplace_back(std::make_unique<Wheel>("back right"));
-    elements.emplace_back(std::make_unique<Body>());
-    elements.emplace_back(std::make_unique<Engine>());
-  }
-
-  void accept(CarElementVisitor *visitor) override {
-    for (const auto &element : elements) {
-      element->accept(visitor);
+    Car() {
+        parts_.push_back(std::make_unique<Wheel>("front-left"));
+        parts_.push_back(std::make_unique<Wheel>("front-right"));
+        parts_.push_back(std::make_unique<Wheel>("back-left"));
+        parts_.push_back(std::make_unique<Wheel>("back-right"));
+        parts_.push_back(std::make_unique<Body>());
+        parts_.push_back(std::make_unique<Engine>());
     }
-    visitor->visit(this);
-  }
+
+    void accept(CarElementVisitor& visitor) const override {
+        for (const auto& part : parts_) part->accept(visitor);
+        visitor.visit(*this);
+    }
+
+private:
+    std::vector<std::unique_ptr<CarElement>> parts_;
 };
 
-// Concrete visitor: Performs actions
-class CarElementDoVisitor : public CarElementVisitor {
+class PrintVisitor : public CarElementVisitor {
 public:
-  void visit(Body *body) override {
-    std::cout << "Moving my body" << std::endl;
-  }
-
-  void visit(Car *car) override { std::cout << "Starting my car" << std::endl; }
-
-  void visit(Wheel *wheel) override {
-    std::cout << "Kicking my " << wheel->getName() << " wheel" << std::endl;
-  }
-
-  void visit(Engine *engine) override {
-    std::cout << "Starting my engine" << std::endl;
-  }
+    void visit(const Body&)            override { std::cout << "visit body\n"; }
+    void visit(const Engine&)          override { std::cout << "visit engine\n"; }
+    void visit(const Wheel& wheel)     override { std::cout << "visit " << wheel.name() << " wheel\n"; }
+    void visit(const Car&)             override { std::cout << "visit car\n"; }
 };
 
-// Concrete visitor: Prints elements
-class CarElementPrintVisitor : public CarElementVisitor {
+class DoVisitor : public CarElementVisitor {
 public:
-  void visit(Body *body) override { std::cout << "Visiting body" << std::endl; }
-
-  void visit(Car *car) override { std::cout << "Visiting car" << std::endl; }
-
-  void visit(Engine *engine) override {
-    std::cout << "Visiting engine" << std::endl;
-  }
-
-  void visit(Wheel *wheel) override {
-    std::cout << "Visiting " << wheel->getName() << " wheel" << std::endl;
-  }
+    void visit(const Body&)            override { std::cout << "moving body\n"; }
+    void visit(const Engine&)          override { std::cout << "starting engine\n"; }
+    void visit(const Wheel& wheel)     override { std::cout << "kicking " << wheel.name() << " wheel\n"; }
+    void visit(const Car&)             override { std::cout << "starting car\n"; }
 };
 
-// Main function
 int main() {
-  auto car = std::make_unique<Car>(); // Use smart pointer for safety
+    Car car;
+    PrintVisitor printer;
+    DoVisitor doer;
 
-  CarElementPrintVisitor printVisitor;
-  CarElementDoVisitor doVisitor;
-
-  car->accept(&printVisitor);
-  car->accept(&doVisitor);
-
-  return 0; // No memory leaks
+    std::cout << "--- print ---\n";
+    car.accept(printer);
+    std::cout << "--- do ---\n";
+    car.accept(doer);
 }

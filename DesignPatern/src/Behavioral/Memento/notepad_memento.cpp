@@ -1,105 +1,71 @@
+// Memento — capture an object's state so it can be restored later, without
+// exposing its internals.
+//
+// Roles:
+//   Originator (Editor)    : creates and consumes mementos
+//   Memento    (Snapshot)  : opaque state holder; only Editor can read it
+//   Caretaker  (History)   : keeps mementos but never inspects them
+
 #include <iostream>
-#include <string>
 #include <memory>
-#include <ctime>
+#include <string>
+#include <utility>
 #include <vector>
 
-class Snapshot {
-public:
-    virtual std::string getState() = 0;
-    virtual std::string getTimestamp() = 0;
-    virtual std::string getName() = 0;
-    virtual ~Snapshot() = default;
-};
-
-class TextSnapshot : public Snapshot {
-private:
-    std::string textState;
-    std::string timestamp;
-
-public:
-    TextSnapshot(std::string state) : textState(state) {
-        std::time_t now = std::time(nullptr);
-        timestamp = std::ctime(&now);
-        timestamp.pop_back(); // Remove newline added by ctime
-    }
-
-    std::string getState() override {
-        return textState;
-    }
-
-    std::string getTimestamp() override {
-        return timestamp;
-    }
-
-    std::string getName() override {
-        return timestamp + " / " + textState;
-    }
-};
-
 class Editor {
-    std::string textContent;
-
 public:
-    Editor(std::string initialText) : textContent(initialText) {
-        std::cout << "Editor: Initial content set to: \"" << textContent << "\"\n";
+    // Snapshot is opaque to outside code: state_ is private and Editor is friend.
+    class Snapshot {
+        friend class Editor;
+        explicit Snapshot(std::string text) : text_(std::move(text)) {}
+        std::string text_;
+    };
+
+    void type(const std::string& text) {
+        text_ = text;
+        std::cout << "[Editor] now: \"" << text_ << "\"\n";
     }
 
-    std::unique_ptr<Snapshot> save() {
-        return std::make_unique<TextSnapshot>(textContent);
+    std::unique_ptr<Snapshot> save() const {
+        return std::unique_ptr<Snapshot>(new Snapshot(text_));
     }
 
-    void restore(Snapshot* snapshot) {
-        textContent = snapshot->getState();
-        std::cout << "Editor: Restored content to: \"" << textContent << "\"\n";
+    void restore(const Snapshot& snap) {
+        text_ = snap.text_;
+        std::cout << "[Editor] restored: \"" << text_ << "\"\n";
     }
 
-    void updateText(const std::string& newText) {
-        textContent = newText;
-        std::cout << "Editor: Updated content to: \"" << textContent << "\"\n";
-    }
+private:
+    std::string text_;
 };
 
-class HistoryManager {
-    std::vector<std::unique_ptr<Snapshot>> history;
-    Editor* editor;
-
+class History {
 public:
-    HistoryManager(Editor* editor) : editor(editor) {}
+    void push(std::unique_ptr<Editor::Snapshot> snap) { stack_.push_back(std::move(snap)); }
 
-    void saveState() {
-        history.push_back(editor->save());
-        std::cout << "HistoryManager: Saved current state.\n";
+    std::unique_ptr<Editor::Snapshot> pop() {
+        if (stack_.empty()) return nullptr;
+        auto snap = std::move(stack_.back());
+        stack_.pop_back();
+        return snap;
     }
 
-    void undo() {
-        if (history.empty()) {
-            std::cout << "HistoryManager: No states to restore.\n";
-            return;
-        }
-
-        std::unique_ptr<Snapshot> lastSnapshot = std::move(history.back());
-        history.pop_back();
-        std::cout << "HistoryManager: Restoring to: " << lastSnapshot->getName() << "\n";
-        editor->restore(lastSnapshot.get());
-    }
+private:
+    std::vector<std::unique_ptr<Editor::Snapshot>> stack_;
 };
 
 int main() {
-    Editor editor("Initial Draft");
-    HistoryManager historyManager(&editor);
+    Editor editor;
+    History history;
 
-    editor.updateText("First Edit");
-    historyManager.saveState();
+    editor.type("Hello");
+    history.push(editor.save());
 
-    editor.updateText("Second Edit");
-    historyManager.saveState();
+    editor.type("Hello, world");
+    history.push(editor.save());
 
-    historyManager.undo();
+    editor.type("oops");
 
-    editor.updateText("Final Edit");
-    historyManager.saveState();
-
-    historyManager.undo();
-    historyManager.undo();
+    if (auto snap = history.pop()) editor.restore(*snap);  // back to "Hello, world"
+    if (auto snap = history.pop()) editor.restore(*snap);  // back to "Hello"
 }

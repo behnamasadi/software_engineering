@@ -1,75 +1,77 @@
+// Visitor — operation that walks a tree without changing the node classes.
+// Each Expression node has accept(visitor); the visitor decides per node type
+// what to do. Adding a new operation = a new visitor; node classes don't change.
+
 #include <iostream>
 #include <memory>
 #include <string>
+#include <utility>
 
 class Literal;
 class Addition;
 
-class IExpressionVisitor {
+class ExpressionVisitor {
 public:
-    virtual ~IExpressionVisitor() = default;
-    virtual void Visit(const Literal& literal) = 0;
-    virtual void Visit(const Addition& addition) = 0;
+    virtual ~ExpressionVisitor() = default;
+    virtual void visit(const Literal& literal) = 0;
+    virtual void visit(const Addition& addition) = 0;
 };
 
-class IExpression {
+class Expression {
 public:
-    virtual ~IExpression() = default;
-    virtual void Accept(IExpressionVisitor& visitor) const = 0;
+    virtual ~Expression() = default;
+    virtual void accept(ExpressionVisitor& visitor) const = 0;
 };
 
-class Literal : public IExpression {
+class Literal : public Expression {
 public:
-    double value;
-    explicit Literal(double val) : value(val) {}
-    void Accept(IExpressionVisitor& visitor) const override {
-        visitor.Visit(*this);
-    }
+    explicit Literal(double value) : value_(value) {}
+    double value() const { return value_; }
+    void accept(ExpressionVisitor& visitor) const override { visitor.visit(*this); }
+private:
+    double value_;
 };
 
-class Addition : public IExpression {
+class Addition : public Expression {
 public:
-    std::unique_ptr<IExpression> left;
-    std::unique_ptr<IExpression> right;
+    Addition(std::unique_ptr<Expression> lhs, std::unique_ptr<Expression> rhs)
+        : left_(std::move(lhs)), right_(std::move(rhs)) {}
 
-    Addition(std::unique_ptr<IExpression> lhs, std::unique_ptr<IExpression> rhs)
-        : left(std::move(lhs)), right(std::move(rhs)) {}
+    const Expression& left()  const { return *left_; }
+    const Expression& right() const { return *right_; }
 
-    void Accept(IExpressionVisitor& visitor) const override {
-        visitor.Visit(*this);
-    }
+    void accept(ExpressionVisitor& visitor) const override { visitor.visit(*this); }
+
+private:
+    std::unique_ptr<Expression> left_, right_;
 };
 
-class ExpressionPrinter : public IExpressionVisitor {
-    std::string output;
-
+class ExpressionPrinter : public ExpressionVisitor {
 public:
-    void Visit(const Literal& literal) override {
-        output += std::to_string(literal.value);
+    void visit(const Literal& literal) override {
+        out_ += std::to_string(literal.value());
+    }
+    void visit(const Addition& addition) override {
+        out_ += "(";
+        addition.left().accept(*this);
+        out_ += " + ";
+        addition.right().accept(*this);
+        out_ += ")";
     }
 
-    void Visit(const Addition& addition) override {
-        output += "(";
-        addition.left->Accept(*this);
-        output += " + ";
-        addition.right->Accept(*this);
-        output += ")";
-    }
+    const std::string& result() const { return out_; }
 
-    std::string GetResult() const {
-        return output;
-    }
+private:
+    std::string out_;
 };
 
 int main() {
-    // Construct (1 + 2) + 3 using smart pointers
+    // (1 + 2) + 3
     auto expr = std::make_unique<Addition>(
         std::make_unique<Addition>(std::make_unique<Literal>(1), std::make_unique<Literal>(2)),
-        std::make_unique<Literal>(3)
-    );
+        std::make_unique<Literal>(3));
 
     ExpressionPrinter printer;
-    expr->Accept(printer);
-    
-    std::cout << printer.GetResult() << std::endl;
+    expr->accept(printer);
+    std::cout << printer.result() << '\n';
 }

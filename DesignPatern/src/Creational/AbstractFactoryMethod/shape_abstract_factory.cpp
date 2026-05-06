@@ -1,111 +1,75 @@
+// Abstract Factory — shape families.
+// SimpleShapeFactory yields {Circle, Square}; RobustShapeFactory yields
+// {Ellipse, Rectangle}. Client code only knows ShapeFactory and Shape.
+
 #include <iostream>
 #include <memory>
 #include <vector>
 
-using namespace std;
-
-class Shape
-{
-protected:
-    int id_;
-    static int total_;
-
+class Shape {
 public:
     Shape() : id_(total_++) {}
-    virtual void draw() = 0;
     virtual ~Shape() = default;
-};
+    virtual void draw() const = 0;
 
+protected:
+    int id_;
+
+private:
+    static int total_;
+};
 int Shape::total_ = 0;
 
-class Circle : public Shape
-{
+class Circle : public Shape {
 public:
-    void draw() override { cout << "⭕ Circle " << id_ << ": draw" << endl; }
+    void draw() const override { std::cout << "  Circle "    << id_ << "\n"; }
+};
+class Square : public Shape {
+public:
+    void draw() const override { std::cout << "  Square "    << id_ << "\n"; }
+};
+class Ellipse : public Shape {
+public:
+    void draw() const override { std::cout << "  Ellipse "   << id_ << "\n"; }
+};
+class Rectangle : public Shape {
+public:
+    void draw() const override { std::cout << "  Rectangle " << id_ << "\n"; }
 };
 
-class Square : public Shape
-{
+class ShapeFactory {
 public:
-    void draw() override { cout << "⬜ Square " << id_ << ": draw" << endl; }
-};
-
-class Ellipse : public Shape
-{
-public:
-    void draw() override { cout << "🟢 Ellipse " << id_ << ": draw" << endl; }
-};
-
-class Rectangle : public Shape
-{
-public:
-    void draw() override { cout << "🟦 Rectangle " << id_ << ": draw" << endl; }
-};
-
-// Abstract Factory
-class ShapeFactory
-{
-public:
-    virtual unique_ptr<Shape> createCurvedShape() = 0;
-    virtual unique_ptr<Shape> createStraightShape() = 0;
     virtual ~ShapeFactory() = default;
+    virtual std::unique_ptr<Shape> createCurvedShape()   = 0;
+    virtual std::unique_ptr<Shape> createStraightShape() = 0;
 };
 
-// Simple Shape Factory
-class SimpleShapeFactory : public ShapeFactory
-{
+class SimpleShapeFactory : public ShapeFactory {
 public:
-    unique_ptr<Shape> createCurvedShape() override
-    {
-        return make_unique<Circle>();
-    }
-
-    unique_ptr<Shape> createStraightShape() override
-    {
-        return make_unique<Square>();
-    }
+    std::unique_ptr<Shape> createCurvedShape()   override { return std::make_unique<Circle>(); }
+    std::unique_ptr<Shape> createStraightShape() override { return std::make_unique<Square>(); }
 };
 
-// Robust Shape Factory
-class RobustShapeFactory : public ShapeFactory
-{
+class RobustShapeFactory : public ShapeFactory {
 public:
-    unique_ptr<Shape> createCurvedShape() override
-    {
-        return make_unique<Ellipse>();
-    }
-
-    unique_ptr<Shape> createStraightShape() override
-    {
-        return make_unique<Rectangle>();
-    }
+    std::unique_ptr<Shape> createCurvedShape()   override { return std::make_unique<Ellipse>(); }
+    std::unique_ptr<Shape> createStraightShape() override { return std::make_unique<Rectangle>(); }
 };
 
-// Define which factory to use
-#define SIMPLE_FACTORY  // Change to ROBUST_FACTORY to switch
+void drawScene(ShapeFactory& factory) {
+    std::vector<std::unique_ptr<Shape>> shapes;
+    shapes.push_back(factory.createCurvedShape());
+    shapes.push_back(factory.createStraightShape());
+    shapes.push_back(factory.createCurvedShape());
+    for (const auto& s : shapes) s->draw();
+}
 
-int main()
-{
-    unique_ptr<ShapeFactory> factory;
+int main() {
+    std::cout << "Simple family:\n";
+    SimpleShapeFactory simple;
+    drawScene(simple);
 
-#ifdef SIMPLE_FACTORY
-    factory = make_unique<SimpleShapeFactory>();
-#elif defined(ROBUST_FACTORY)
-    factory = make_unique<RobustShapeFactory>();
-#endif
-
-    vector<unique_ptr<Shape>> shapes;
-
-    // Create different types of shapes using factory
-    shapes.push_back(factory->createCurvedShape());   // Circle or Ellipse
-    shapes.push_back(factory->createStraightShape()); // Square or Rectangle
-    shapes.push_back(factory->createCurvedShape());   // Circle or Ellipse
-
-    // Draw all shapes
-    for (const auto& shape : shapes)
-    {
-        shape->draw();
-    }
-
-    return 0;
+    std::cout << "Robust family:\n";
+    RobustShapeFactory robust;
+    drawScene(robust);
 }

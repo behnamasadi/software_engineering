@@ -1,87 +1,61 @@
+// Abstract Factory — minimal skeleton.
+//
+// AbstractProduct: IButton
+// ConcreteProducts: WinButton, OSXButton
+// AbstractFactory: IGUIFactory
+// ConcreteFactories: WinFactory, OSXFactory
+
 #include <iostream>
-#include <string>
+#include <memory>
 
-class IButton
-{
+class IButton {
 public:
-    void virtual  Paint(){}
+    virtual ~IButton() = default;
+    virtual void paint() = 0;
 };
 
-class IGUIFactory
-{
+class WinButton : public IButton {
 public:
-    virtual IButton *  CreateButton(){}
+    void paint() override { std::cout << "Win button painted\n"; }
 };
 
-class WinButton :public  IButton
-{
-    public:
-    void Paint()
-    {
-        //Render a button in a Windows style
-    }
-};
-
-class WinFactory : public IGUIFactory
-{
+class OSXButton : public IButton {
 public:
-    IButton * CreateButton()
-    {
-        return new WinButton();
-    }
+    void paint() override { std::cout << "OSX button painted\n"; }
 };
 
-class OSXButton : public IButton
-{
-    public:
-    void Paint()
-    {
-        //Render a button in a Mac OS X style
-    }
-};
-
-class OSXFactory : public IGUIFactory
-{
+class IGUIFactory {
 public:
-    IButton * CreateButton()
-    {
-        return new OSXButton();
+    virtual ~IGUIFactory() = default;
+    virtual std::unique_ptr<IButton> createButton() = 0;
+};
+
+class WinFactory : public IGUIFactory {
+public:
+    std::unique_ptr<IButton> createButton() override {
+        return std::make_unique<WinButton>();
     }
 };
 
-enum class APPEARANCE
-{
-     WIN, MAC
+class OSXFactory : public IGUIFactory {
+public:
+    std::unique_ptr<IButton> createButton() override {
+        return std::make_unique<OSXButton>();
+    }
 };
 
-/*
-Abstract factory ==> IGUIFactory
-WinFactory ==> concrete factory1
-OSXFactory ==> concrete factory2
+enum class Appearance { Win, Mac };
 
-Abstract ProductA ==> IButton
-ProductA1 ==> OSXButton
-ProductA2 ==> WinButton
-*/
-
-
-int main()
-{
-    APPEARANCE appearance = APPEARANCE::MAC;
-
-    IGUIFactory *factory;
-    switch (appearance)
-    {
-        case APPEARANCE::WIN:
-            factory = new WinFactory();
-            break;
-        case APPEARANCE::MAC:
-            factory = new OSXFactory();
-            break;
+std::unique_ptr<IGUIFactory> makeFactory(Appearance a) {
+    switch (a) {
+        case Appearance::Win: return std::make_unique<WinFactory>();
+        case Appearance::Mac: return std::make_unique<OSXFactory>();
     }
-
-    IButton* button = factory->CreateButton();
-    //auto button = factory->CreateButton();
-    button->Paint();
+    return nullptr;  // unreachable
 }
 
+int main() {
+    auto factory = makeFactory(Appearance::Mac);
+    auto button  = factory->createButton();
+    button->paint();
+}

@@ -1,55 +1,39 @@
+// Factory Method — pick a Vehicle subtype by enum.
+
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
-// Abstract Product: Vehicle
 class Vehicle {
 public:
-    virtual void describe() const = 0;
     virtual ~Vehicle() = default;
+    virtual void describe() const = 0;
 };
 
-// Concrete Product: Motorcycle
 class Motorcycle : public Vehicle {
 public:
-    void describe() const override {
-        std::cout << "🏍️ This is a motorcycle (Two-Wheeler)\n";
-    }
+    void describe() const override { std::cout << "  motorcycle (2 wheels)\n"; }
 };
 
-// Concrete Product: Car
 class Car : public Vehicle {
 public:
-    void describe() const override {
-        std::cout << "🚗 This is a car (Four-Wheeler)\n";
-    }
+    void describe() const override { std::cout << "  car (4 wheels)\n"; }
 };
 
-// Factory Class
+enum class VehicleType { Motorcycle, Car };
+
 class VehicleFactory {
 public:
-    static std::unique_ptr<Vehicle> createVehicle(int type) {
-        if (type == 1) {
-            return std::make_unique<Motorcycle>();
-        } else if (type == 2) {
-            return std::make_unique<Car>();
-        } else {
-            throw std::invalid_argument("Unknown vehicle type!");
+    static std::unique_ptr<Vehicle> create(VehicleType type) {
+        switch (type) {
+            case VehicleType::Motorcycle: return std::make_unique<Motorcycle>();
+            case VehicleType::Car:        return std::make_unique<Car>();
         }
+        throw std::invalid_argument("Unknown vehicle type");
     }
 };
 
-// Main Function
 int main() {
-    try {
-        std::unique_ptr<Vehicle> myBike = VehicleFactory::createVehicle(1);
-        myBike->describe();
-
-        std::unique_ptr<Vehicle> myCar = VehicleFactory::createVehicle(2);
-        myCar->describe();
-    } 
-    catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << '\n';
-    }
-
-    return 0;
+    VehicleFactory::create(VehicleType::Motorcycle)->describe();
+    VehicleFactory::create(VehicleType::Car)->describe();
 }

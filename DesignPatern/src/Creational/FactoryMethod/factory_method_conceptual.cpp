@@ -1,46 +1,43 @@
+// Factory Method — conceptual skeleton.
+//
+// ProductCreator declares a factory method (createProduct). Subclasses decide
+// which Product to instantiate. Common business logic (generateReport) lives
+// in the base class; only the type of product varies.
+
 #include <iostream>
 #include <memory>
 #include <string>
 
-// Abstract Product
 class Product {
 public:
     virtual ~Product() = default;
-    virtual std::string getInfo() const = 0;
+    virtual std::string info() const = 0;
 };
 
-// Concrete Product: Alpha
 class AlphaProduct : public Product {
 public:
-    std::string getInfo() const override {
-        return "{AlphaProduct: Advanced Processing}";
-    }
+    std::string info() const override { return "AlphaProduct"; }
 };
 
-// Concrete Product: Beta
 class BetaProduct : public Product {
 public:
-    std::string getInfo() const override {
-        return "{BetaProduct: Efficient Performance}";
-    }
+    std::string info() const override { return "BetaProduct"; }
 };
 
-// Abstract Creator
 class ProductCreator {
 public:
     virtual ~ProductCreator() = default;
-    
-    // Factory Method using smart pointers
+
+    // Factory Method.
     virtual std::unique_ptr<Product> createProduct() const = 0;
 
-    // Business logic using factory method
+    // Business logic that uses the factory method.
     std::string generateReport() const {
-        auto product = this->createProduct();
-        return "ProductCreator: Successfully worked with " + product->getInfo();
+        auto product = createProduct();
+        return "report: worked with " + product->info();
     }
 };
 
-// Concrete Creator: Alpha
 class AlphaCreator : public ProductCreator {
 public:
     std::unique_ptr<Product> createProduct() const override {
@@ -48,7 +45,6 @@ public:
     }
 };
 
-// Concrete Creator: Beta
 class BetaCreator : public ProductCreator {
 public:
     std::unique_ptr<Product> createProduct() const override {
@@ -56,21 +52,14 @@ public:
     }
 };
 
-// Client Code
 void clientProcess(const ProductCreator& creator) {
-    std::cout << "Client: Executing process...\n"
-              << creator.generateReport() << std::endl;
+    std::cout << "  " << creator.generateReport() << '\n';
 }
 
-// Main Function
 int main() {
-    std::cout << "🚀 App: Running with AlphaCreator.\n";
-    std::unique_ptr<ProductCreator> alphaCreator = std::make_unique<AlphaCreator>();
-    clientProcess(*alphaCreator);
-    
-    std::cout << "\n🚀 App: Running with BetaCreator.\n";
-    std::unique_ptr<ProductCreator> betaCreator = std::make_unique<BetaCreator>();
-    clientProcess(*betaCreator);
+    std::cout << "AlphaCreator:\n";
+    clientProcess(AlphaCreator{});
 
-    return 0;
+    std::cout << "BetaCreator:\n";
+    clientProcess(BetaCreator{});
 }

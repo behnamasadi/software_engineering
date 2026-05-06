@@ -1,137 +1,88 @@
+// Factory Method — before/after.
+//
+// "Before": every site that needs a Stooge has its own if/else picking which
+// concrete subclass to new. The selection logic is duplicated everywhere.
+//
+// "After": one static factory method lives next to the type. Adding a new
+// stooge means adding one branch, not editing every call site.
+
 #include <iostream>
-#include <vector>
 #include <memory>
+#include <vector>
 
-using namespace std;
+namespace before_hardcoded {
 
-namespace before
-{
-    class Stooge
-    {
-      public:
-        virtual void performAction() = 0;
-        virtual ~Stooge() = default;
-    };
+class Stooge {
+public:
+    virtual ~Stooge() = default;
+    virtual void perform() = 0;
+};
 
-    class Larry : public Stooge
-    {
-      public:
-        void performAction() override
-        {
-            cout << "Larry: poke eyes\n";
-        }
-    };
-    
-    class Moe : public Stooge
-    {
-      public:
-        void performAction() override
-        {
-            cout << "Moe: slap head\n";
-        }
-    };
-    
-    class Curly : public Stooge
-    {
-      public:
-        void performAction() override
-        {
-            cout << "Curly: suffer abuse\n";
-        }
-    };
-}
+class Larry : public Stooge {
+public:
+    void perform() override { std::cout << "  Larry: poke eyes\n"; }
+};
+class Moe : public Stooge {
+public:
+    void perform() override { std::cout << "  Moe: slap head\n"; }
+};
+class Curly : public Stooge {
+public:
+    void perform() override { std::cout << "  Curly: suffer abuse\n"; }
+};
 
-namespace after
-{
-    class Stooge
-    {
-      public:
-        // Factory Method using smart pointers
-        static unique_ptr<Stooge> createStooge(int choice);
-        virtual void performAction() = 0;
-        virtual ~Stooge() = default;
-    };
+}  // namespace before_hardcoded
 
-    class Larry : public Stooge
-    {
-      public:
-        void performAction() override
-        {
-            cout << "Larry: poke eyes\n";
-        }
-    };
+namespace after_factory_method {
 
-    class Moe : public Stooge
-    {
-      public:
-        void performAction() override
-        {
-            cout << "Moe: slap head\n";
-        }
-    };
+class Stooge {
+public:
+    virtual ~Stooge() = default;
+    virtual void perform() = 0;
 
-    class Curly : public Stooge
-    {
-      public:
-        void performAction() override
-        {
-            cout << "Curly: suffer abuse\n";
-        }
-    };
+    // Factory Method.
+    static std::unique_ptr<Stooge> create(int choice);
+};
 
-    unique_ptr<Stooge> Stooge::createStooge(int choice)
-    {
-        if (choice == 1)
-            return make_unique<Larry>();
-        else if (choice == 2)
-            return make_unique<Moe>();
-        else
-            return make_unique<Curly>();
+class Larry : public Stooge {
+public:
+    void perform() override { std::cout << "  Larry: poke eyes\n"; }
+};
+class Moe : public Stooge {
+public:
+    void perform() override { std::cout << "  Moe: slap head\n"; }
+};
+class Curly : public Stooge {
+public:
+    void perform() override { std::cout << "  Curly: suffer abuse\n"; }
+};
+
+std::unique_ptr<Stooge> Stooge::create(int choice) {
+    switch (choice) {
+        case 1:  return std::make_unique<Larry>();
+        case 2:  return std::make_unique<Moe>();
+        default: return std::make_unique<Curly>();
     }
 }
 
-int main()
-{
+}  // namespace after_factory_method
+
+int main() {
+    std::cout << "--- before (hardcoded) ---\n";
     {
-        cout << "\n🔴 BEFORE: Hardcoded Stooge Creation\n";
-        vector<unique_ptr<before::Stooge>> stooges;
-        int choice;
-
-        while (true)
-        {
-            cout << "Larry(1) Moe(2) Curly(3) Go(0): ";
-            cin >> choice;
-            if (choice == 0)
-                break;
-            else if (choice == 1)
-                stooges.push_back(make_unique<before::Larry>());
-            else if (choice == 2)
-                stooges.push_back(make_unique<before::Moe>());
-            else
-                stooges.push_back(make_unique<before::Curly>());
-        }
-
-        for (const auto& stooge : stooges)
-            stooge->performAction();
+        std::vector<std::unique_ptr<before_hardcoded::Stooge>> stooges;
+        stooges.push_back(std::make_unique<before_hardcoded::Larry>());
+        stooges.push_back(std::make_unique<before_hardcoded::Moe>());
+        stooges.push_back(std::make_unique<before_hardcoded::Curly>());
+        for (auto& s : stooges) s->perform();
     }
 
+    std::cout << "--- after (factory method) ---\n";
     {
-        cout << "\n🟢 AFTER: Factory Method with Smart Pointers\n";
-        vector<unique_ptr<after::Stooge>> stooges;
-        int choice;
-
-        while (true)
-        {
-            cout << "Larry(1) Moe(2) Curly(3) Go(0): ";
-            cin >> choice;
-            if (choice == 0)
-                break;
-            stooges.push_back(after::Stooge::createStooge(choice));
+        std::vector<std::unique_ptr<after_factory_method::Stooge>> stooges;
+        for (int choice : {1, 2, 3}) {
+            stooges.push_back(after_factory_method::Stooge::create(choice));
         }
-
-        for (const auto& stooge : stooges)
-            stooge->performAction();
+        for (auto& s : stooges) s->perform();
     }
-
-    return 0;
 }

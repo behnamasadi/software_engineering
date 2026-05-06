@@ -1,46 +1,45 @@
+// Factory Method — parameterized over the product type.
+// One template ProductFactory<T> generates a factory for any concrete Product
+// without writing a new factory class for each.
+
 #include <iostream>
 #include <memory>
 
-// Abstract Product
 class Product {
 public:
     virtual ~Product() = default;
     virtual void use() const = 0;
 };
 
-// Concrete Product
 class CustomProduct : public Product {
 public:
-    CustomProduct() { std::cout << "🔧 CustomProduct: Created\n"; }
-    void use() const override { std::cout << "🛠️ Using CustomProduct\n"; }
+    CustomProduct() { std::cout << "  CustomProduct ctor\n"; }
+    void use() const override { std::cout << "  using CustomProduct\n"; }
 };
 
-// Abstract Creator
+class AnotherProduct : public Product {
+public:
+    AnotherProduct() { std::cout << "  AnotherProduct ctor\n"; }
+    void use() const override { std::cout << "  using AnotherProduct\n"; }
+};
+
 class Creator {
 public:
-    virtual std::unique_ptr<Product> createInstance() = 0;
     virtual ~Creator() = default;
+    virtual std::unique_ptr<Product> create() = 0;
 };
 
-// Concrete Creator (Factory) using Templates
-template <class TheProduct>
+template <typename T>
 class ProductFactory : public Creator {
+    static_assert(std::is_base_of_v<Product, T>, "T must derive from Product");
 public:
-    std::unique_ptr<Product> createInstance() override {
-        return std::make_unique<TheProduct>();
-    }
+    std::unique_ptr<Product> create() override { return std::make_unique<T>(); }
 };
 
-// Main Function
 int main() {
-    // Create a factory for CustomProduct
-    ProductFactory<CustomProduct> factory;
+    ProductFactory<CustomProduct>  customFactory;
+    ProductFactory<AnotherProduct> anotherFactory;
 
-    // Create an instance of CustomProduct
-    std::unique_ptr<Product> product = factory.createInstance();
-
-    // Use the product
-    product->use();
-
-    return 0;
+    customFactory.create()->use();
+    anotherFactory.create()->use();
 }

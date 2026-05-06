@@ -1,60 +1,44 @@
+// Factory Method — produce per-platform Buttons through a single API.
+
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
-// Abstract Product: Button
 class Button {
 public:
-    virtual void render() = 0;
     virtual ~Button() = default;
+    virtual void render() = 0;
 };
 
-// Concrete Product: Mac Button
 class MacButton : public Button {
 public:
-    void render() override {
-        std::cout << "🍏 Rendering Mac-style button\n";
-    }
+    void render() override { std::cout << "  Mac button\n"; }
 };
 
-// Concrete Product: Windows Button
 class WinButton : public Button {
 public:
-    void render() override {
-        std::cout << "🪟 Rendering Windows-style button\n";
-    }
+    void render() override { std::cout << "  Windows button\n"; }
 };
 
-// Abstract Factory: ButtonFactory
 class ButtonFactory {
 public:
-    virtual std::unique_ptr<Button> buildButton(const std::string& type) = 0;
     virtual ~ButtonFactory() = default;
+    virtual std::unique_ptr<Button> create(const std::string& type) = 0;
 };
 
-// Concrete Factory: PlatformFactory
-class PlatformFactory : public ButtonFactory {
+class PlatformButtonFactory : public ButtonFactory {
 public:
-    std::unique_ptr<Button> buildButton(const std::string& type) override {
-        if (type == "Windows") {
-            return std::make_unique<WinButton>();
-        } else if (type == "Mac") {
-            return std::make_unique<MacButton>();
-        } else {
-            throw std::invalid_argument("Unknown button type: " + type);
-        }
+    std::unique_ptr<Button> create(const std::string& type) override {
+        if (type == "Mac")     return std::make_unique<MacButton>();
+        if (type == "Windows") return std::make_unique<WinButton>();
+        throw std::invalid_argument("Unknown button type: " + type);
     }
 };
 
-// Main Function
 int main() {
-    std::unique_ptr<ButtonFactory> buttonFactory = std::make_unique<PlatformFactory>();
+    std::unique_ptr<ButtonFactory> factory = std::make_unique<PlatformButtonFactory>();
 
-    std::unique_ptr<Button> macButton = buttonFactory->buildButton("Mac");
-    macButton->render();
-
-    std::unique_ptr<Button> winButton = buttonFactory->buildButton("Windows");
-    winButton->render();
-
-    return 0;
+    factory->create("Mac")->render();
+    factory->create("Windows")->render();
 }

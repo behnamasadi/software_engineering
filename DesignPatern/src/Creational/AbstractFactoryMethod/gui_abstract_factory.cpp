@@ -1,213 +1,128 @@
+// Abstract Factory — before/after.
+//
+// "Before": every code path that creates a widget hard-codes per-platform
+// ifdef branches. Adding a new platform means hunting through every site.
+//
+// "After": a WidgetFactory hides the platform decision. The Client just
+// asks for buttons and menus and never knows which OS it's on.
+
 #include <iostream>
 #include <memory>
 
-#define LINUX
+namespace before_ifdef_everywhere {
 
-using namespace std;
-
-namespace before
-{
-class Widget
-{
+class Widget {
 public:
-    virtual void render() = 0;
     virtual ~Widget() = default;
+    virtual void render() = 0;
 };
 
-class LinuxButton : public Widget
-{
+class LinuxButton : public Widget {
 public:
-    void render() override { cout << "🟢 Linux Button Rendered\n"; }
+    void render() override { std::cout << "[linux]   button\n"; }
+};
+class LinuxMenu : public Widget {
+public:
+    void render() override { std::cout << "[linux]   menu\n"; }
+};
+class WindowsButton : public Widget {
+public:
+    void render() override { std::cout << "[windows] button\n"; }
+};
+class WindowsMenu : public Widget {
+public:
+    void render() override { std::cout << "[windows] menu\n"; }
 };
 
-class LinuxMenu : public Widget
-{
+class Client {
 public:
-    void render() override { cout << "🟢 Linux Menu Rendered\n"; }
-};
-
-class WindowsButton : public Widget
-{
-public:
-    void render() override { cout << "🟦 Windows Button Rendered\n"; }
-};
-
-class WindowsMenu : public Widget
-{
-public:
-    void render() override { cout << "🟦 Windows Menu Rendered\n"; }
-};
-
-class Client
-{
-public:
-    void render()
-    {
-#ifdef LINUX
-        unique_ptr<Widget> w = make_unique<LinuxButton>();
+    void render() {
+#ifdef WINDOWS_BUILD
+        auto w = std::make_unique<WindowsButton>();
 #else
-        unique_ptr<Widget> w = make_unique<WindowsButton>();
+        auto w = std::make_unique<LinuxButton>();
 #endif
         w->render();
-        displayWindowOne();
-        displayWindowTwo();
     }
-
-    void displayWindowOne()
-    {
-#ifdef LINUX
-        unique_ptr<Widget> w1 = make_unique<LinuxButton>();
-        unique_ptr<Widget> w2 = make_unique<LinuxMenu>();
-#else
-        unique_ptr<Widget> w1 = make_unique<WindowsButton>();
-        unique_ptr<Widget> w2 = make_unique<WindowsMenu>();
-#endif
-        w1->render();
-        w2->render();
-    }
-
-    void displayWindowTwo()
-    {
-#ifdef LINUX
-        unique_ptr<Widget> w1 = make_unique<LinuxMenu>();
-        unique_ptr<Widget> w2 = make_unique<LinuxButton>();
-#else
-        unique_ptr<Widget> w1 = make_unique<WindowsMenu>();
-        unique_ptr<Widget> w2 = make_unique<WindowsButton>();
-#endif
-        w1->render();
-        w2->render();
-    }
+    // Every other window/dialog repeats the same #ifdef.
 };
-}
 
-namespace after
-{
-class Widget
-{
+}  // namespace before_ifdef_everywhere
+
+namespace after_abstract_factory {
+
+class Widget {
 public:
-    virtual void render() = 0;
     virtual ~Widget() = default;
+    virtual void render() = 0;
 };
 
-class LinuxButton : public Widget
-{
+class LinuxButton : public Widget {
 public:
-    void render() override { cout << "🟢 Linux Button Rendered\n"; }
+    void render() override { std::cout << "[linux]   button\n"; }
+};
+class LinuxMenu : public Widget {
+public:
+    void render() override { std::cout << "[linux]   menu\n"; }
+};
+class WindowsButton : public Widget {
+public:
+    void render() override { std::cout << "[windows] button\n"; }
+};
+class WindowsMenu : public Widget {
+public:
+    void render() override { std::cout << "[windows] menu\n"; }
 };
 
-class LinuxMenu : public Widget
-{
+class WidgetFactory {
 public:
-    void render() override { cout << "🟢 Linux Menu Rendered\n"; }
-};
-
-class WindowsButton : public Widget
-{
-public:
-    void render() override { cout << "🟦 Windows Button Rendered\n"; }
-};
-
-class WindowsMenu : public Widget
-{
-public:
-    void render() override { cout << "🟦 Windows Menu Rendered\n"; }
-};
-
-// Abstract Factory Interface
-class WidgetFactory
-{
-public:
-    virtual unique_ptr<Widget> createButton() = 0;
-    virtual unique_ptr<Widget> createMenu() = 0;
     virtual ~WidgetFactory() = default;
+    virtual std::unique_ptr<Widget> createButton() = 0;
+    virtual std::unique_ptr<Widget> createMenu()   = 0;
 };
 
-// Concrete Factory for Linux UI
-class LinuxFactory : public WidgetFactory
-{
+class LinuxFactory : public WidgetFactory {
 public:
-    unique_ptr<Widget> createButton() override
-    {
-        return make_unique<LinuxButton>();
-    }
-
-    unique_ptr<Widget> createMenu() override
-    {
-        return make_unique<LinuxMenu>();
-    }
+    std::unique_ptr<Widget> createButton() override { return std::make_unique<LinuxButton>(); }
+    std::unique_ptr<Widget> createMenu()   override { return std::make_unique<LinuxMenu>(); }
 };
 
-// Concrete Factory for Windows UI
-class WindowsFactory : public WidgetFactory
-{
+class WindowsFactory : public WidgetFactory {
 public:
-    unique_ptr<Widget> createButton() override
-    {
-        return make_unique<WindowsButton>();
-    }
-
-    unique_ptr<Widget> createMenu() override
-    {
-        return make_unique<WindowsMenu>();
-    }
+    std::unique_ptr<Widget> createButton() override { return std::make_unique<WindowsButton>(); }
+    std::unique_ptr<Widget> createMenu()   override { return std::make_unique<WindowsMenu>(); }
 };
 
-class Client
-{
+class Client {
+public:
+    explicit Client(std::unique_ptr<WidgetFactory> f) : factory_(std::move(f)) {}
+
+    void renderWindow() {
+        auto button = factory_->createButton();
+        auto menu   = factory_->createMenu();
+        button->render();
+        menu->render();
+    }
+
 private:
-    unique_ptr<WidgetFactory> factory;
-
-public:
-    explicit Client(unique_ptr<WidgetFactory> f) : factory(move(f)) {}
-
-    void render()
-    {
-        unique_ptr<Widget> w = factory->createButton();
-        w->render();
-        displayWindowOne();
-        displayWindowTwo();
-    }
-
-    void displayWindowOne()
-    {
-        unique_ptr<Widget> w1 = factory->createButton();
-        unique_ptr<Widget> w2 = factory->createMenu();
-        w1->render();
-        w2->render();
-    }
-
-    void displayWindowTwo()
-    {
-        unique_ptr<Widget> w1 = factory->createMenu();
-        unique_ptr<Widget> w2 = factory->createButton();
-        w1->render();
-        w2->render();
-    }
+    std::unique_ptr<WidgetFactory> factory_;
 };
-}
 
-int main()
-{
-    cout << "\n🌍 BEFORE: Hardcoded UI Elements\n";
+}  // namespace after_abstract_factory
+
+int main() {
+    std::cout << "--- before (ifdef everywhere) ---\n";
     {
-        before::Client c;
+        before_ifdef_everywhere::Client c;
         c.render();
     }
 
-    cout << "\n🌍 AFTER: Using Abstract Factory\n";
+    std::cout << "--- after (abstract factory) ---\n";
     {
-        unique_ptr<after::WidgetFactory> factory;
-
-#ifdef LINUX
-        factory = make_unique<after::LinuxFactory>();
-#else
-        factory = make_unique<after::WindowsFactory>();
-#endif
-
-        unique_ptr<after::Client> c = make_unique<after::Client>(move(factory));
-        c->render();
+        // Client never sees a Linux/Windows type — only WidgetFactory.
+        std::unique_ptr<after_abstract_factory::WidgetFactory> factory =
+            std::make_unique<after_abstract_factory::LinuxFactory>();
+        after_abstract_factory::Client client(std::move(factory));
+        client.renderWindow();
     }
-
-    return 0;
 }

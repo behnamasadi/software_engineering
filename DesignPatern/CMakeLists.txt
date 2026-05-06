@@ -31,6 +31,9 @@ target_link_libraries(shape_abstract_factory)
 add_executable(car_abstract_factory src/Creational/AbstractFactoryMethod/car_abstract_factory.cpp)
 target_link_libraries(car_abstract_factory)
 
+add_executable(maze_abstract_factory src/Creational/AbstractFactoryMethod/maze_abstract_factory.cpp)
+target_link_libraries(maze_abstract_factory)
+
 # ##################### (2) Builder ###########################
 add_executable(pizza_builder src/Creational/Builder/pizza_builder.cpp)
 target_link_libraries(pizza_builder)

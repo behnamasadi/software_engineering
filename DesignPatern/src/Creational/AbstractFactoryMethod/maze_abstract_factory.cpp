@@ -1,163 +1,124 @@
-#include <vector>
-#include <memory>
+// Abstract Factory — maze components.
+// MazeFactory produces walls, rooms, doors. Subclasses (e.g.
+// EnchantedMazeFactory) substitute themed variants without changing the
+// MazeGame assembly code.
+
+#include <array>
 #include <iostream>
+#include <memory>
+#include <utility>
+#include <vector>
 
-// Enum for directions
-enum class Direction { NORTH, SOUTH, WEST, EAST };
+enum class Direction { North = 0, South = 1, West = 2, East = 3 };
 
-// Base class for maze components
-class MapSite
-{
+class MapSite {
 public:
-    virtual void enter() = 0;
     virtual ~MapSite() = default;
+    virtual void enter() = 0;
 };
 
-// Wall class
-class Wall : public MapSite
-{
+class Wall : public MapSite {
 public:
-    void enter() override { std::cout << "You hit a wall.\n"; }
+    void enter() override { std::cout << "  hit a wall\n"; }
 };
 
-// Room class
-class Room : public MapSite
-{
+class Room : public MapSite {
+public:
+    explicit Room(int number) : number_(number) {}
+
+    void enter() override { std::cout << "  entering room " << number_ << '\n'; }
+
+    void setSide(Direction dir, std::shared_ptr<MapSite> site) {
+        sides_[static_cast<int>(dir)] = std::move(site);
+    }
+
 private:
-    int roomNumber;
-    std::vector<std::unique_ptr<MapSite>> sides{4};
-
-public:
-    explicit Room(int num) : roomNumber(num) {}
-
-    void enter() override { std::cout << "Entering room " << roomNumber << ".\n"; }
-
-    void addSide(Direction dir, std::unique_ptr<MapSite> site)
-    {
-        sides[static_cast<int>(dir)] = std::move(site);
-    }
+    int number_;
+    std::array<std::shared_ptr<MapSite>, 4> sides_;
 };
 
-// Door class
-class Door : public MapSite
-{
+class Door : public MapSite {
+public:
+    Door(std::shared_ptr<Room> a, std::shared_ptr<Room> b)
+        : a_(std::move(a)), b_(std::move(b)) {}
+
+    void enter() override {
+        if (open_) std::cout << "  passing through the door\n";
+        else       std::cout << "  the door is locked\n";
+    }
+
+    void open() { open_ = true; }
+
 private:
-    Room* room1;
-    Room* room2;
-    bool isOpen;
-
-public:
-    Door(Room* r1, Room* r2) : room1(r1), room2(r2), isOpen(false) {}
-
-    void enter() override
-    {
-        if (isOpen)
-            std::cout << "Passing through the door.\n";
-        else
-            std::cout << "The door is locked.\n";
-    }
-
-    void openDoor() { isOpen = true; }
+    std::shared_ptr<Room> a_, b_;
+    bool open_ = false;
 };
 
-// Maze class
-class Maze
-{
+class Maze {
+public:
+    void addRoom(std::shared_ptr<Room> room) { rooms_.push_back(std::move(room)); }
+    std::size_t roomCount() const { return rooms_.size(); }
+
 private:
-    std::vector<std::unique_ptr<Room>> rooms;
-
-public:
-    void addRoom(std::unique_ptr<Room> room)
-    {
-        rooms.push_back(std::move(room));
-    }
+    std::vector<std::shared_ptr<Room>> rooms_;
 };
 
-// Abstract Factory for creating Maze components
-class MazeFactory
-{
+class MazeFactory {
 public:
-    virtual std::unique_ptr<Maze> createMaze() const
-    {
-        return std::make_unique<Maze>();
-    }
-
-    virtual std::unique_ptr<Room> createRoom(int n) const
-    {
-        return std::make_unique<Room>(n);
-    }
-
-    virtual std::unique_ptr<Wall> createWall() const
-    {
-        return std::make_unique<Wall>();
-    }
-
-    virtual std::unique_ptr<Door> createDoor(Room* r1, Room* r2) const
-    {
-        return std::make_unique<Door>(r1, r2);
-    }
-
     virtual ~MazeFactory() = default;
+
+    virtual std::unique_ptr<Maze>         createMaze()                                            const { return std::make_unique<Maze>(); }
+    virtual std::shared_ptr<Wall>         createWall()                                            const { return std::make_shared<Wall>(); }
+    virtual std::shared_ptr<Room>         createRoom(int n)                                       const { return std::make_shared<Room>(n); }
+    virtual std::shared_ptr<Door>         createDoor(std::shared_ptr<Room> a, std::shared_ptr<Room> b) const { return std::make_shared<Door>(std::move(a), std::move(b)); }
 };
 
-// Specialized Factory for an Enchanted Maze
-class EnchantedMazeFactory : public MazeFactory
-{
+class EnchantedMazeFactory : public MazeFactory {
 public:
-    std::unique_ptr<Room> createRoom(int n) const override
-    {
-        std::cout << "Creating an enchanted room " << n << ".\n";
-        return std::make_unique<Room>(n); // Replace with EnchantedRoom if needed
+    std::shared_ptr<Room> createRoom(int n) const override {
+        std::cout << "  [enchanted] creating room " << n << '\n';
+        return std::make_shared<Room>(n);
     }
-
-    std::unique_ptr<Door> createDoor(Room* r1, Room* r2) const override
-    {
-        std::cout << "Creating a magical door.\n";
-        return std::make_unique<Door>(r1, r2); // Replace with DoorNeedingSpell if needed
+    std::shared_ptr<Door> createDoor(std::shared_ptr<Room> a, std::shared_ptr<Room> b) const override {
+        std::cout << "  [enchanted] creating magical door\n";
+        return std::make_shared<Door>(std::move(a), std::move(b));
     }
 };
 
-// MazeGame class to assemble the Maze
-class MazeGame
-{
+class MazeGame {
 public:
-    std::unique_ptr<Maze> createMaze(const MazeFactory& factory)
-    {
+    std::unique_ptr<Maze> create(const MazeFactory& factory) {
         auto maze = factory.createMaze();
-        auto r1 = factory.createRoom(1);
-        auto r2 = factory.createRoom(2);
-        auto door = factory.createDoor(r1.get(), r2.get());
+        auto r1   = factory.createRoom(1);
+        auto r2   = factory.createRoom(2);
+        auto door = factory.createDoor(r1, r2);  // door is shared between both rooms
 
-        // Setting sides for Room 1
-        r1->addSide(Direction::NORTH, factory.createWall());
-        r1->addSide(Direction::EAST, std::make_unique<Door>(*door));
-        r1->addSide(Direction::SOUTH, factory.createWall());
-        r1->addSide(Direction::WEST, factory.createWall());
+        r1->setSide(Direction::North, factory.createWall());
+        r1->setSide(Direction::East,  door);
+        r1->setSide(Direction::South, factory.createWall());
+        r1->setSide(Direction::West,  factory.createWall());
 
-        // Setting sides for Room 2
-        r2->addSide(Direction::NORTH, factory.createWall());
-        r2->addSide(Direction::EAST, factory.createWall());
-        r2->addSide(Direction::SOUTH, factory.createWall());
-        r2->addSide(Direction::WEST, std::make_unique<Door>(*door));
+        r2->setSide(Direction::North, factory.createWall());
+        r2->setSide(Direction::East,  factory.createWall());
+        r2->setSide(Direction::South, factory.createWall());
+        r2->setSide(Direction::West,  door);
 
         maze->addRoom(std::move(r1));
         maze->addRoom(std::move(r2));
-
         return maze;
     }
 };
 
-// Main function
-int main()
-{
-    std::cout << "\n🛠️ Creating a Normal Maze\n";
-    MazeFactory normalFactory;
+int main() {
     MazeGame game;
-    auto normalMaze = game.createMaze(normalFactory);
 
-    std::cout << "\n🪄 Creating an Enchanted Maze\n";
-    EnchantedMazeFactory enchantedFactory;
-    auto enchantedMaze = game.createMaze(enchantedFactory);
+    std::cout << "--- normal maze ---\n";
+    MazeFactory normal;
+    auto m1 = game.create(normal);
+    std::cout << "  rooms = " << m1->roomCount() << '\n';
 
-    return 0;
+    std::cout << "--- enchanted maze ---\n";
+    EnchantedMazeFactory enchanted;
+    auto m2 = game.create(enchanted);
+    std::cout << "  rooms = " << m2->roomCount() << '\n';
 }

@@ -1,180 +1,130 @@
+// Abstract Factory — regional car factories.
+// IndiaCarFactory / USACarFactory / GlobalCarFactory each produce the same
+// product family (Micro/Mini/Luxury) but stamped for their region.
+// CarProductionHub picks the regional factory; client code asks for a model
+// without knowing which factory backed it.
+
 #include <iostream>
 #include <memory>
 #include <string>
 
-// Car Type Enumeration
-enum class CarType
-{
-    MICRO, MINI, LUXURY
-};
+enum class CarType { Micro, Mini, Luxury };
+enum class Location { Default, USA, India };
 
-std::string ToString(CarType type)
-{
-    switch (type)
-    {
-        case CarType::MICRO:   return "MICRO";
-        case CarType::MINI:    return "MINI";
-        case CarType::LUXURY:  return "LUXURY";
-        default:               return "[Unknown]";
+const char* toString(CarType t) {
+    switch (t) {
+        case CarType::Micro:  return "Micro";
+        case CarType::Mini:   return "Mini";
+        case CarType::Luxury: return "Luxury";
     }
+    return "?";
 }
 
-// Location Enumeration
-enum class Location
-{
-    DEFAULT, USA, INDIA
-};
-
-std::string ToString(Location loc)
-{
-    switch (loc)
-    {
-        case Location::DEFAULT: return "DEFAULT";
+const char* toString(Location l) {
+    switch (l) {
+        case Location::Default: return "Default";
         case Location::USA:     return "USA";
-        case Location::INDIA:   return "INDIA";
-        default:                return "[Unknown]";
+        case Location::India:   return "India";
     }
+    return "?";
 }
 
-// Base Car Class
-class Car
-{
-protected:
-    CarType model;
-    Location location;
-
+class Car {
 public:
-    Car(CarType model, Location location) : model(model), location(location) {}
-
-    virtual void assemble() = 0;
-
-    std::string getInfo() const
-    {
-        return "🚗 Car Model: " + ToString(model) + " | Location: " + ToString(location);
-    }
-
+    Car(CarType model, Location location) : model_(model), location_(location) {}
     virtual ~Car() = default;
+
+    virtual void assemble() const = 0;
+
+    std::string info() const {
+        return std::string("model=") + toString(model_) + " location=" + toString(location_);
+    }
+
+private:
+    CarType model_;
+    Location location_;
 };
 
-// Concrete Car Implementations
-class LuxuryCar : public Car
-{
+class LuxuryCar : public Car {
 public:
-    LuxuryCar(Location location) : Car(CarType::LUXURY, location)
-    {
-        assemble();
-    }
+    explicit LuxuryCar(Location l) : Car(CarType::Luxury, l) {}
+    void assemble() const override { std::cout << "  assembling luxury car\n"; }
+};
+class MicroCar : public Car {
+public:
+    explicit MicroCar(Location l) : Car(CarType::Micro, l) {}
+    void assemble() const override { std::cout << "  assembling micro car\n"; }
+};
+class MiniCar : public Car {
+public:
+    explicit MiniCar(Location l) : Car(CarType::Mini, l) {}
+    void assemble() const override { std::cout << "  assembling mini car\n"; }
+};
 
-    void assemble() override
-    {
-        std::cout << "🔧 Assembling a Luxury Car\n";
+class CarFactory {
+public:
+    virtual ~CarFactory() = default;
+    virtual std::unique_ptr<Car> build(CarType type) const = 0;
+};
+
+class IndiaCarFactory : public CarFactory {
+public:
+    std::unique_ptr<Car> build(CarType type) const override {
+        switch (type) {
+            case CarType::Micro:  return std::make_unique<MicroCar>(Location::India);
+            case CarType::Mini:   return std::make_unique<MiniCar>(Location::India);
+            case CarType::Luxury: return std::make_unique<LuxuryCar>(Location::India);
+        }
+        return nullptr;
     }
 };
 
-class MicroCar : public Car
-{
+class USACarFactory : public CarFactory {
 public:
-    MicroCar(Location location) : Car(CarType::MICRO, location)
-    {
-        assemble();
-    }
-
-    void assemble() override
-    {
-        std::cout << "🔧 Assembling a Micro Car\n";
+    std::unique_ptr<Car> build(CarType type) const override {
+        switch (type) {
+            case CarType::Micro:  return std::make_unique<MicroCar>(Location::USA);
+            case CarType::Mini:   return std::make_unique<MiniCar>(Location::USA);
+            case CarType::Luxury: return std::make_unique<LuxuryCar>(Location::USA);
+        }
+        return nullptr;
     }
 };
 
-class MiniCar : public Car
-{
+class GlobalCarFactory : public CarFactory {
 public:
-    MiniCar(Location location) : Car(CarType::MINI, location)
-    {
-        assemble();
-    }
-
-    void assemble() override
-    {
-        std::cout << "🔧 Assembling a Mini Car\n";
+    std::unique_ptr<Car> build(CarType type) const override {
+        switch (type) {
+            case CarType::Micro:  return std::make_unique<MicroCar>(Location::Default);
+            case CarType::Mini:   return std::make_unique<MiniCar>(Location::Default);
+            case CarType::Luxury: return std::make_unique<LuxuryCar>(Location::Default);
+        }
+        return nullptr;
     }
 };
 
-// Car Factories for Different Regions
-class IndiaCarFactory
-{
+class CarProductionHub {
 public:
-    static std::unique_ptr<Car> buildCar(CarType model)
-    {
-        switch (model)
-        {
-            case CarType::MICRO:  return std::make_unique<MicroCar>(Location::INDIA);
-            case CarType::MINI:   return std::make_unique<MiniCar>(Location::INDIA);
-            case CarType::LUXURY: return std::make_unique<LuxuryCar>(Location::INDIA);
-            default:              return nullptr;
+    explicit CarProductionHub(Location region) {
+        switch (region) {
+            case Location::USA:   factory_ = std::make_unique<USACarFactory>();   break;
+            case Location::India: factory_ = std::make_unique<IndiaCarFactory>(); break;
+            default:              factory_ = std::make_unique<GlobalCarFactory>();
         }
     }
+
+    std::unique_ptr<Car> build(CarType type) const { return factory_->build(type); }
+
+private:
+    std::unique_ptr<CarFactory> factory_;
 };
 
-class GlobalCarFactory
-{
-public:
-    static std::unique_ptr<Car> buildCar(CarType model)
-    {
-        switch (model)
-        {
-            case CarType::MICRO:  return std::make_unique<MicroCar>(Location::DEFAULT);
-            case CarType::MINI:   return std::make_unique<MiniCar>(Location::DEFAULT);
-            case CarType::LUXURY: return std::make_unique<LuxuryCar>(Location::DEFAULT);
-            default:              return nullptr;
-        }
+int main() {
+    CarProductionHub hub(Location::India);
+
+    for (CarType t : {CarType::Micro, CarType::Mini, CarType::Luxury}) {
+        auto car = hub.build(t);
+        car->assemble();
+        std::cout << "  -> " << car->info() << "\n\n";
     }
-};
-
-class USACarFactory
-{
-public:
-    static std::unique_ptr<Car> buildCar(CarType model)
-    {
-        switch (model)
-        {
-            case CarType::MICRO:  return std::make_unique<MicroCar>(Location::USA);
-            case CarType::MINI:   return std::make_unique<MiniCar>(Location::USA);
-            case CarType::LUXURY: return std::make_unique<LuxuryCar>(Location::USA);
-            default:              return nullptr;
-        }
-    }
-};
-
-// Centralized Car Production Hub
-class CarProductionHub
-{
-public:
-    static std::unique_ptr<Car> buildCar(CarType type)
-    {
-        Location location = Location::INDIA;  // Changeable location logic
-
-        switch (location)
-        {
-            case Location::USA:
-                return USACarFactory::buildCar(type);
-            case Location::INDIA:
-                return IndiaCarFactory::buildCar(type);
-            default:
-                return GlobalCarFactory::buildCar(type);
-        }
-    }
-};
-
-int main()
-{
-    std::unique_ptr<Car> microCar = CarProductionHub::buildCar(CarType::MICRO);
-    std::cout << microCar->getInfo() << "\n\n";
-
-    std::unique_ptr<Car> miniCar = CarProductionHub::buildCar(CarType::MINI);
-    std::cout << miniCar->getInfo() << "\n\n";
-
-    std::unique_ptr<Car> luxuryCar = CarProductionHub::buildCar(CarType::LUXURY);
-    std::cout << luxuryCar->getInfo() << "\n";
-
-    return 0;
 }

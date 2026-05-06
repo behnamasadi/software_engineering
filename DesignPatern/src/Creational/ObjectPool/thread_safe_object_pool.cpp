@@ -1,85 +1,81 @@
+// Object Pool — thread-safe variant.
+//
+// acquire() blocks on a condition_variable when the pool is empty, then
+// hands out a shared_ptr whose custom deleter returns the resource and
+// notifies one waiter.
+
+#include <chrono>
+#include <condition_variable>
 #include <iostream>
-#include <queue>
 #include <memory>
 #include <mutex>
-#include <condition_variable>
+#include <queue>
 #include <thread>
+#include <utility>
+#include <vector>
 
-// Resource class simulating an expensive object.
 class Resource {
 public:
-    Resource(int id) : id(id) {
-        std::cout << "Resource " << id << " created.\n";
+    explicit Resource(int id) : id_(id) {
+        std::cout << "  Resource " << id_ << " created\n";
     }
+    ~Resource() { std::cout << "  Resource " << id_ << " destroyed\n"; }
 
-    void use() {
-        std::cout << "Using Resource " << id << ".\n";
-    }
-
-    ~Resource() {
-        std::cout << "Resource " << id << " destroyed.\n";
-    }
+    void use() const { std::cout << "  using Resource " << id_ << '\n'; }
 
 private:
-    int id;
+    int id_;
 };
 
-// Thread-safe Object Pool
 class ObjectPool {
 public:
-    ObjectPool(size_t poolSize) {
-        for (size_t i = 0; i < poolSize; ++i) {
-            pool.push(std::make_unique<Resource>(i));
+    explicit ObjectPool(std::size_t size) {
+        for (std::size_t i = 0; i < size; ++i) {
+            pool_.push(std::make_unique<Resource>(static_cast<int>(i)));
         }
     }
 
     std::shared_ptr<Resource> acquire() {
-        std::unique_lock<std::mutex> lock(mtx);
-        cv.wait(lock, [this] { return !pool.empty(); });
+        std::unique_lock<std::mutex> lock(mutex_);
+        cv_.wait(lock, [this] { return !pool_.empty(); });
 
-        // Extract unique_ptr and convert it to a shared_ptr with a custom deleter
-        std::unique_ptr<Resource> uniqueResource = std::move(pool.front());
-        pool.pop();
+        std::unique_ptr<Resource> resource = std::move(pool_.front());
+        pool_.pop();
 
-        return std::shared_ptr<Resource>(uniqueResource.release(), [this](Resource* r) {
-            release(r);
-        });
+        // Caller must drop the shared_ptr before the pool dies.
+        return std::shared_ptr<Resource>(resource.release(),
+            [this](Resource* r) { release(r); });
     }
 
 private:
-    void release(Resource* resource) {
-        std::lock_guard<std::mutex> lock(mtx);
-        pool.push(std::unique_ptr<Resource>(resource));
-        cv.notify_one();
-        std::cout << "Resource returned to pool.\n";
+    void release(Resource* r) {
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            pool_.emplace(r);
+        }
+        cv_.notify_one();
+        std::cout << "  -> returned to pool\n";
     }
 
-    std::queue<std::unique_ptr<Resource>> pool;
-    std::mutex mtx;
-    std::condition_variable cv;
+    std::queue<std::unique_ptr<Resource>> pool_;
+    std::mutex mutex_;
+    std::condition_variable cv_;
 };
 
-// Function to simulate multiple threads using the pool
-void worker(ObjectPool& pool, int workerID) {
+void worker(ObjectPool& pool, int id) {
     auto resource = pool.acquire();
-    std::cout << "Worker " << workerID << " acquired a resource.\n";
+    std::cout << "  worker " << id << " acquired a resource\n";
     resource->use();
-    std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Simulate work
-    std::cout << "Worker " << workerID << " done using the resource.\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::cout << "  worker " << id << " done\n";
 }
 
 int main() {
-    ObjectPool pool(3); // Pool with 3 resources
+    ObjectPool pool(3);  // 3 resources, 4 workers — one will wait
 
-    std::thread t1(worker, std::ref(pool), 1);
-    std::thread t2(worker, std::ref(pool), 2);
-    std::thread t3(worker, std::ref(pool), 3);
-    std::thread t4(worker, std::ref(pool), 4); // Will wait for a resource
-
-    t1.join();
-    t2.join();
-    t3.join();
-    t4.join();
-
-    return 0;
+    std::vector<std::thread> threads;
+    for (int i = 1; i <= 4; ++i) {
+        threads.emplace_back(worker, std::ref(pool), i);
+    }
+    for (auto& t : threads) t.join();
 }

@@ -1,102 +1,73 @@
-#include <memory>
+// Decorator — start with a base ice cream, then stack toppings (fruit, nuts,
+// wafer, ...) at runtime. Each decorator wraps an IceCream, forwards `make()`
+// to the wrapped object, and prints its own contribution after.
+
 #include <iostream>
-#include <string>
+#include <memory>
+#include <utility>
 
-// Base class for Ice Cream
-class IceCreamBase
-{
+class IceCream {
 public:
+    virtual ~IceCream() = default;
     virtual void make() const = 0;
-    virtual ~IceCreamBase() = default; // Ensures proper polymorphic destruction
 };
 
-// Concrete Ice Cream Base
-class BasicIceCream : public IceCreamBase
-{
+class BasicIceCream : public IceCream {
 public:
-    void make() const override
-    {
-        std::cout << "\nMilk + Sugar + Ice Cream Base";
+    void make() const override {
+        std::cout << "Milk + Sugar + Ice Cream Base";
     }
 };
 
-// Abstract Decorator Class
-class IceCreamDecorator : public IceCreamBase
-{
+// Base decorator.
+class IceCreamTopping : public IceCream {
+public:
+    explicit IceCreamTopping(std::unique_ptr<IceCream> inner)
+        : inner_(std::move(inner)) {}
+
+    void make() const override { inner_->make(); }
+
 protected:
-    std::unique_ptr<IceCreamBase> m_decorator;
-
-public:
-    explicit IceCreamDecorator(std::unique_ptr<IceCreamBase> decorator)
-        : m_decorator(std::move(decorator)) {}
-
-    void make() const override
-    {
-        m_decorator->make();
-    }
+    std::unique_ptr<IceCream> inner_;
 };
 
-// Concrete Decorator - Fruit Topping
-class FruitTopping : public IceCreamDecorator
-{
+class FruitTopping : public IceCreamTopping {
 public:
-    explicit FruitTopping(std::unique_ptr<IceCreamBase> decorator)
-        : IceCreamDecorator(std::move(decorator)) {}
-
-    void make() const override
-    {
-        IceCreamDecorator::make();
+    using IceCreamTopping::IceCreamTopping;
+    void make() const override {
+        IceCreamTopping::make();
         std::cout << " + Fresh Fruits";
     }
 };
 
-// Concrete Decorator - Nut Topping
-class NutTopping : public IceCreamDecorator
-{
+class NutTopping : public IceCreamTopping {
 public:
-    explicit NutTopping(std::unique_ptr<IceCreamBase> decorator)
-        : IceCreamDecorator(std::move(decorator)) {}
-
-    void make() const override
-    {
-        IceCreamDecorator::make();
+    using IceCreamTopping::IceCreamTopping;
+    void make() const override {
+        IceCreamTopping::make();
         std::cout << " + Crunchy Nuts";
     }
 };
 
-// Concrete Decorator - Wafer Crunch
-class WaferCrunch : public IceCreamDecorator
-{
+class WaferCrunch : public IceCreamTopping {
 public:
-    explicit WaferCrunch(std::unique_ptr<IceCreamBase> decorator)
-        : IceCreamDecorator(std::move(decorator)) {}
-
-    void make() const override
-    {
-        IceCreamDecorator::make();
+    using IceCreamTopping::IceCreamTopping;
+    void make() const override {
+        IceCreamTopping::make();
         std::cout << " + Crispy Wafers";
     }
 };
 
-int main()
-{
-    // Start with a basic ice cream
-    std::unique_ptr<IceCreamBase> iceCream = std::make_unique<BasicIceCream>();
-    iceCream->make();
+int main() {
+    std::unique_ptr<IceCream> cone = std::make_unique<BasicIceCream>();
+    cone->make(); std::cout << '\n';
 
-    std::cout << "\n\nAdding Toppings:\n";
-    
-    // Add fruit topping
-    iceCream = std::make_unique<FruitTopping>(std::move(iceCream));
-    iceCream->make();
+    cone = std::make_unique<FruitTopping>(std::move(cone));
+    cone->make(); std::cout << '\n';
 
-    // Add nut topping
-    iceCream = std::make_unique<NutTopping>(std::move(iceCream));
-    iceCream->make();
+    cone = std::make_unique<NutTopping>(std::move(cone));
+    cone->make(); std::cout << '\n';
 
-    // Add wafer topping
-    iceCream = std::make_unique<WaferCrunch>(std::move(iceCream));
-    iceCream->make();
-
-    return 0;
+    cone = std::make_unique<WaferCrunch>(std::move(cone));
+    cone->make(); std::cout << '\n';
 }

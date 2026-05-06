@@ -1,84 +1,68 @@
+// Composite — treat individual objects and groups uniformly through one
+// interface. A `Group` is itself a `Shape`, so a group can contain shapes or
+// other groups. The client calls `draw()` once on the root and the call
+// recurses through the tree.
+
 #include <iostream>
-#include <string>
-#include <vector>
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
-class Shape
-{
-protected:
-    std::string m_name;
-
+class Shape {
 public:
-    explicit Shape(std::string name = "") : m_name(std::move(name)) {}
-
+    explicit Shape(std::string name) : name_(std::move(name)) {}
+    virtual ~Shape() = default;
     virtual void draw() const = 0;
 
-    virtual ~Shape() = default;  // Ensure proper polymorphic destruction
+protected:
+    std::string name_;
 };
 
-class Circle : public Shape
-{
+class Circle : public Shape {
 public:
-    explicit Circle(std::string name) : Shape(std::move(name)) {}
-
-    void draw() const override
-    {
-        std::cout << "Drawing Circle: " << m_name << std::endl;
+    using Shape::Shape;
+    void draw() const override {
+        std::cout << "Circle: " << name_ << '\n';
     }
 };
 
-class Rectangle : public Shape
-{
+class Rectangle : public Shape {
 public:
-    explicit Rectangle(std::string name) : Shape(std::move(name)) {}
-
-    void draw() const override
-    {
-        std::cout << "Drawing Rectangle: " << m_name << std::endl;
+    using Shape::Shape;
+    void draw() const override {
+        std::cout << "Rectangle: " << name_ << '\n';
     }
 };
 
-class Group : public Shape
-{
+// Composite: holds children and forwards `draw()` to each one.
+class Group : public Shape {
+public:
+    using Shape::Shape;
+
+    void add(std::unique_ptr<Shape> child) {
+        children_.push_back(std::move(child));
+    }
+
+    void draw() const override {
+        std::cout << "Group: " << name_ << '\n';
+        for (const auto& child : children_) child->draw();
+    }
+
 private:
-    std::vector<std::unique_ptr<Shape>> m_objects;
-
-public:
-    explicit Group(std::string name) : Shape(std::move(name)) {}
-
-    void draw() const override
-    {
-        std::cout << "Drawing Group: " << m_name << std::endl;
-        for (const auto& obj : m_objects)
-        {
-            obj->draw();
-        }
-    }
-
-    void add(std::unique_ptr<Shape> object)
-    {
-        m_objects.push_back(std::move(object));
-    }
+    std::vector<std::unique_ptr<Shape>> children_;
 };
 
-int main()
-{
+int main() {
     auto root = std::make_unique<Group>("Root");
+    root->add(std::make_unique<Circle>("Circle1"));
+    root->add(std::make_unique<Circle>("Circle2"));
+    root->add(std::make_unique<Rectangle>("Rectangle1"));
 
-    auto circle1 = std::make_unique<Circle>("Circle1");
-    auto circle2 = std::make_unique<Circle>("Circle2");
-    auto rectangle1 = std::make_unique<Rectangle>("Rectangle1");
+    auto sub = std::make_unique<Group>("Subgroup1");
+    sub->add(std::make_unique<Circle>("Circle3"));
+    sub->add(std::make_unique<Rectangle>("Rectangle2"));
+    root->add(std::move(sub));
 
-    auto subgroup = std::make_unique<Group>("Subgroup1");
-    subgroup->add(std::make_unique<Circle>("Circle3"));
-    subgroup->add(std::make_unique<Rectangle>("Rectangle2"));
-
-    root->add(std::move(circle1));
-    root->add(std::move(circle2));
-    root->add(std::move(rectangle1));
-    root->add(std::move(subgroup));
-
-    root->draw();  // Displays the full hierarchy
-
-    return 0;
+    root->draw();
 }

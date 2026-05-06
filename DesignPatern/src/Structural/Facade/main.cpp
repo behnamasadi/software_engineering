@@ -1,94 +1,52 @@
+// Facade — present a small, task-oriented API in front of several
+// independent subsystems. The client calls `leaveHome()` / `returnHome()` and
+// the facade orchestrates the alarm, AC, and TV. The subsystems stay simple
+// and reusable; the facade just wires them together for one common workflow.
+
 #include <iostream>
-#include <memory>
-#include <string>
 
-using namespace std;
-
-// Alarm System
-class Alarm
-{
+class Alarm {
 public:
-    void turnOn()
-    {
-        cout << "🔔 Alarm is activated. House is secured." << endl;
-    }
-
-    void turnOff()
-    {
-        cout << "🔕 Alarm is deactivated. You can enter the house." << endl;
-    }
+    void turnOn()  { std::cout << "  alarm ON (house secured)\n"; }
+    void turnOff() { std::cout << "  alarm OFF\n"; }
 };
 
-// Air Conditioner System
-class AirConditioner
-{
+class AirConditioner {
 public:
-    void turnOn()
-    {
-        cout << "❄️ Air Conditioner is now ON." << endl;
-    }
-
-    void turnOff()
-    {
-        cout << "🔥 Air Conditioner is now OFF." << endl;
-    }
+    void turnOn()  { std::cout << "  AC ON\n"; }
+    void turnOff() { std::cout << "  AC OFF\n"; }
 };
 
-// Television System
-class Television
-{
+class Television {
 public:
-    void turnOn()
-    {
-        cout << "📺 TV is now ON." << endl;
-    }
-
-    void turnOff()
-    {
-        cout << "📴 TV is now OFF." << endl;
-    }
+    void turnOn()  { std::cout << "  TV ON\n"; }
+    void turnOff() { std::cout << "  TV OFF\n"; }
 };
 
-// Facade for controlling the house devices
-class SmartHomeFacade
-{
+class SmartHome {
+public:
+    void leaveHome() {
+        std::cout << "Leaving home...\n";
+        ac_.turnOff();
+        tv_.turnOff();
+        alarm_.turnOn();
+    }
+
+    void returnHome() {
+        std::cout << "Coming home...\n";
+        alarm_.turnOff();
+        ac_.turnOn();
+        tv_.turnOn();
+    }
+
 private:
-    unique_ptr<Alarm> alarm;
-    unique_ptr<AirConditioner> ac;
-    unique_ptr<Television> tv;
-
-public:
-    SmartHomeFacade()
-        : alarm(make_unique<Alarm>()),
-          ac(make_unique<AirConditioner>()),
-          tv(make_unique<Television>())
-    {
-    }
-
-    void leaveHome()
-    {
-        cout << "\n🏠 Preparing house for leaving..." << endl;
-        ac->turnOff();
-        tv->turnOff();
-        alarm->turnOn();
-    }
-
-    void returnHome()
-    {
-        cout << "\n🏠 Preparing house for arrival..." << endl;
-        alarm->turnOff();
-        ac->turnOn();
-        tv->turnOn();
-    }
+    Alarm alarm_;
+    AirConditioner ac_;
+    Television tv_;
 };
 
-int main()
-{
-    SmartHomeFacade myHome;
-
-    // Thanks to the Facade, we control all devices with just two functions
-    myHome.leaveHome();
-    myHome.returnHome();
-
-    return 0;
+int main() {
+    SmartHome home;
+    home.leaveHome();
+    home.returnHome();
 }

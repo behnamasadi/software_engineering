@@ -1,54 +1,57 @@
+// Adapter — external polymorphism with a templated wrapper.
+//
+// `LegacyRectangle` and `LegacyCircle` are unrelated classes that each happen
+// to expose a `render()` member. We want to treat them uniformly through a
+// common `ExecuteInterface`, without modifying either class or making them
+// share a base.
+//
+// `ExecuteAdapter<T>` is a thin template wrapper that holds a T plus a
+// pointer-to-member-function and exposes `execute()`. This is the C++ flavor
+// of "external polymorphism": the polymorphism lives in the adapter, not in
+// the wrapped types.
+
 #include <iostream>
 #include <memory>
 
-class LegacyRectangle
-{
+class LegacyRectangle {
 public:
-    void render()
-    {
-        std::cout << "Legacy Rectangle render()" << std::endl;
-    }
+    void render() const { std::cout << "LegacyRectangle::render\n"; }
 };
 
-class LegacyCircle
-{
+class LegacyCircle {
 public:
-    void render()
-    {
-        std::cout << "Legacy Circle render()" << std::endl;
-    }
+    void render() const { std::cout << "LegacyCircle::render\n"; }
 };
 
-class ExecuteInterface
-{
+class ExecuteInterface {
 public:
     virtual ~ExecuteInterface() = default;
     virtual void execute() = 0;
 };
 
-template <class ClassType>
-class ExecuteAdapter : public ExecuteInterface
-{
-    std::unique_ptr<ClassType> m_object;
-    void (ClassType::*m_method)();
-
+template <class T>
+class ExecuteAdapter : public ExecuteInterface {
 public:
-    ExecuteAdapter(std::unique_ptr<ClassType> object, void (ClassType::*method)())
-        : m_object(std::move(object)), m_method(method) {}
+    using Method = void (T::*)() const;
 
-    void execute() override
-    {
-        (m_object.get()->*m_method)();
-    }
+    ExecuteAdapter(std::unique_ptr<T> object, Method method)
+        : object_(std::move(object)), method_(method) {}
+
+    void execute() override { (object_.get()->*method_)(); }
+
+private:
+    std::unique_ptr<T> object_;
+    Method method_;
 };
 
-int main()
-{
-    std::unique_ptr<ExecuteInterface> shape1 = std::make_unique<ExecuteAdapter<LegacyRectangle>>(
-        std::make_unique<LegacyRectangle>(), &LegacyRectangle::render);
-    shape1->execute();
+int main() {
+    std::unique_ptr<ExecuteInterface> shape1 =
+        std::make_unique<ExecuteAdapter<LegacyRectangle>>(
+            std::make_unique<LegacyRectangle>(), &LegacyRectangle::render);
+    std::unique_ptr<ExecuteInterface> shape2 =
+        std::make_unique<ExecuteAdapter<LegacyCircle>>(
+            std::make_unique<LegacyCircle>(), &LegacyCircle::render);
 
-    std::unique_ptr<ExecuteInterface> shape2 = std::make_unique<ExecuteAdapter<LegacyCircle>>(
-        std::make_unique<LegacyCircle>(), &LegacyCircle::render);
+    shape1->execute();
     shape2->execute();
 }

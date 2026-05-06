@@ -1,113 +1,78 @@
+// Proxy — protection proxy that gates access to a sensitive object.
+//
+// `SecurePettyCash` actually holds the money. `PettyCashProxy` wraps it and
+// only forwards `withdraw()` if the requesting Person is on the authorized
+// list. The real object never sees an unauthorized call.
+
+#include <algorithm>
 #include <iostream>
-#include <vector>
 #include <memory>
-#include <algorithm>  // ✅ Added for std::find
+#include <string>
+#include <vector>
 
-using namespace std;
-
-class Person
-{
-    string nameString;
-    static vector<string> nameList;
-    static int next;
-
+class Person {
 public:
-    Person()
-    {
-        if (next < nameList.size())
-            nameString = nameList[next++];
-        else
-            nameString = "Unknown";
-    }
+    explicit Person(std::string name) : name_(std::move(name)) {}
 
-    string getName() const
-    {
-        return nameString;
-    }
+    const std::string& name() const { return name_; }
+
+private:
+    std::string name_;
 };
 
-// Initialize static name list
-vector<string> Person::nameList = {"Tom", "Dick", "Harry", "Bubba"};
-int Person::next = 0;
-
-// Secure class handling actual cash transactions
-class SecurePettyCash
-{
-private:
-    int balance;
-
+class SecurePettyCash {
 public:
-    SecurePettyCash() : balance(500) {}
+    SecurePettyCash() : balance_(500) {}
 
-    bool withdraw(int amount)
-    {
-        if (amount > balance)
-        {
-            cout << "❌ Not enough funds in petty cash.\n";
+    bool withdraw(int amount) {
+        if (amount > balance_) {
+            std::cout << "  not enough funds (balance=" << balance_ << ")\n";
             return false;
         }
-        balance -= amount;
+        balance_ -= amount;
         return true;
     }
 
-    int getBalance() const
-    {
-        return balance;
-    }
+    int balance() const { return balance_; }
+
+private:
+    int balance_;
 };
 
-// Proxy class controlling access to SecurePettyCash
-class PettyCashProxy
-{
-private:
-    unique_ptr<SecurePettyCash> realPettyCash;
-
+class PettyCashProxy {
 public:
-    PettyCashProxy() : realPettyCash(make_unique<SecurePettyCash>()) {}
+    PettyCashProxy() : cash_(std::make_unique<SecurePettyCash>()) {}
 
-    bool withdraw(const Person& person, int amount)
-    {
-        static vector<string> authorizedUsers = {"Tom", "Harry", "Bubba"};
+    bool withdraw(const Person& person, int amount) {
+        static const std::vector<std::string> authorized = {"Tom", "Harry", "Bubba"};
 
-        // ✅ Fixed std::find issue
-        if (std::find(authorizedUsers.begin(), authorizedUsers.end(), person.getName()) != authorizedUsers.end())
-        {
-            return realPettyCash->withdraw(amount);
-        }
-        else
-        {
-            cout << "⛔ Access denied for " << person.getName() << ".\n";
+        auto it = std::find(authorized.begin(), authorized.end(), person.name());
+        if (it == authorized.end()) {
+            std::cout << "  access denied for " << person.name() << '\n';
             return false;
         }
+        return cash_->withdraw(amount);
     }
 
-    int getBalance() const
-    {
-        return realPettyCash->getBalance();
-    }
+    int balance() const { return cash_->balance(); }
+
+private:
+    std::unique_ptr<SecurePettyCash> cash_;
 };
 
-int main()
-{
+int main() {
     PettyCashProxy pc;
-    vector<unique_ptr<Person>> workers;
-    
-    // Creating 4 workers
-    for (int i = 0; i < 4; i++)
-        workers.push_back(make_unique<Person>());
+    std::vector<Person> workers = {Person("Tom"), Person("Dick"),
+                                   Person("Harry"), Person("Bubba")};
 
     int amount = 100;
-    for (const auto& worker : workers)
-    {
-        if (!pc.withdraw(*worker, amount))
-            cout << "❌ No money for " << worker->getName() << ".\n";
+    for (const auto& w : workers) {
+        if (pc.withdraw(w, amount))
+            std::cout << "  $" << amount << " withdrawn by " << w.name() << '\n';
         else
-            cout << "✅ " << amount << " dollars withdrawn by " << worker->getName() << ".\n";
-
+            std::cout << "  no money for " << w.name() << '\n';
         amount += 100;
     }
 
-    cout << "\n💰 Remaining balance in petty cash: $" << pc.getBalance() << '\n';
-
-    return 0;
+    std::cout << "Remaining balance: $" << pc.balance() << '\n';
 }

@@ -1,156 +1,83 @@
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <time.h>
-#include <memory>
-#include <vector>
-/*
-Intrinsic: shared
-Intrinsic state consists of information that is independent of the flyweight's context information.
+// Flyweight — share the team-level state across all players on a team. Each
+// Player flyweight carries only the *intrinsic* state (the team's mission
+// goal). The *extrinsic* state (current weapon) is passed in at call time, so
+// many game-world entities can share two Player objects total — one
+// Terrorist, one CounterTerrorist — instead of one per player.
+//
+// Bug fix vs. earlier version: weapon used to be stored on the flyweight,
+// which means every "player" mutated the same shared object — defeating the
+// pattern. Weapon is extrinsic and lives on the call site, not the flyweight.
 
-Extrinsic: can not be shared
-Extrinsic state cannot be shared, it depends on and varies with the Flyweight's context
-
-The idea being that the memory it takes to store the extrinsic state need not be duplicated for every object.
-Extrinsic state is stored or computed by the client and is passed to the flyweight when
-an operation is invoked. Clients should not instantiate Flyweights directly, they should
-obtain them exclusively from a FlyweightFactory object to ensure they are shared properly.
-
-An good example of this categorisation is a graphical component such as a tooltip, whose intrinsic
-data is the text to be displayed and the extrinsic data is the xx and yy coordinates on the screen.
-
-*/
-
-
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-#include <memory>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-// Common interface for all players
-class Player
-{
+class Player {
 public:
-    virtual void equipWeapon(const std::string& weapon) = 0;
-    virtual void performMission() const = 0;
-    virtual ~Player() = default;  // Ensures proper polymorphic destruction
+    virtual ~Player() = default;
+    virtual void performMission(const std::string& weapon) const = 0;
 };
 
-// Enum for player types
 enum class PlayerType { TERRORIST, COUNTER_TERRORIST };
 
-// Terrorist class (Flyweight)
-class Terrorist : public Player
-{
-private:
-    const std::string MISSION_GOAL = "Plant a bomb"; // Intrinsic state (shared)
-    std::string weapon; // Extrinsic state (unique per instance)
-
+class Terrorist : public Player {
 public:
-    void equipWeapon(const std::string& weapon) override
-    {
-        this->weapon = weapon;
+    void performMission(const std::string& weapon) const override {
+        std::cout << "Terrorist with " << weapon << " | mission: " << goal_ << '\n';
     }
 
-    void performMission() const override
-    {
-        std::cout << "Terrorist with weapon " << weapon 
-                  << " | Mission: " << MISSION_GOAL << std::endl;
-    }
+private:
+    const std::string goal_ = "plant the bomb";
 };
 
-// Counter-Terrorist class (Flyweight)
-class CounterTerrorist : public Player
-{
-private:
-    const std::string MISSION_GOAL = "Diffuse the bomb"; // Intrinsic state (shared)
-    std::string weapon; // Extrinsic state (unique per instance)
-
+class CounterTerrorist : public Player {
 public:
-    void equipWeapon(const std::string& weapon) override
-    {
-        this->weapon = weapon;
+    void performMission(const std::string& weapon) const override {
+        std::cout << "Counter-Terrorist with " << weapon
+                  << " | mission: " << goal_ << '\n';
     }
 
-    void performMission() const override
-    {
-        std::cout << "Counter-Terrorist with weapon " << weapon 
-                  << " | Mission: " << MISSION_GOAL << std::endl;
-    }
+private:
+    const std::string goal_ = "diffuse the bomb";
 };
 
-// Factory class to manage Flyweight instances
-class PlayerFactory
-{
-private:
-    static std::unordered_map<PlayerType, std::shared_ptr<Player>> playerCache;
-
+class PlayerFactory {
 public:
-    static std::shared_ptr<Player> getPlayer(PlayerType type)
-    {
-        auto it = playerCache.find(type);
+    static const Player& get(PlayerType type) {
+        auto it = cache_.find(type);
+        if (it != cache_.end()) return *it->second;
 
-        if (it != playerCache.end())
-        {
-            std::cout << "✅ Reusing existing player.\n";
-            return it->second;
+        std::unique_ptr<Player> p;
+        switch (type) {
+            case PlayerType::TERRORIST:
+                std::cout << "Factory: creating Terrorist flyweight\n";
+                p = std::make_unique<Terrorist>();
+                break;
+            case PlayerType::COUNTER_TERRORIST:
+                std::cout << "Factory: creating CounterTerrorist flyweight\n";
+                p = std::make_unique<CounterTerrorist>();
+                break;
         }
-
-        std::shared_ptr<Player> newPlayer = nullptr;
-
-        switch (type)
-        {
-        case PlayerType::TERRORIST:
-            std::cout << "🔥 Creating a new Terrorist.\n";
-            newPlayer = std::make_shared<Terrorist>();
-            break;
-        case PlayerType::COUNTER_TERRORIST:
-            std::cout << "🛡️ Creating a new Counter-Terrorist.\n";
-            newPlayer = std::make_shared<CounterTerrorist>();
-            break;
-        default:
-            throw std::runtime_error("Invalid Player Type");
-        }
-
-        playerCache[type] = newPlayer;
-        return newPlayer;
+        return *(cache_[type] = std::move(p));
     }
+
+private:
+    static std::unordered_map<PlayerType, std::unique_ptr<Player>> cache_;
 };
 
-// Define static unordered_map
-std::unordered_map<PlayerType, std::shared_ptr<Player>> PlayerFactory::playerCache;
+std::unordered_map<PlayerType, std::unique_ptr<Player>> PlayerFactory::cache_;
 
-// Utility function to get a random player type
-PlayerType getRandomPlayerType()
-{
-    return static_cast<PlayerType>(rand() % 2);
-}
+int main() {
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+    const std::vector<std::string> weapons = {"AK-47", "Maverick", "Gut Knife", "Desert Eagle"};
 
-// List of available weapons
-std::string weapons[] = { "AK-47", "Maverick", "Gut Knife", "Desert Eagle" };
-
-// Utility function to get a random weapon
-std::string getRandomWeapon()
-{
-    return weapons[rand() % 4];
-}
-
-// Main execution
-int main()
-{
-    srand(time(NULL));  // Seed random number generator
-
-    std::vector<std::shared_ptr<Player>> gamePlayers;
-    const int numPlayers = 20;
-
-    for (int i = 0; i < numPlayers; ++i)
-    {
-        auto player = PlayerFactory::getPlayer(getRandomPlayerType());
-        player->equipWeapon(getRandomWeapon());
-        player->performMission();
+    for (int i = 0; i < 10; ++i) {
+        auto type = static_cast<PlayerType>(std::rand() % 2);
+        const Player& p = PlayerFactory::get(type);
+        p.performMission(weapons[std::rand() % weapons.size()]);
     }
-
-    return 0;
 }

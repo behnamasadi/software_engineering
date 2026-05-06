@@ -1,70 +1,66 @@
+// Bridge — decouple an abstraction (Shape) from its implementation (RenderAPI).
+//
+// Without the Bridge: every (shape × renderer) combination becomes a class —
+//   BrushSquare, PencilSquare, BrushCircle, PencilCircle, ...  N×M classes.
+//
+// With the Bridge: Shape holds a reference to a RenderAPI. Adding a new shape
+// or a new renderer is independent — you do not multiply classes.
+
 #include <iostream>
+#include <memory>
 
-using namespace std;
-
-// Implementor
+// Implementor: knows how to draw primitives.
 class RenderAPI {
 public:
-    virtual void renderSquare(double side) = 0;
     virtual ~RenderAPI() = default;
+    virtual void renderSquare(double side) = 0;
 };
 
-// Concrete Implementor A
 class BrushRenderer : public RenderAPI {
 public:
     void renderSquare(double side) override {
-        cout << "\n[BrushRenderer] Rendering square with side = " << side << endl;
+        std::cout << "[Brush] square side=" << side << '\n';
     }
 };
 
-// Concrete Implementor B
 class PencilRenderer : public RenderAPI {
 public:
     void renderSquare(double side) override {
-        cout << "\n[PencilRenderer] Rendering square with side = " << side << endl;
+        std::cout << "[Pencil] square side=" << side << '\n';
     }
 };
 
-// Abstraction
+// Abstraction: high-level shape API, delegates rendering to RenderAPI.
 class Shape {
 public:
-    virtual void display() = 0;  // Low-level
-    virtual void scaleSize(double factor) = 0; // High-level
     virtual ~Shape() = default;
+    virtual void display() = 0;
+    virtual void scaleSize(double factor) = 0;
 };
 
-// Refined Abstraction
 class Square : public Shape {
 public:
-    Square(double s, RenderAPI& renderer) : side(s), renderAPI(renderer) {}
+    Square(double side, RenderAPI& renderer)
+        : side_(side), renderer_(renderer) {}
 
-    void display() override {
-        renderAPI.renderSquare(side);
-    }
-
-    void scaleSize(double factor) override {
-        side *= factor;
-    }
+    void display() override { renderer_.renderSquare(side_); }
+    void scaleSize(double factor) override { side_ *= factor; }
 
 private:
-    double side;
-    RenderAPI& renderAPI;
+    double side_;
+    RenderAPI& renderer_;
 };
 
 int main() {
-    BrushRenderer brushRenderer;
-    PencilRenderer pencilRenderer;
+    BrushRenderer brush;
+    PencilRenderer pencil;
 
-    Square squareA(1, brushRenderer);
-    Square squareB(2, pencilRenderer);
+    Square a(1, brush);
+    Square b(2, pencil);
 
-    Shape* shapes[2] = { &squareA, &squareB };
+    a.scaleSize(10);
+    a.display();
 
-    shapes[0]->scaleSize(10);
-    shapes[0]->display();
-    
-    shapes[1]->scaleSize(10);
-    shapes[1]->display();
-
-    return 0;
+    b.scaleSize(10);
+    b.display();
 }

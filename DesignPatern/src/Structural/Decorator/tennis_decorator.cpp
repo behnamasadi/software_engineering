@@ -1,95 +1,70 @@
-#include <memory>
+// Decorator — start with a base court booking and stack add-ons (rackets,
+// ball pack, coaching). Each add-on wraps a CourtBooking, forwards `cost()`
+// to the wrapped booking, and adds its own charge.
+
 #include <iostream>
-#include <string>
+#include <memory>
+#include <utility>
 
-// Base class for court booking
-class CourtBooking
-{
+class CourtBooking {
 public:
-    virtual int cost() const
-    {
-        return 1000;  // Base price
-    }
-
-    virtual ~CourtBooking() = default; // Ensures proper polymorphic destruction
+    virtual ~CourtBooking() = default;
+    virtual int cost() const = 0;
 };
 
-// Abstract Decorator Class
-class TennisAddon : public CourtBooking
-{
-protected:
-    std::unique_ptr<CourtBooking> court;
-
+class GrassCourt : public CourtBooking {
 public:
-    explicit TennisAddon(std::unique_ptr<CourtBooking> cb) : court(std::move(cb)) {}
-
-    virtual int cost() const override = 0; // Ensure derived classes implement this
-};
-
-// Concrete Grass Court Booking
-class GrassCourt : public CourtBooking
-{
-public:
-    int cost() const override
-    {
-        std::cout << "Grass Court Booking: 8000" << std::endl;
+    int cost() const override {
+        std::cout << "  grass court: 8000\n";
         return 8000;
     }
 };
 
-// Concrete Decorator - Coaching
-class CoachingAddon : public TennisAddon
-{
+// Base decorator.
+class TennisAddon : public CourtBooking {
 public:
-    explicit CoachingAddon(std::unique_ptr<CourtBooking> cb) : TennisAddon(std::move(cb)) {}
+    explicit TennisAddon(std::unique_ptr<CourtBooking> court)
+        : court_(std::move(court)) {}
 
-    int cost() const override
-    {
-        std::cout << "Coaching cost: 300" << std::endl;
-        return court->cost() + 300;
+protected:
+    std::unique_ptr<CourtBooking> court_;
+};
+
+class CoachingAddon : public TennisAddon {
+public:
+    using TennisAddon::TennisAddon;
+    int cost() const override {
+        std::cout << "  coaching: 300\n";
+        return court_->cost() + 300;
     }
 };
 
-// Concrete Decorator - Ball Pack
-class BallPackAddon : public TennisAddon
-{
+class BallPackAddon : public TennisAddon {
 public:
-    explicit BallPackAddon(std::unique_ptr<CourtBooking> cb) : TennisAddon(std::move(cb)) {}
-
-    int cost() const override
-    {
-        std::cout << "Ball Pack cost: 100" << std::endl;
-        return court->cost() + 100;
+    using TennisAddon::TennisAddon;
+    int cost() const override {
+        std::cout << "  ball pack: 100\n";
+        return court_->cost() + 100;
     }
 };
 
-// Concrete Decorator - Rackets
-class RacketAddon : public TennisAddon
-{
+class RacketAddon : public TennisAddon {
 public:
-    explicit RacketAddon(std::unique_ptr<CourtBooking> cb) : TennisAddon(std::move(cb)) {}
-
-    int cost() const override
-    {
-        std::cout << "Rackets cost: 200" << std::endl;
-        return court->cost() + 200;
+    using TennisAddon::TennisAddon;
+    int cost() const override {
+        std::cout << "  rackets: 200\n";
+        return court_->cost() + 200;
     }
 };
 
-int main()
-{
-    std::cout << "Booking Details and Costs:\n";
+int main() {
+    std::cout << "Booking breakdown:\n";
 
-    // Base grass court booking
     std::unique_ptr<CourtBooking> booking = std::make_unique<GrassCourt>();
-
-    // Add-ons
     booking = std::make_unique<RacketAddon>(std::move(booking));
     booking = std::make_unique<BallPackAddon>(std::move(booking));
     booking = std::make_unique<CoachingAddon>(std::move(booking));
 
-    // Final cost calculation
-    std::cout << "Total Cost: " << booking->cost() << std::endl;
-
-    return 0;
+    int total = booking->cost();
+    std::cout << "Total: " << total << '\n';
 }

@@ -9,9 +9,9 @@ A stereotype uses the same notation as a class, with the keyword `«stereotype»
 A stereotype cannot be used by itself, but must always be used with one of the metaclasses it extends.
 Stereotype can change the graphical appearance of the extended model element by using attached icons represented by the Image profile class.
 
-![PlantUML model](diagrams/WebClientUser.svg.svg)
+![PlantUML model](diagrams/WebClientUser.svg)
 
-[plantuml code](diagrams/WebClientUser.svg.puml)
+[plantuml code](diagrams/WebClientUser.puml)
 
 ### Tag
 

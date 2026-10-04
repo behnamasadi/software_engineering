@@ -10,7 +10,7 @@ The state pattern can be interpreted as a strategy pattern, which is able to swi
 [plantuml code](diagrams/music_player_state.puml)
 
 Source code examples:
-[music player state](../../../DesignPatern/src/Behavioral/State/music_player_state.cpp), [machine on off state](State/machine_on_off_state.cpp)
+[music player state](../../../DesignPatern/src/Behavioral/State/music_player_state.cpp), [machine on off state](../../../DesignPatern/src/Behavioral/State/machine_on_off_state.cpp)
 
 ---
 

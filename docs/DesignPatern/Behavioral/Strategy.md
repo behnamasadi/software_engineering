@@ -52,5 +52,5 @@ With the **Strategy Pattern**, we achieve this seamlessly **without modifying th
 
 
 Source code examples:
-[robot strategy](../../../DesignPatern/src/Behavioral/Strategy/robot.cpp), [conceptual strategy](../../../DesignPatern/src/Behavioral/Strategy/conceptual_strategy.cpp), [billing strategy](Strategy/billing_strategy.cpp)
+[robot strategy](../../../DesignPatern/src/Behavioral/Strategy/robot.cpp), [conceptual strategy](../../../DesignPatern/src/Behavioral/Strategy/conceptual_strategy.cpp), [billing strategy](../../../DesignPatern/src/Behavioral/Strategy/billing_strategy.cpp)
 

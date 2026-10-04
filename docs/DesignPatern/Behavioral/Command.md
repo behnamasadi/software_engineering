@@ -114,6 +114,6 @@ Now, **press the button** and watch the magic happen! ✨
 
 
 Source code examples:
-[Light on command](../../../DesignPatern/src/Behavioral/Command/LightOnCommand.cpp), [giant command](../../../DesignPatern/src/Behavioral/Command/giant_command.cpp)
+[Light on command](../../../DesignPatern/src/Behavioral/Command/light_on_command.cpp), [giant command](../../../DesignPatern/src/Behavioral/Command/giant_command.cpp)
 
 

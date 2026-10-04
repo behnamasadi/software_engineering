@@ -13,5 +13,5 @@ Another good example use case of this pattern would be logger, where user might 
 
 ![PlantUML model](diagrams/logger_decorater.svg)
 
-[plantuml code](diagrams/logger_decorater.puml)
+[plantuml code](diagrams/logger_decorator.puml)
 

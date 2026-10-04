@@ -2,7 +2,7 @@
  - [Chain of responsibility](ChainOfResponsibility.md)  
  - [Command](Command.md)  
  - [Interpreter](Interpreter.md)  
- - [Iterator](Iterator.dm)  
+ - [Iterator](Iterator.md)  
  - [Mediator](Mediator.md)  
  - [Memento](Memento.md)  
  - [Null Object](NullObject.md)  

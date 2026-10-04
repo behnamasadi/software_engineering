@@ -105,4 +105,4 @@ By understanding these use cases and trade-offs, you can decide whether the **Ob
 
 
 Source code examples:
-[car parts observer](../../../DesignPatern/src/Behavioral/Observer/car_observer.cpp), [clocktimer](../../../DesignPatern/src/Behavioral/Observer/clocktimer.cpp), [rocket observer](../../../DesignPatern/src/Behavioral/Observer/rocket_observer.cpp),[weather station observer](../../../DesignPatern/src/Behavioral/Observer/weather_station_observer.cpp), [chat room observer](../../../DesignPatern/src/Behavioral/Observer/chat_room_observer.cpp)
+[car parts observer](../../../DesignPatern/src/Behavioral/Observer/car_observer.cpp), [clocktimer](../../../DesignPatern/src/Behavioral/Observer/clocktimer.cpp), [weather station observer](../../../DesignPatern/src/Behavioral/Observer/weather_station_observer.cpp), [chat room observer](../../../DesignPatern/src/Behavioral/Observer/chat_room_observer.cpp)

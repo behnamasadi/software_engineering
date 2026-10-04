@@ -13,5 +13,5 @@ Strategy modifies the logic of individual objects. Template Method modifies the 
 **Factory Method** is a specialization of Template Method.
 
 Source code examples:
-[template method](TemplateMethod/template_method.cpp), [template method order](TemplateMethod/template_method_order.cpp)
+[template method](../../../DesignPatern/src/Behavioral/TemplateMethod/template_method.cpp), [template method order](../../../DesignPatern/src/Behavioral/TemplateMethod/template_method_order.cpp)
 

@@ -350,7 +350,6 @@ Now let's **match this with your UML diagram**.
 
 Source code examples:
 [Chat room mediator](../../../DesignPatern/src/Behavioral/Mediator/chat_room_mediator.cpp), 
-[Airport traffic pattern](../../../DesignPatern/src/Behavioral/Mediator/air_traffic_control.cpp), 
-[Mediator before after](../../../DesignPatern/src/Behavioral/Mediator/mediator_before_after.cpp)
+[Airport traffic pattern](../../../DesignPatern/src/Behavioral/Mediator/air_traffic_control.cpp)
 
 

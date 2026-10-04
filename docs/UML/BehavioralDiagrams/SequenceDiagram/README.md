@@ -11,7 +11,7 @@ UML sequence diagram shows how objects in a system  or classes in the code inter
 
 ![PlantUML model](diagrams/TheaterServer.svg)
 
-[plantuml code](diagrams/TheaterServer..puml)
+[plantuml code](diagrams/TheaterServer.puml)
 
 Refs:   [1](https://www.geeksforgeeks.org/unified-modeling-language-uml-sequence-diagrams/),
 	[2](https://www.uml-diagrams.org/)

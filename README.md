@@ -1,12 +1,33 @@
 # [UML, Design Pattern and Refactoring](#)
 
-![Ubuntu](https://github.com/behnamasadi/software_engineering/actions/workflows/docker-build.yml/badge.svg)
-![Windows](https://github.com/behnamasadi/software_engineering/actions/workflows/windows-build.yml/badge.svg)
-![alt text](https://img.shields.io/badge/license-BSD-blue.svg)
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/behnamasadi/software_engineering)
-![GitHub Release](https://img.shields.io/github/v/release/behnamasadi/software_engineering)
-![GitHub Repo stars](https://img.shields.io/github/stars/behnamasadi/software_engineering)
-![GitHub forks](https://img.shields.io/github/forks/behnamasadi/software_engineering)
+**CI**  
+[![Ubuntu 24.04 (Docker)](https://github.com/behnamasadi/software_engineering/actions/workflows/docker-build.yml/badge.svg?branch=master)](https://github.com/behnamasadi/software_engineering/actions/workflows/docker-build.yml)
+[![Linux GCC/Clang](https://github.com/behnamasadi/software_engineering/actions/workflows/linux-compilers.yml/badge.svg?branch=master)](https://github.com/behnamasadi/software_engineering/actions/workflows/linux-compilers.yml)
+[![macOS](https://github.com/behnamasadi/software_engineering/actions/workflows/macos.yml/badge.svg?branch=master)](https://github.com/behnamasadi/software_engineering/actions/workflows/macos.yml)
+[![Windows](https://github.com/behnamasadi/software_engineering/actions/workflows/windows-build.yml/badge.svg?branch=master)](https://github.com/behnamasadi/software_engineering/actions/workflows/windows-build.yml)
+[![Links](https://github.com/behnamasadi/software_engineering/actions/workflows/links.yml/badge.svg?branch=master)](https://github.com/behnamasadi/software_engineering/actions/workflows/links.yml)
+[![CodeQL](https://github.com/behnamasadi/software_engineering/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/behnamasadi/software_engineering/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/behnamasadi/software_engineering/badge)](https://scorecard.dev/viewer/?uri=github.com/behnamasadi/software_engineering)
+
+**Stack**  
+![C++20](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=cplusplus&logoColor=white)
+![CMake](https://img.shields.io/badge/CMake-3.21%2B%20(presets)-064F8C?logo=cmake&logoColor=white)
+[![Docker](https://img.shields.io/badge/Docker-ubuntu%3A24.04-2496ED?logo=docker&logoColor=white)](Dockerfile)
+![PlantUML](https://img.shields.io/badge/diagrams-PlantUML-FBB117)
+![Platforms](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)
+
+**Repository**  
+[![License](https://img.shields.io/github/license/behnamasadi/software_engineering)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/behnamasadi/software_engineering)](https://github.com/behnamasadi/software_engineering/commits/master)
+[![Commit activity](https://img.shields.io/github/commit-activity/y/behnamasadi/software_engineering)](https://github.com/behnamasadi/software_engineering/graphs/commit-activity)
+[![Contributors](https://img.shields.io/github/contributors/behnamasadi/software_engineering)](https://github.com/behnamasadi/software_engineering/graphs/contributors)
+[![Issues](https://img.shields.io/github/issues/behnamasadi/software_engineering)](https://github.com/behnamasadi/software_engineering/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/behnamasadi/software_engineering)](https://github.com/behnamasadi/software_engineering/pulls)
+![Top language](https://img.shields.io/github/languages/top/behnamasadi/software_engineering)
+![Code size](https://img.shields.io/github/languages/code-size/behnamasadi/software_engineering)
+![Repo size](https://img.shields.io/github/repo-size/behnamasadi/software_engineering)
+[![Stars](https://img.shields.io/github/stars/behnamasadi/software_engineering?style=social)](https://github.com/behnamasadi/software_engineering/stargazers)
+[![Forks](https://img.shields.io/github/forks/behnamasadi/software_engineering?style=social)](https://github.com/behnamasadi/software_engineering/network/members)
 
 This repository serves as a comprehensive resource for learning software design and development with C++. It includes:
 
@@ -71,7 +92,7 @@ cmake --build --preset ninja-multi-release
    * [Object Diagram](docs/UML/StructureDiagrams/ObjectDiagram)
    * [Package Diagram](docs/UML/StructureDiagrams/PackageDiagram)
    * [Profile Diagram](docs/UML/StructureDiagrams/ProfileDiagram)
-   * [Composite Structure Diagram](UML/StructureDiagrams/CompositeStructureDiagram)
+   * [Composite Structure Diagram](docs/UML/StructureDiagrams/CompositeStructureDiagram)
 - [Behavioral Diagrams](docs/UML/BehavioralDiagrams)
    * [Use Case Diagram](docs/UML/BehavioralDiagrams/UseCaseDiagram)
    * [Activity Diagram](docs/UML/BehavioralDiagrams/ActivityDiagram)
@@ -121,7 +142,7 @@ References:
   * [Chain of responsibility](docs/DesignPatern/Behavioral/ChainOfResponsibility.md)  
   * [Command](docs/DesignPatern/Behavioral/Command.md)  
   * [Interpreter](docs/DesignPatern/Behavioral/Interpreter.md)  
-  * [Iterator](docs/DesignPatern/Behavioral/Iterator.dm)  
+  * [Iterator](docs/DesignPatern/Behavioral/Iterator.md)  
   * [Mediator](docs/DesignPatern/Behavioral/Mediator.md)  
   * [Memento](docs/DesignPatern/Behavioral/Memento.md)  
   * [Null Object](docs/DesignPatern/Behavioral/NullObject.md)  
@@ -199,10 +220,10 @@ References: [1](https://refactoring.guru/refactoring), [2](https://sourcemaking.
 
 
 ## [Systems Development Life Cycle (SDLC)](#)
-- [Waterfall Model](SDLC/README.md#--1-waterfall-model--)  
-- [V-Model](SDLC/README.md#--2-v-model--)  
-- [Agile Model](SDLC/README.md#--4-agile-model--)  
-- [DevOps Model](SDLC/README.md#--9-devops-model--)  
+- [Waterfall Model](SDLC/README.md#1-waterfall-model)  
+- [V-Model](SDLC/README.md#2-v-model)  
+- [Agile Model](SDLC/README.md#4-agile-model)  
+- [DevOps Model](SDLC/README.md#9-devops-model)  
 
 
 ## [System Design](#) 
@@ -217,15 +238,15 @@ References: [1](https://refactoring.guru/refactoring), [2](https://sourcemaking.
 - [API Gateway](SystemDesign/index.md#9-api-gateway)
 - [Microservices](SystemDesign/index.md#10-microservices)
 - [Service Discovery](SystemDesign/index.md#11-service-discovery)
-- [CDNs (Content Delivery Networks)](SystemDesign/index.md#12-cdns--content-delivery-networks-)
+- [CDNs (Content Delivery Networks)](SystemDesign/index.md#12-cdns-content-delivery-networks)
 - [DB Indexing](SystemDesign/index.md#13-db-indexing)
-- [Partitioning](#14-partitioning)
+- [Partitioning](SystemDesign/index.md#14-partitioning)
 - [Eventual Consistency](SystemDesign/index.md#15-eventual-consistency)
 - [WebSockets](SystemDesign/index.md#16-websockets)
 - [Scalability](SystemDesign/index.md#17-scalability)
 - [Fault Tolerance](SystemDesign/index.md#18-fault-tolerance)
 - [Monitoring](SystemDesign/index.md#19-monitoring)
-- [AuthN & AuthZ](SystemDesign/index.md#20-authn---authz)
+- [AuthN & AuthZ](SystemDesign/index.md#20-authn--authz)
 
 
 ## The Flaws of Inheritance
